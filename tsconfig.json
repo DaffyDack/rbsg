@@ -1,0 +1,19 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ],
+  "compilerOptions": {
+        "noEmit": true,
+        "allowJs": true,
+        "target": "ES2020",
+        "moduleResolution": "bundler",
+        "skipLibCheck": true,
+        "strict": true
+    }
+}
