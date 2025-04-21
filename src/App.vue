@@ -4,19 +4,21 @@ import { RouterLink, RouterView } from 'vue-router'
 import IconAngle from './components/icons/IconAngle.vue'
 import IconExclamation from './components/icons/IconExclamation.vue'
 import IconHome from './components/icons/IconHome.vue'
+import Reg from './components/reg.vue'
 
 const isSidebarOpen = shallowRef<Boolean>(false)
-const registration = false
+const registration = true
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
 }
+
 </script>
 
 <template>
   <header>
-    <div v-if="registration">
-      !!!!
+    <div v-if="registration" class="flex items-center justify-center h-screen">
+      <Reg/>
     </div>
     <div v-else class="wrapper flex items-stretch">
       <div>
@@ -168,4 +170,9 @@ button {
   opacity: 0;
   transform: translateX(-100%);
 }
+
+
+//form
+
+
 </style>
