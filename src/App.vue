@@ -1,24 +1,36 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
+import { shallowRef, ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import IconAngle from './components/icons/IconAngle.vue'
 import IconExclamation from './components/icons/IconExclamation.vue'
 import IconHome from './components/icons/IconHome.vue'
 import Reg from './components/reg.vue'
+import Button from 'primevue/button';
+
 
 const isSidebarOpen = shallowRef<Boolean>(false)
-const registration = true
+const regValue = ref({
+  registration: true,
+});
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
+}
+function receiveEmit() {
+  regValue.value.registration = false
+}
+
+function ExitStatus () {
+  regValue.value.registration = true
+  localStorage.removeItem('test')
 }
 
 </script>
 
 <template>
   <header>
-    <div v-if="registration" class="flex items-center justify-center h-screen">
-      <Reg/>
+    <div v-if="regValue.registration" class="flex items-center justify-center h-screen">
+      <Reg @toggle-favorite="receiveEmit"/>
     </div>
     <div v-else class="wrapper flex items-stretch">
       <div>
@@ -28,7 +40,7 @@ function toggleSidebar() {
               <img src="./assets/logo.svg" alt="logo" width="32" height="32" />
             </li>
             <li>
-              <button class="sidebar-toggle" :class="isSidebarOpen ? 'toggle-button' : ''">
+              <button class="sidebar-toggle button" :class="isSidebarOpen ? 'toggle-button' : ''">
                 <IconAngle @click="toggleSidebar" />
               </button>
             </li>
@@ -50,6 +62,10 @@ function toggleSidebar() {
               </RouterLink>
             </li>
           </ul>
+          <div class="mt-auto flex justify-center">
+            <Button @click="ExitStatus()" ><i class="pi pi-sign-in"></i></Button>
+            
+          </div>
         </aside>
       </div>
       <div class="p-10">
@@ -61,6 +77,7 @@ function toggleSidebar() {
 
 <style scoped lang="scss">
 @use './assets/scss/colors' as clr;
+
 
 $sidebar-width: 4rem;
 $toggle-duration: 300ms;
@@ -143,7 +160,7 @@ h4[transparent='true'] {
   opacity: 0;
 }
 
-button {
+.button {
   cursor: pointer;
   position: absolute;
   transition-duration: $toggle-duration;
