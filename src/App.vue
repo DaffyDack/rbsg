@@ -1,27 +1,31 @@
 <script setup lang="ts">
-import { shallowRef, ref } from 'vue'
+import { shallowRef, ref, defineComponent, reactive, computed, onMounted  } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import IconAngle from './components/icons/IconAngle.vue'
 import IconExclamation from './components/icons/IconExclamation.vue'
 import IconHome from './components/icons/IconHome.vue'
-import Reg from './components/reg.vue'
+import Reg from './components/Reg.vue'
 import Button from 'primevue/button';
+
+import {useCounterStore} from './stores/counter'
+const store = useCounterStore()
+
+
+onMounted(() => {
+  if (localStorage.getItem('test')) {
+    store.registrationCompleted()
+  }
+})
 
 
 const isSidebarOpen = shallowRef<Boolean>(false)
-const regValue = ref({
-  registration: true,
-});
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
 }
-function receiveEmit() {
-  regValue.value.registration = false
-}
 
 function ExitStatus () {
-  regValue.value.registration = true
+  store.registrationCompleted()
   localStorage.removeItem('test')
 }
 
@@ -29,8 +33,8 @@ function ExitStatus () {
 
 <template>
   <header>
-    <div v-if="regValue.registration" class="flex items-center justify-center h-screen">
-      <Reg @toggle-favorite="receiveEmit"/>
+    <div v-if="store.reg" class="flex items-center justify-center h-screen">
+      <Reg />
     </div>
     <div v-else class="wrapper flex items-stretch">
       <div>
