@@ -4,12 +4,22 @@ import { ref, watch } from 'vue'
 import { useCounterStore } from '../../stores/counter'
 const store = useCounterStore()
 
-const form = ref({
+interface Form {
+    email: string;
+    password: string;
+}
+
+interface Errors {
+    email: string;
+    password: string;
+}
+
+const form = ref<Form>({
     email: '',
     password: ''
 });
 
-const errors = ref({
+const errors = ref<Errors>({
     email: '',
     password: ''
 });
@@ -23,7 +33,7 @@ watch(() => [form.value.email, form.value.password], () => {
     }
 })
 
-function checkLength(err: any, input: any, min: any, max: any) {
+function checkLength(err: 'password', input: string, min: number, max: number) {
     if (input.length < min) {
         if (err == 'password') {
             errors.value.password = 'меньше чем надо'
@@ -38,7 +48,7 @@ function checkLength(err: any, input: any, min: any, max: any) {
         }
     }
 }
-function checkEmail(input: any) {
+function checkEmail(input: string) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (re.test(input.trim())) {
         errors.value.email = ''
@@ -56,7 +66,7 @@ const validateForm = () => {
     }
 };
 
-function isEmpty(obj: any) {
+function isEmpty(obj: Record<string, string>) {
     let a = true
     for (const [key, value] of Object.entries(obj)) {
         console.log(value, value == '')
@@ -84,12 +94,12 @@ const toggleFavorite = () => {
 <template>
     <div>
         <form @submit.prevent="handleSubmit" class="form">
-            <div class="form-control" :class="{ 'error': errors.email }">
+            <div class="form-control" :class="{'error': errors.email, 'success': !errors.email && form.email != ''}">
                 <label for="emailAuto">Email</label>
                 <input type="text" v-model="form.email" id="emailAuto" placeholder="Введите email">
                 <small v-if="errors.email">{{ errors.email }}</small>
             </div>
-            <div class="form-control" :class="{ 'error': errors.password }">
+            <div class="form-control" :class="{ 'error': errors.password, 'success': !errors.password && form.password != '' }">
                 <label for="passwordAuto">Пароль</label>
                 <input type="password" v-model="form.password" id="passwordAuto" placeholder="Введите пароль">
                 <small v-if="errors.password">{{ errors.password }}</small>

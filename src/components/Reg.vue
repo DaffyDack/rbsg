@@ -145,7 +145,7 @@ import FormReg from './form/FormReg.vue';
 
 .tabs [class^="tab"] [type="radio"],
 .tabs [class*=" tab"] [type="radio"] {
-    border-bottom: 1px solid rgba(239, 237, 239, 0.5);
+    border-bottom: 2px solid rgba(239, 237, 239, 0.5);
     cursor: pointer;
     appearance: none;
     display: block;
@@ -157,7 +157,7 @@ import FormReg from './form/FormReg.vue';
 .tabs [class^="tab"] [type="radio"]:focus,
 .tabs [class*=" tab"] [type="radio"]:hover,
 .tabs [class*=" tab"] [type="radio"]:focus {
-    border-bottom: 1px solid #fd264f;
+    border-bottom: 2px solid #ad998b;
 }
 
 .tabs [class^="tab"] [type="radio"]:checked,

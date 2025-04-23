@@ -33,7 +33,7 @@ function ExitStatus () {
 
 <template>
   <header>
-    <div v-if="store.reg" class="flex items-center justify-center h-screen">
+    <div v-if="store.reg" class="wrapper flex items-center justify-center h-screen">
       <Reg />
     </div>
     <div v-else class="wrapper flex items-stretch">
@@ -41,7 +41,7 @@ function ExitStatus () {
         <aside :vue:is-open="isSidebarOpen">
           <ul class="sidebar-head">
             <li>
-              <img src="./assets/logo.svg" alt="logo" width="32" height="32" />
+              <img src="./assets/logo.png" alt="logo" width="32" height="32" />
             </li>
             <li>
               <button class="sidebar-toggle button" :class="isSidebarOpen ? 'toggle-button' : ''">
@@ -55,14 +55,16 @@ function ExitStatus () {
           <ul>
             <li>
               <RouterLink to="/">
-                <IconHome />
-                <span v-show="isSidebarOpen">Home</span>
+                <!-- <IconHome /> -->
+                <i class="pi pi-list-check"></i>
+                <span v-show="isSidebarOpen">Мои Задачи</span>
               </RouterLink>
             </li>
             <li>
               <RouterLink to="/about">
-                <IconExclamation />
-                <span v-show="isSidebarOpen">About</span>
+                <!-- <IconExclamation /> -->
+                <i class="pi pi-clipboard"></i>
+                <span v-show="isSidebarOpen">Мои Проекты</span>
               </RouterLink>
             </li>
           </ul>
@@ -82,6 +84,10 @@ function ExitStatus () {
 <style scoped lang="scss">
 @use './assets/scss/colors' as clr;
 
+.wrapper {
+  background: linear-gradient(45deg,rgba(86, 0, 60, 1) 0%, rgba(7, 62, 137, 1) 35%, rgba(41, 182, 253, 1) 100%);
+}
+
 
 $sidebar-width: 4rem;
 $toggle-duration: 300ms;
@@ -89,7 +95,9 @@ $sidebar-padding-inline-start: 1rem;
 
 aside {
   color: clr.$primary;
-  background: clr.$bg-dark;
+  // background: clr.$bg-dark;
+  background: rgba(255, 255, 255, 0.2); // Make sure this color has an opacity of less than 1
+  backdrop-filter: blur(1px);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
