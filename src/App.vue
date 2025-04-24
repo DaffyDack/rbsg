@@ -5,7 +5,7 @@ import IconAngle from './components/icons/IconAngle.vue'
 import IconExclamation from './components/icons/IconExclamation.vue'
 import IconHome from './components/icons/IconHome.vue'
 
-const isSidebarOpen = shallowRef<Boolean>(false)
+const isSidebarOpen = shallowRef<boolean>(false)
 const registration = false
 
 function toggleSidebar() {
@@ -50,6 +50,7 @@ function toggleSidebar() {
           </ul>
         </aside>
       </div>
+      1290
       <div class="p-10">
         <RouterView />
       </div>
