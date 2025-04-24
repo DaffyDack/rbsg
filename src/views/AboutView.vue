@@ -1,10 +1,4 @@
 <script setup lang="ts">
-// import { ref, onMounted } from 'vue'
-// import { Tab, initTWE } from 'tw-elements'
-
-// onMounted(() => {
-//   initTWE({ Tab })
-// });
 
 import Tabs from 'primevue/tabs'
 import TabList from 'primevue/tablist'
