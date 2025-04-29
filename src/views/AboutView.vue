@@ -1,61 +1,163 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'
+import {useRoute} from 'vue-router'
+import { RouterLink } from 'vue-router'
 
-import Tabs from 'primevue/tabs'
-import TabList from 'primevue/tablist'
-import Tab from 'primevue/tab'
-import TabPanels from 'primevue/tabpanels'
-import TabPanel from 'primevue/tabpanel'
+
+
+const route = useRoute()
+const id = computed(() => route.params.id)
+
+
+
+const activeIndex = ref(null)
+const items = ref([{ page: 'projects', id: 1, nameProject: 'Создать рабочий стол' }, { page: 'projects', id: 2, nameProject: 'Собрать мангал' }, { page: 'projects', id: 3, nameProject: 'Настроить комп' }])
+
+
+
+const setActive = (index: any) => {
+  console.log(index, activeIndex.value)
+  if (activeIndex.value == index) {
+    activeIndex.value = null
+  } else {
+    activeIndex.value = index;
+  }
+};
+
+
+
 </script>
 
 <template>
-  <div class="card">
-    <Tabs value="0">
-      <TabList>
-        <Tab value="0">Header I</Tab>
-        <Tab value="1">Header II</Tab>
-        <Tab value="2">Header III</Tab>
-      </TabList>
-      <TabPanels>
-        <TabPanel value="0">
-          <p class="m-0">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-            mollit anim id est laborum.
-          </p>
-        </TabPanel>
-        <TabPanel value="1">
-          <p class="m-0">
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-            laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-            architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
-            sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
-            voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam eius modi.
-          </p>
-        </TabPanel>
-        <TabPanel value="2">
-          <p class="m-0">
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
-            voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint
-            occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
-            mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et
-            expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque
-            nihil impedit quo minus.
-          </p>
-        </TabPanel>
-      </TabPanels>
-    </Tabs>
+  <div class="sidebar">
+    <div id="leftside-navigation" class="nano">
+      <ul class="nano-content">
+
+        <li class="sub-menu rounded-[10px]" v-for="(item, index) in items" :key="index"
+          :class="{ 'active': activeIndex === index }">
+          <div class="flex items-center ">
+            <i class="pi pi-angle-down unwrap" @click="setActive(index)"></i>
+            <RouterLink :to="{ name: item.page, params: { id: item.id } }">
+              <i class="pi pi-file-edit unwrap"></i>
+            </RouterLink>
+            <a href="" class="link"><span>{{ item.nameProject }}</span></a>
+          </div>
+          <ul>
+            <li><a href="tables-basic.html" class="link">Basic Tables</a>
+            </li>
+
+            <li><a href="tables-data.html" class="link">Data Tables</a>
+            </li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
   </div>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
+<style scoped lang="scss">
+.unwrap {
+  margin: 0 5px 0 5px;
+  color: #7d7c7c;
+  cursor: pointer;
+  padding: 10px;
+  background: #fff;
+  border-radius: 5px;
+
+}
+
+.sidebar-toggle {
+  margin-left: -240px;
+}
+
+.sidebar {
+  width: -webkit-fill-available;
+  position: absolute;
+  transition: all 0.3s ease-in-out;
+  z-index: 100;
+  margin-right: 40px;
+
+  & .sub-menu {
+    background: #293949;
+    margin-bottom: 10px;
+  }
+
+  #leftside-navigation {
+
+    ul,
+    ul ul {
+      margin: -2px 0 0;
+      padding: 0;
+    }
+
+    ul {
+      li {
+        list-style-type: none;
+        border-bottom: 1px solid rgba(255, 255, 255, .05);
+
+        &.active {
+          &>a {
+            color: #1abc9c;
+          }
+
+          ul {
+            display: block;
+          }
+        }
+
+        a.link {
+          color: #aeb2b7;
+          text-decoration: none;
+          display: block;
+          padding: 18px 0 18px 25px;
+          font-size: 12px;
+          outline: 0;
+          width: 100%;
+          -webkit-transition: all 200ms ease-in;
+          -moz-transition: all 200ms ease-in;
+          -o-transition: all 200ms ease-in;
+          -ms-transition: all 200ms ease-in;
+          transition: all 200ms ease-in;
+
+          &:hover {
+            color: #1abc9c;
+          }
+
+          span {
+            display: inline-block;
+          }
+
+          i {
+            // width: 20px;
+
+            .fa-angle-left,
+            .fa-angle-right {
+              padding-top: 3px;
+            }
+          }
+        }
+      }
+    }
+
+    ul ul {
+      display: none;
+
+      li {
+        background: #23313f;
+        margin-bottom: 0;
+        margin-left: 0;
+        margin-right: 0;
+        border-bottom: none;
+
+        a {
+          font-size: 12px;
+          padding-top: 13px;
+          padding-bottom: 13px;
+          color: #aeb2b7;
+        }
+      }
+    }
   }
 }
 </style>

@@ -7,6 +7,10 @@ import IconHome from './components/icons/IconHome.vue'
 import Reg from './components/Reg.vue'
 import Button from 'primevue/button';
 
+const theme = ref({
+    color: 'red',
+})
+
 import {useCounterStore} from './stores/counter'
 const store = useCounterStore()
 
@@ -55,16 +59,18 @@ function ExitStatus () {
           <ul>
             <li>
               <RouterLink to="/">
-                <!-- <IconHome /> -->
-                <i class="pi pi-list-check"></i>
-                <span v-show="isSidebarOpen">Мои Задачи</span>
+                 <div class="flex items-center justify-center">
+                   <i class="pi pi-list-check"></i>
+                 </div>
+                <span v-show="isSidebarOpen" class="namePage">Мои задачи</span>
               </RouterLink>
             </li>
             <li>
               <RouterLink to="/about">
-                <!-- <IconExclamation /> -->
-                <i class="pi pi-clipboard"></i>
-                <span v-show="isSidebarOpen">Мои Проекты</span>
+                 <div class="flex items-center justify-center">
+                   <i class="pi pi-clipboard"></i>
+                </div>
+                <span v-show="isSidebarOpen" class="namePage">Мои задачи</span>
               </RouterLink>
             </li>
           </ul>
@@ -84,6 +90,14 @@ function ExitStatus () {
 <style scoped lang="scss">
 @use './assets/scss/colors' as clr;
 
+// .test {
+//   color: v-bind('theme.color');
+// }
+
+.namePage {
+  min-width: 100px;
+}
+
 .wrapper {
   background: linear-gradient(45deg,rgba(86, 0, 60, 1) 0%, rgba(7, 62, 137, 1) 35%, rgba(41, 182, 253, 1) 100%);
 }
@@ -94,8 +108,7 @@ $toggle-duration: 300ms;
 $sidebar-padding-inline-start: 1rem;
 
 aside {
-  color: clr.$primary;
-  // background: clr.$bg-dark;
+  color: #e3e1e1;
   background: rgba(255, 255, 255, 0.2); // Make sure this color has an opacity of less than 1
   backdrop-filter: blur(1px);
   display: flex;
@@ -104,6 +117,7 @@ aside {
   padding-block: 1rem;
   transition: all $toggle-duration;
   width: $sidebar-width;
+  overflow: hidden;
 }
 
 aside[vue\:is-open='true'] {
@@ -127,7 +141,7 @@ li {
   padding-inline-start: $sidebar-padding-inline-start;
 
   &:hover {
-    color: clr.$secondary;
+    color: #fffbfb;
   }
 
   & a {
@@ -136,6 +150,7 @@ li {
     column-gap: 0.75rem;
     position: relative;
     padding-block: 0.5rem;
+    min-height: 40px;
   }
 
   a.router-link-exact-active::after {
@@ -144,7 +159,7 @@ li {
     right: 0;
     width: 0.25rem;
     height: 100%;
-    background-color: clr.$secondary;
+    background-color: #12d304;
   }
 }
 
@@ -178,7 +193,7 @@ h4[transparent='true'] {
   transition-duration: $toggle-duration;
   transition-property: transform, left, top;
   left: 0;
-  top: 1rem;
+  top: 0;
   transform: translateX(0%) translateY(2rem) rotateZ(0deg);
 
   &.toggle-button {

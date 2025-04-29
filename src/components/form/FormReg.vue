@@ -4,19 +4,6 @@ import { ref, watch } from 'vue'
 import {useCounterStore} from '../../stores/counter'
 const store = useCounterStore()
 
-// const form = ref({
-//     username: '',
-//     email: '',
-//     password: '',
-//     password2: ''
-// });
-
-// const errors = ref({
-//     username: '',
-//     email: '',
-//     password: '',
-//     password2: ''
-// });
 interface Form {
     username: string;
     email: string;
@@ -164,8 +151,3 @@ const toggleFavorite = () => {
         </form>
     </div>
 </template>
-
-<style scoped lang="scss">
-
-
-</style>
