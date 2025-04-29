@@ -1,17 +1,24 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import {useRoute} from 'vue-router'
 import { RouterLink } from 'vue-router'
 
+import InputText from 'primevue/inputtext';
+import FloatLabel from 'primevue/floatlabel';
 
-
-const route = useRoute()
-const id = computed(() => route.params.id)
-
+const name_project = ref('')
 
 
 const activeIndex = ref(null)
-const items = ref([{ page: 'projects', id: 1, nameProject: 'Создать рабочий стол' }, { page: 'projects', id: 2, nameProject: 'Собрать мангал' }, { page: 'projects', id: 3, nameProject: 'Настроить комп' }])
+const items = ref([
+  { page: 'projects', id: 1, nameProject: 'Создать рабочий стол' },
+  { page: 'projects', id: 2, nameProject: 'Собрать мангал' },
+  { page: 'projects', id: 3, nameProject: 'Настроить комп' },
+  { page: 'projects', id: 4, nameProject: 'Настроить программы' },
+  { page: 'projects', id: 5, nameProject: 'Сделка' },
+  { page: 'projects', id: 6, nameProject: 'Лид' },
+  { page: 'projects', id: 7, nameProject: 'Крафтер' },
+  { page: 'projects', id: 7, nameProject: 'Крафтер' },
+])
 
 
 
@@ -24,23 +31,37 @@ const setActive = (index: any) => {
   }
 };
 
+const filteredList = computed(() => {
+  let comp = name_project.value;
+  return items.value.filter(function (elem) {
+    if (comp === '') return true;
+    else return elem.nameProject.indexOf(comp) > -1;
+  })
+})
+
 
 
 </script>
 
 <template>
   <div class="sidebar">
+    <div class="card flex justify-content-center">
+        <FloatLabel class="w-[100%]">
+            <InputText class="w-[100%] mt-5 mb-5" size="small" id="username" v-model="name_project" />
+            <label for="username">Тип проекта</label>
+        </FloatLabel>
+    </div>
     <div id="leftside-navigation" class="nano">
       <ul class="nano-content">
 
-        <li class="sub-menu rounded-[10px]" v-for="(item, index) in items" :key="index"
+        <li class="sub-menu rounded-[10px]" v-for="(item, index) in filteredList" :key="index"
           :class="{ 'active': activeIndex === index }">
           <div class="flex items-center ">
             <i class="pi pi-angle-down unwrap" @click="setActive(index)"></i>
             <RouterLink :to="{ name: item.page, params: { id: item.id } }">
               <i class="pi pi-file-edit unwrap"></i>
             </RouterLink>
-            <a href="" class="link"><span>{{ item.nameProject }}</span></a>
+            <div class="link"><span>{{ item.nameProject }}</span></div>
           </div>
           <ul>
             <li><a href="tables-basic.html" class="link">Basic Tables</a>
@@ -106,7 +127,7 @@ const setActive = (index: any) => {
           }
         }
 
-        a.link {
+        div.link {
           color: #aeb2b7;
           text-decoration: none;
           display: block;
@@ -114,10 +135,6 @@ const setActive = (index: any) => {
           font-size: 12px;
           outline: 0;
           width: 100%;
-          -webkit-transition: all 200ms ease-in;
-          -moz-transition: all 200ms ease-in;
-          -o-transition: all 200ms ease-in;
-          -ms-transition: all 200ms ease-in;
           transition: all 200ms ease-in;
 
           &:hover {
@@ -126,11 +143,12 @@ const setActive = (index: any) => {
 
           span {
             display: inline-block;
+            &:hover {
+              cursor: default;
+            }
           }
 
           i {
-            // width: 20px;
-
             .fa-angle-left,
             .fa-angle-right {
               padding-top: 3px;

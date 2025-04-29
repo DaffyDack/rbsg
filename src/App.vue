@@ -54,7 +54,7 @@ function ExitStatus () {
             </li>
           </ul>
 
-          <h4 :transparent="!isSidebarOpen">Menu</h4>
+          <h4 :transparent="!isSidebarOpen">Меню</h4>
 
           <ul>
             <li>
@@ -62,11 +62,11 @@ function ExitStatus () {
                  <div class="flex items-center justify-center">
                    <i class="pi pi-list-check"></i>
                  </div>
-                <span v-show="isSidebarOpen" class="namePage">Мои задачи</span>
+                <span v-show="isSidebarOpen" class="namePage">Мои проекты</span>
               </RouterLink>
             </li>
             <li>
-              <RouterLink to="/about">
+              <RouterLink to="/MyTasks">
                  <div class="flex items-center justify-center">
                    <i class="pi pi-clipboard"></i>
                 </div>
