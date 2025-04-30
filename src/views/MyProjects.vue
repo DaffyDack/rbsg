@@ -4,8 +4,12 @@ import { RouterLink } from 'vue-router'
 
 import InputText from 'primevue/inputtext';
 import FloatLabel from 'primevue/floatlabel';
+import Button from 'primevue/button';
+import { useProjectsStore } from '../stores/projectUser'
 
-const name_project = ref('')
+const store = useProjectsStore()
+
+const name_project = ref<string>('')
 
 
 const activeIndex = ref(null)
@@ -33,11 +37,17 @@ const setActive = (index: any) => {
 
 const filteredList = computed(() => {
   let comp = name_project.value;
-  return items.value.filter(function (elem) {
+  return store.projectsList.filter(function (elem) {
     if (comp === '') return true;
     else return elem.nameProject.indexOf(comp) > -1;
   })
 })
+
+
+
+function addProject() {
+  store.addedProjectStore('Rhfanth')
+}
 
 
 
@@ -74,6 +84,7 @@ const filteredList = computed(() => {
 
       </ul>
     </div>
+    <Button @click="addProject()" label="Добавить" icon="pi pi-check" size="small" class="mt-2" />
   </div>
 </template>
 
