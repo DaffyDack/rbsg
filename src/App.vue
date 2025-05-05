@@ -1,38 +1,41 @@
 <script setup lang="ts">
-import { shallowRef, ref, defineComponent, reactive, computed, onMounted  } from 'vue'
+import { shallowRef, onMounted, ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import IconAngle from './components/icons/IconAngle.vue'
-import IconExclamation from './components/icons/IconExclamation.vue'
-import IconHome from './components/icons/IconHome.vue'
-import Reg from './components/Reg.vue'
-import Button from 'primevue/button';
+import Reg from './components/Reg-components.vue'
+import Button from 'primevue/button'
+import { useRouter } from 'vue-router'
 
-const theme = ref({
-    color: 'red',
-})
+const router = useRouter()
 
-import {useCounterStore} from './stores/counter'
+const name = ref(localStorage.getItem('test'))
+
+
+function pushWithQuery() {
+  router.push({ path: '/' })
+}
+
+import { useCounterStore } from './stores/counter'
+
 const store = useCounterStore()
 
-
 onMounted(() => {
+  pushWithQuery()
   if (localStorage.getItem('test')) {
     store.registrationCompleted()
   }
 })
 
-
-const isSidebarOpen = shallowRef<Boolean>(false)
+const isSidebarOpen = shallowRef(false)
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
 }
 
-function ExitStatus () {
+function ExitStatus() {
   store.registrationCompleted()
   localStorage.removeItem('test')
 }
-
 </script>
 
 <template>
@@ -54,29 +57,28 @@ function ExitStatus () {
             </li>
           </ul>
 
-          <h4 :transparent="!isSidebarOpen">Меню</h4>
+          <h4 :transparent="!isSidebarOpen">{{ name }}</h4>
 
           <ul>
             <li>
               <RouterLink to="/">
-                 <div class="flex items-center justify-center">
-                   <i class="pi pi-list-check"></i>
-                 </div>
+                <div class="flex items-center justify-center">
+                  <i class="pi pi-list-check"></i>
+                </div>
                 <span v-show="isSidebarOpen" class="namePage">Мои проекты</span>
               </RouterLink>
             </li>
             <li>
               <RouterLink to="/MyTasks">
-                 <div class="flex items-center justify-center">
-                   <i class="pi pi-clipboard"></i>
+                <div class="flex items-center justify-center">
+                  <i class="pi pi-clipboard"></i>
                 </div>
                 <span v-show="isSidebarOpen" class="namePage">Мои задачи</span>
               </RouterLink>
             </li>
           </ul>
           <div class="mt-auto flex justify-center">
-            <Button @click="ExitStatus()" ><i class="pi pi-sign-in"></i></Button>
-            
+            <Button @click="ExitStatus()"><i class="pi pi-sign-in"></i></Button>
           </div>
         </aside>
       </div>
@@ -99,9 +101,14 @@ function ExitStatus () {
 }
 
 .wrapper {
-  background: linear-gradient(45deg,rgba(86, 0, 60, 1) 0%, rgba(7, 62, 137, 1) 35%, rgba(41, 182, 253, 1) 100%);
+  overflow: scroll;
+  background: linear-gradient(
+    45deg,
+    rgba(86, 0, 60, 1) 0%,
+    rgba(7, 62, 137, 1) 35%,
+    rgba(41, 182, 253, 1) 100%
+  );
 }
-
 
 $sidebar-width: 4rem;
 $toggle-duration: 300ms;
@@ -215,8 +222,5 @@ h4[transparent='true'] {
   transform: translateX(-100%);
 }
 
-
 //form
-
-
 </style>

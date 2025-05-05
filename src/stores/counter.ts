@@ -5,8 +5,6 @@ export const useCounterStore = defineStore('counter', () => {
   const count = ref(1)
   const reg = ref(true)
 
-
-
   const doubleCount = computed(() => count.value * 2)
   function increment() {
     count.value++
@@ -15,7 +13,7 @@ export const useCounterStore = defineStore('counter', () => {
     count.value--
   }
 
-  function registrationCompleted () {
+  function registrationCompleted() {
     reg.value = !reg.value
   }
 

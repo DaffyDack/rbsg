@@ -13,11 +13,10 @@ export const useProjectsStore = defineStore('projects', () => {
     { data: '02.11.2027', page: 'projects', id: 8, nameProject: 'Крафтер' },
   ])
 
-  function addedProjectStore (e:any) {
-    let a = projectsList.value.length + 1
-    projectsList.value.push({data: '02.11.2026', page: 'projects', id: a, nameProject: e }) 
+  function addedProjectStore(e: string) {
+    const a = projectsList.value.length + 1
+    projectsList.value.push({ data: '02.11.2026', page: 'projects', id: a, nameProject: e })
   }
-
 
   return { projectsList, addedProjectStore }
 })
