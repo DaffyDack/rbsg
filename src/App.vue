@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { shallowRef, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { RouterView } from 'vue-router'
-import IconAngle from './components/icons/IconAngle.vue'
 import Reg from './components/RegComponents.vue'
 import LeftMenu from './components/LeftMenu.vue'
-import Button from 'primevue/button'
-import { useRouter } from 'vue-router'
 import { useCounterStore } from './stores/counter'
+const store = useCounterStore()
+
+import { useRouter } from 'vue-router'
+
 
 
 const router = useRouter()
-const store = useCounterStore()
-const isSidebarOpen = shallowRef(false)
+
 const componentKey = ref(0)
 
 
@@ -23,21 +23,12 @@ onMounted(() => {
   }
 })
 
-
-function forceRerender() {
-  componentKey.value += 1;
+function incrCounter () {
+  componentKey.value++
 }
 
 
-// function toggleSidebar() {
-//   isSidebarOpen.value = !isSidebarOpen.value
-// }
 
-function ExitStatus() {
-  forceRerender()
-  store.registrationCompleted()
-  localStorage.removeItem('test')
-}
 </script>
 
 <template>
@@ -47,26 +38,8 @@ function ExitStatus() {
     </div>
     <div v-else class="wrapper flex items-stretch">
       <div>
-        <!-- <aside :vue:is-open="isSidebarOpen">
-          <ul class="sidebar-head">
-            <li>
-              <img src="./assets/logo.png" alt="logo" width="32" height="32" />
-            </li>
-            <li>
-              <button class="sidebar-toggle button" :class="isSidebarOpen ? 'toggle-button' : ''">
-                <IconAngle @click="toggleSidebar" />
-              </button>
-            </li>
-          </ul>
-
-
-
-          
-        </aside> -->
-        <LeftMenu :key="componentKey" />
-        <div class="mt-auto flex justify-center">
-            <Button @click="ExitStatus()"><i class="pi pi-sign-in"></i></Button>
-          </div>
+        <LeftMenu :key="componentKey" @counter-event="incrCounter"/>
+        
       </div>
       <div class="p-10">
         <RouterView />
@@ -77,10 +50,6 @@ function ExitStatus() {
 
 <style scoped lang="scss">
 @use './assets/scss/colors' as clr;
-
-// .test {
-//   color: v-bind('theme.color');
-// }
 
 .namePage {
   min-width: 100px;

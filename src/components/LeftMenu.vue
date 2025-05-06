@@ -2,11 +2,28 @@
 import { shallowRef, ref } from 'vue'
 import { RouterLink, } from 'vue-router'
 import IconAngle from '../components/icons/IconAngle.vue'
+import Button from 'primevue/button'
+import { useCounterStore } from '../stores/counter'
+import { useRouter } from 'vue-router'
+
+
+
+const emit = defineEmits(['counterEvent'])
+const router = useRouter()
+const store = useCounterStore()
 const isSidebarOpen = shallowRef(false)
 const name = ref(JSON.parse(localStorage.getItem('test') || '""'))
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
+}
+
+function ExitStatus() {
+  // forceRerender()
+  emit('counterEvent')
+  store.registrationCompleted()
+  localStorage.removeItem('test')
+  router.push({ path: '/' })
 }
 </script>
 
@@ -49,6 +66,9 @@ function toggleSidebar() {
         </RouterLink>
       </li>
     </ul>
+    <div class="mt-auto flex justify-center">
+      <Button @click="ExitStatus()"><i class="pi pi-sign-in"></i></Button>
+    </div>
   </aside>
 </template>
 
