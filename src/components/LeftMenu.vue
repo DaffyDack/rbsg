@@ -1,86 +1,60 @@
 <script setup lang="ts">
-import { shallowRef, onMounted, ref } from 'vue'
-import { RouterView } from 'vue-router'
-import IconAngle from './components/icons/IconAngle.vue'
-import Reg from './components/RegComponents.vue'
-import LeftMenu from './components/LeftMenu.vue'
-import Button from 'primevue/button'
-import { useRouter } from 'vue-router'
-import { useCounterStore } from './stores/counter'
-
-
-const router = useRouter()
-const store = useCounterStore()
+import { shallowRef, ref } from 'vue'
+import { RouterLink, } from 'vue-router'
+import IconAngle from '../components/icons/IconAngle.vue'
 const isSidebarOpen = shallowRef(false)
-const componentKey = ref(0)
+const name = ref(JSON.parse(localStorage.getItem('test') || '""'))
 
-
-onMounted(() => {
-  console.log('name', JSON.parse(localStorage.getItem('test') || '""'))
-  router.push({ path: '/' })
-  if (localStorage.getItem('test')) {
-    store.registrationCompleted()
-  }
-})
-
-
-function forceRerender() {
-  componentKey.value += 1;
-}
-
-
-// function toggleSidebar() {
-//   isSidebarOpen.value = !isSidebarOpen.value
-// }
-
-function ExitStatus() {
-  forceRerender()
-  store.registrationCompleted()
-  localStorage.removeItem('test')
+function toggleSidebar() {
+  isSidebarOpen.value = !isSidebarOpen.value
 }
 </script>
 
 <template>
-  <header>
-    <div v-if="store.reg" class="wrapper flex items-center justify-center h-screen">
-      <Reg />
-    </div>
-    <div v-else class="wrapper flex items-stretch">
-      <div>
-        <!-- <aside :vue:is-open="isSidebarOpen">
-          <ul class="sidebar-head">
-            <li>
-              <img src="./assets/logo.png" alt="logo" width="32" height="32" />
-            </li>
-            <li>
-              <button class="sidebar-toggle button" :class="isSidebarOpen ? 'toggle-button' : ''">
-                <IconAngle @click="toggleSidebar" />
-              </button>
-            </li>
-          </ul>
-
-
-
-          
-        </aside> -->
-        <LeftMenu :key="componentKey" />
-        <div class="mt-auto flex justify-center">
-            <Button @click="ExitStatus()"><i class="pi pi-sign-in"></i></Button>
+  <aside :vue:is-open="isSidebarOpen">
+    <ul class="sidebar-head">
+      <li>
+        <img src="../assets/logo.png" alt="logo" width="32" height="32" />
+      </li>
+      <li>
+        <button class="sidebar-toggle button" :class="isSidebarOpen ? 'toggle-button' : ''">
+          <IconAngle @click="toggleSidebar" />
+        </button>
+      </li>
+    </ul>
+    <h4 :transparent="!isSidebarOpen">{{ name.email }}-{{ name.role }}</h4>
+    <ul>
+      <li>
+        <RouterLink to="/">
+          <div class="flex items-center justify-center">
+            <i class="pi pi-list-check"></i>
           </div>
-      </div>
-      <div class="p-10">
-        <RouterView />
-      </div>
-    </div>
-  </header>
+          <span v-show="isSidebarOpen" class="namePage">Мои проекты</span>
+        </RouterLink>
+      </li>
+      <li>
+        <RouterLink to="/MyTasks">
+          <div class="flex items-center justify-center">
+            <i class="pi pi-clipboard"></i>
+          </div>
+          <span v-show="isSidebarOpen" class="namePage">Мои задачи</span>
+        </RouterLink>
+      </li>
+      <li v-if="name.role === 'admin'">
+        <RouterLink to="/UsersList">
+          <div class="flex items-center justify-center">
+            <i class="pi pi-clipboard"></i>
+          </div>
+          <span v-show="isSidebarOpen" class="namePage">Пользователи</span>
+        </RouterLink>
+      </li>
+    </ul>
+  </aside>
 </template>
 
-<style scoped lang="scss">
-@use './assets/scss/colors' as clr;
 
-// .test {
-//   color: v-bind('theme.color');
-// }
+<style scoped lang="scss">
+@use '../assets/scss/colors' as clr;
 
 .namePage {
   min-width: 100px;
@@ -205,5 +179,4 @@ h4[transparent='true'] {
   opacity: 0;
   transform: translateX(-100%);
 }
-
-//form</style>
+</style>

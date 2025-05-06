@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import FormAuto from './form/FormAuto.vue'
-import FormReg from './form/FormReg.vue'
 
 </script>
 
 <template>
   <div class="container">
-    <div class="tabs">
+    <!-- <div class="tabs">
       <div class="tab-2">
         <label for="tab2-1" class="tabsLab">Регистрация</label>
         <input id="tab2-1" name="tabs-two" type="radio" checked />
@@ -21,7 +20,9 @@ import FormReg from './form/FormReg.vue'
           <FormAuto />
         </div>
       </div>
-    </div>
+    </div> -->
+    <FormAuto />
+
   </div>
 </template>
 

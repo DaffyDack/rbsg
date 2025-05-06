@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import './style.scss'
 import { ref, watch } from 'vue'
-import { useCounterStore } from '../../stores/counter'
+import { useUsersStore } from '../../stores/users'
 
-const store = useCounterStore()
+const store = useUsersStore()
 
 interface Form {
   username: string
@@ -102,16 +102,18 @@ const validateForm = () => {
 
 function isEmpty(obj: Record<string, string>) {
   let a = true
-  for (const [key, value] of Object.entries(obj)) {
-    console.log(value, value == '',key)
-    if (value == '') {
-      a = true
-    } else {
+  console.log('запус проверки', obj)
+  for (const [key,value] of Object.entries(obj)) {
+    console.log(value, key)
+    if (value === '') {
       a = false
+    } else {
+      a = true
       break
     }
   }
-  if (a) toggleFavorite()
+  console.log(a,'идет ли дальше код')
+  if (!a) toggleFavorite()
 }
 const handleSubmit = () => {
   validateForm()
@@ -120,7 +122,7 @@ const handleSubmit = () => {
 
 const toggleFavorite = () => {
   localStorage.setItem('test', 'value')
-  store.registrationCompleted()
+  store.registrationCompleted(form.value.email, form.value.password)
 }
 </script>
 

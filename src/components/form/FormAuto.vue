@@ -98,8 +98,8 @@ const toggleFavorite = () => {
   for (let index = 0; index < storeUsers.user.length; index++) {
     // if (JSON.stringify(storeUsers.user[index]) === JSON.stringify(form.value)) {
     if (storeUsers.user[index].email === form.value.email && storeUsers.user[index].password === form.value.password) {
-      localStorage.setItem('test', storeUsers.user[index].email)
       registeredUser.value = false
+      localStorage.setItem('test', JSON.stringify({email: storeUsers.user[index].email, role: storeUsers.user[index].role}));
       store.registrationCompleted()
     } else {
       registeredUser.value = true

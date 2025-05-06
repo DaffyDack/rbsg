@@ -13,19 +13,18 @@ import { useProjectsStore } from '../stores/projectUser'
 const store = useProjectsStore()
 
 const name_project = ref<string>('')
-const activeIndex = ref(null)
+const activeIndex = ref()
 
-const setActive = (index: any) => {
-  console.log(index, activeIndex.value)
+const setActive = (index: number) => {
   if (activeIndex.value == index) {
-    activeIndex.value = null
+    activeIndex.value = 0
   } else {
     activeIndex.value = index
   }
 }
 
 const filteredList = computed(() => {
-  let comp = name_project.value
+  const comp = name_project.value
   return store.projectsList.filter(function (elem) {
     if (comp === '') return true
     else return elem.nameProject.indexOf(comp) > -1

@@ -5,7 +5,7 @@ import IconAngle from './icons/IconAngle.vue'
 import IconExclamation from './icons/IconExclamation.vue'
 import IconHome from './icons/IconHome.vue'
 
-const isSidebarOpen = shallowRef<Boolean>(false)
+const isSidebarOpen = shallowRef(false)
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value

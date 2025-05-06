@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MyProjects from '@/views/MyProjects.vue'
-import Projects from '@/views/Projects-list.vue'
+import Projects from '@/views/ProjectsList.vue'
+import UsersList from '@/views/UsersList.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,6 +18,11 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/MyTasks.vue'),
+    },
+    {
+      path: '/UsersList',
+      name: 'UsersList',
+      component: UsersList,
     },
     {
       path: '/projects/:id',
