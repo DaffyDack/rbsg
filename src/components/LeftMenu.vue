@@ -19,7 +19,6 @@ function toggleSidebar() {
 }
 
 function ExitStatus() {
-  // forceRerender()
   emit('counterEvent')
   store.registrationCompleted()
   localStorage.removeItem('test')
@@ -60,7 +59,7 @@ function ExitStatus() {
       <li v-if="name.role === 'admin'">
         <RouterLink to="/UsersList">
           <div class="flex items-center justify-center">
-            <i class="pi pi-clipboard"></i>
+            <i class="pi pi-user"></i>
           </div>
           <span v-show="isSidebarOpen" class="namePage">Пользователи</span>
         </RouterLink>

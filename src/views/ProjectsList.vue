@@ -2,30 +2,32 @@
 import { ref } from 'vue'
 import Avatar from 'primevue/avatar';
 import AvatarGroup from 'primevue/avatargroup';
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
-import { useToast } from "primevue/usetoast";
-const toast = useToast();
+import Tree from '../components/projectsListElements/TreeWrap.vue';
+// import InputText from 'primevue/inputtext';
+// import Button from 'primevue/button';
+// import { useToast } from "primevue/usetoast";
+// const toast = useToast();
 
 
-import FileUpload from 'primevue/fileupload';
+// import FileUpload from 'primevue/fileupload';
 
 
-const activeIndex = ref<number>()
-const deadline = ref('');
-const timeExecution = ref('');
-const start = ref('');
-const preliminaryCost = ref('');
-const nameProject = ref('');
+// const activeIndex = ref<number>()
+// const deadline = ref('');
+// const timeExecution = ref('');
+// const start = ref('');
+// const preliminaryCost = ref('');
+// const nameProject = ref('');
+
 const items = ref([
   {
-    page: 'projects', id: 1, nameProject: 'Создать рабочий стол', deadline: '10.10.2026', timeExecution: '2ч', start: '12.04.2025, 14:55', cost: '12 000', preliminaryCost: '12 000', subtask: [{
+    page: 'projects', id: 1, nameProject: 'Создать рабочий стол', deadline: '10.10.2026', timeExecution: '2ч', start: '12.04.2025, 14:55', cost: '12 000', preliminaryCost: '12 000', children: [{
       page: 'projects', id: 1.1, nameProject: 'Купить монитор'
     }]
   },
-  { page: 'projects', id: 2, nameProject: 'Собрать мангал', deadline: '10.10.2026', timeExecution: '2ч', start: '12.04.2025, 14:55', cost: '12 000', preliminaryCost: '12 000', subtask: [] },
+  { page: 'projects', id: 2, nameProject: 'Собрать мангал', deadline: '10.10.2026', timeExecution: '2ч', start: '12.04.2025, 14:55', cost: '12 000', preliminaryCost: '12 000' },
   {
-    page: 'projects', id: 3, nameProject: 'Настроить комп', deadline: '10.10.2026', timeExecution: '2ч', start: '12.04.2025, 14:55', cost: '12 000', preliminaryCost: '12 000', subtask: [{
+    page: 'projects', id: 3, nameProject: 'Настроить комп', deadline: '10.10.2026', timeExecution: '2ч', start: '12.04.2025, 14:55', cost: '12 000', preliminaryCost: '12 000', children: [{
       page: 'projects', id: 3.1, nameProject: 'Купить монитор'
     }, {
       page: 'projects', id: 3.2, nameProject: 'Купить монитор'
@@ -34,26 +36,39 @@ const items = ref([
 
 ])
 
-const setActive = (index: number) => {
-  console.log(index, activeIndex.value)
-  if (activeIndex.value == index) {
-    activeIndex.value = 0
-  } else {
-    activeIndex.value = index
-  }
-}
 
-const onUpload = () => {
-  toast.add({ severity: 'secondary', summary: 'secondary', detail: 'File Uploaded', life: 3000 });
-};
 
-const changeDate = (e: number) => {
-  items.value[e-1].deadline = deadline.value 
-  deadline.value = ''
-}
-const closed = (e: number) => {
-  deadline.value = items.value[e-1].deadline
-}
+// ТОЧНО НАБОТАЕТ!!!
+
+// const items = ref({
+//   page: 'projects', id: 1, nameProject: 'Создать рабочий стол', deadline: '10.10.2026', timeExecution: '2ч', start: '12.04.2025, 14:55', cost: '12 000', preliminaryCost: '12 000', children: [
+//     {
+//     page: 'projects', id: 1.1, nameProject: 'Купить монитор', children: [{
+//       page: 'projects', id: 1.2, nameProject: 'Купить монитор',
+//     }]
+//   }]
+// })
+
+// const setActive = (index: number) => {
+//   console.log(index, activeIndex.value)
+//   if (activeIndex.value == index) {
+//     activeIndex.value = 0
+//   } else {
+//     activeIndex.value = index
+//   }
+// }
+
+// const onUpload = () => {
+//   toast.add({ severity: 'secondary', summary: 'secondary', detail: 'File Uploaded', life: 3000 });
+// };
+
+// const changeDate = (e: number) => {
+//   items.value[e-1].deadline = deadline.value 
+//   deadline.value = ''
+// }
+// const closed = (e: number) => {
+//   deadline.value = items.value[e-1].deadline
+// }
 
 </script>
 
@@ -72,7 +87,11 @@ const closed = (e: number) => {
           <Avatar label="+2" shape="circle" />
         </AvatarGroup>
       </div>
-      <ul class="nano-content">
+      <h1>Рекурсивный компонент</h1>
+      <div v-for="(item, i) in items" :key="i">
+        <tree :tree-data="item"></tree>
+      </div>
+      <!-- <ul class="nano-content">
         <li class="sub-menu rounded-[10px] pt-1" v-for="(item, index) in items" :key="index"
           :class="{ active: activeIndex === index }">
           <div
@@ -156,12 +175,11 @@ const closed = (e: number) => {
                   <div class="id">{{ sub.id }}</div>
                 </div>
                 <span class="link">{{ sub.nameProject }}</span>
-                <!-- <i class="pi pi-file-edit unwrap"></i> -->
               </div>
             </div>
           </template>
-        </li>
-      </ul>
+</li>
+</ul> -->
       <div class="information_about_project">
         <ul>
           <li>

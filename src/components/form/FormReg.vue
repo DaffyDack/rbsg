@@ -102,7 +102,6 @@ const validateForm = () => {
 
 function isEmpty(obj: Record<string, string>) {
   let a = true
-  console.log('запус проверки', obj)
   for (const [key,value] of Object.entries(obj)) {
     console.log(value, key)
     if (value === '') {
@@ -112,7 +111,6 @@ function isEmpty(obj: Record<string, string>) {
       break
     }
   }
-  console.log(a,'идет ли дальше код')
   if (!a) toggleFavorite()
 }
 const handleSubmit = () => {
@@ -174,3 +172,12 @@ const toggleFavorite = () => {
     </form>
   </div>
 </template>
+<style scoped lang="scss">
+.form {
+  padding: 0;
+  & label {
+    color: #fff;
+  }
+}
+
+</style>

@@ -11,7 +11,6 @@ import AvatarGroup from 'primevue/avatargroup'
 import { useProjectsStore } from '../stores/projectUser'
 
 const store = useProjectsStore()
-
 const name_project = ref<string>('')
 const activeIndex = ref()
 
