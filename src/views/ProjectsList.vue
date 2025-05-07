@@ -2,22 +2,22 @@
 import { ref } from 'vue'
 import Avatar from 'primevue/avatar';
 import AvatarGroup from 'primevue/avatargroup';
-import Tree from '../components/projectsListElements/TreeWrap.vue';
-// import InputText from 'primevue/inputtext';
-// import Button from 'primevue/button';
-// import { useToast } from "primevue/usetoast";
-// const toast = useToast();
+// import Tree from '../components/projectsListElements/TreeWrap.vue';
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import { useToast } from "primevue/usetoast";
+const toast = useToast();
 
 
-// import FileUpload from 'primevue/fileupload';
+import FileUpload from 'primevue/fileupload';
 
 
-// const activeIndex = ref<number>()
-// const deadline = ref('');
-// const timeExecution = ref('');
-// const start = ref('');
-// const preliminaryCost = ref('');
-// const nameProject = ref('');
+const activeIndex = ref<number>()
+const deadline = ref('');
+const timeExecution = ref('');
+const start = ref('');
+const preliminaryCost = ref('');
+const nameProject = ref('');
 
 const items = ref([
   {
@@ -49,26 +49,26 @@ const items = ref([
 //   }]
 // })
 
-// const setActive = (index: number) => {
-//   console.log(index, activeIndex.value)
-//   if (activeIndex.value == index) {
-//     activeIndex.value = 0
-//   } else {
-//     activeIndex.value = index
-//   }
-// }
+const setActive = (index: number) => {
+  console.log(index, activeIndex.value)
+  if (activeIndex.value == index) {
+    activeIndex.value = 0
+  } else {
+    activeIndex.value = index
+  }
+}
 
-// const onUpload = () => {
-//   toast.add({ severity: 'secondary', summary: 'secondary', detail: 'File Uploaded', life: 3000 });
-// };
+const onUpload = () => {
+  toast.add({ severity: 'secondary', summary: 'secondary', detail: 'File Uploaded', life: 3000 });
+};
 
-// const changeDate = (e: number) => {
-//   items.value[e-1].deadline = deadline.value 
-//   deadline.value = ''
-// }
-// const closed = (e: number) => {
-//   deadline.value = items.value[e-1].deadline
-// }
+const changeDate = (e: number) => {
+  items.value[e-1].deadline = deadline.value 
+  deadline.value = ''
+}
+const closed = (e: number) => {
+  deadline.value = items.value[e-1].deadline
+}
 
 </script>
 
@@ -87,11 +87,11 @@ const items = ref([
           <Avatar label="+2" shape="circle" />
         </AvatarGroup>
       </div>
-      <h1>Рекурсивный компонент</h1>
+      <!-- <h1>Рекурсивный компонент</h1>
       <div v-for="(item, i) in items" :key="i">
         <tree :tree-data="item"></tree>
-      </div>
-      <!-- <ul class="nano-content">
+      </div> -->
+      <ul class="nano-content">
         <li class="sub-menu rounded-[10px] pt-1" v-for="(item, index) in items" :key="index"
           :class="{ active: activeIndex === index }">
           <div
@@ -167,8 +167,8 @@ const items = ref([
               <span><Button label="Отмена" @click="closed(item.id)" severity="danger" icon="pi pi-times" size="Normal" /></span>
             </li>
           </ul>
-          <template v-if="item.subtask?.length !== 0">
-            <div v-for="(sub, index) in item.subtask" :key="index"
+          <template v-if="item.children?.length !== 0">
+            <div v-for="(sub, index) in item.children" :key="index"
               class="bg-[#DFDFDF] mt-[10px] rounded-[10px] ml-[30px]">
               <div class="flex items-center p-3">
                 <div class="number-task">
@@ -179,7 +179,7 @@ const items = ref([
             </div>
           </template>
 </li>
-</ul> -->
+</ul>
       <div class="information_about_project">
         <ul>
           <li>

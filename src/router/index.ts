@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MyProjects from '@/views/MyProjects.vue'
 import Projects from '@/views/ProjectsList.vue'
+import ForTestRecusive from '@/views/ForTestRecusive.vue'
 import UsersList from '@/views/UsersList.vue'
 
 const router = createRouter({
@@ -23,6 +24,11 @@ const router = createRouter({
       path: '/UsersList',
       name: 'UsersList',
       component: UsersList,
+    },
+    {
+      path: '/ForTest',
+      name: 'ForTest',
+      component: ForTestRecusive,
     },
     {
       path: '/projects/:id',
