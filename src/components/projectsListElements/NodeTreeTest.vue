@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useToast } from "primevue/usetoast";
-const toast = useToast();
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import Avatar from 'primevue/avatar';
+
 const props = defineProps({
     node: {
         type: Object,
@@ -9,11 +11,14 @@ const props = defineProps({
     }
 })
 const activeIndex = ref<number>(0)
-const deadline = ref('');
-const timeExecution = ref('');
-const start = ref('');
-const preliminaryCost = ref('');
-const nameProject = ref('');
+
+const editingProject = ref({
+    deadline: '',
+    timeExecution: '',
+    start: '',
+    preliminaryCost: '',
+    nameProject: '',
+})
 
 
 const setActive = (index: number) => {
@@ -24,14 +29,11 @@ const setActive = (index: number) => {
         activeIndex.value = index
     }
 }
-const onUpload = () => {
-  toast.add({ severity: 'secondary', summary: 'secondary', detail: 'File Uploaded', life: 3000 });
-};
+
 </script>
 
 <template>
     <li class="sub-menu rounded-[10px] pt-1" :class="{ active: activeIndex === props.node.id }">
-
         <div
             class="flex items-center p-3 bg-[#DFDFDF] rounded-tl-[10px] rounded-br-[0] rounded-tr-[10px] rounded-bl-[0]">
             <div class="number-task">
@@ -69,22 +71,22 @@ const onUpload = () => {
         </div>
         <ul class="content_projects bg-[#DFDFDF] rounded-tl-[0] rounded-br-[10px] rounded-tr-[0] rounded-bl-[10px]">
             <li>
-                <InputText class="w-[100%]" type="text" v-model="nameProject" :placeholder="props.node.nameProject" />
+                <InputText class="w-[100%]" type="text" v-model="editingProject.nameProject" :placeholder="props.node.nameProject" />
             </li>
             <li>
                 <span class="mr-2">Дата дедлайна:
-                    <InputText type="text" v-model="deadline" :placeholder="props.node.deadline" />
+                    <InputText type="text" v-model="editingProject.deadline" :placeholder="props.node.deadline" />
                 </span>
                 <span class="mr-2">Время на исполнение:
-                    <InputText type="text" v-model="timeExecution" :placeholder="props.node.timeExecution" />
+                    <InputText type="text" v-model="editingProject.timeExecution" :placeholder="props.node.timeExecution" />
                 </span>
                 <span class="mr-2">Начать:
-                    <InputText type="text" v-model="start" :placeholder="props.node.start" />
+                    <InputText type="text" v-model="editingProject.start" :placeholder="props.node.start" />
                 </span>
             </li>
             <li class="flex">
                 <span class="mr-2">Предварительная стоимость:
-                    <InputText type="text" v-model="preliminaryCost" :placeholder="props.node.preliminaryCost" />
+                    <InputText type="text" v-model="editingProject.preliminaryCost" :placeholder="props.node.preliminaryCost" />
                 </span>
                 <span class="mr-2">Прикрепленные документы:
                     <Button label="Прикрепленные документы" severity="secondary" icon="pi pi-file-plus" size="Normal" />
@@ -92,23 +94,19 @@ const onUpload = () => {
                 </span>
                 <span class="mr-2">
                     <div class="card flex justify-content-center">
-                        <Toast />
-                        <FileUpload mode="basic" name="demo[]" url="/api/upload" accept="image/*" :maxFileSize="1000000"
-                            @upload="onUpload" :auto="true" chooseLabel="Прикрепить документ" />
+                       
                     </div>
                 </span>
                 <span></span>
             </li>
             <li>
                 <span class="mr-2">
-                    <Button label="Принять исправления" severity="success"
-                        icon="pi pi-check" size="Normal" /></span>
-                <span><Button label="Отмена"  severity="danger" icon="pi pi-times"
-                        size="Normal" /></span>
+                    <Button label="Принять исправления" severity="success" icon="pi pi-check" size="Normal" /></span>
+                <span><Button label="Отмена" severity="danger" icon="pi pi-times" size="Normal" /></span>
             </li>
         </ul>
-        <ul v-if="props.node.children && props.node.children.length">
-            <node-tree-test v-for="child in props.node.children" :key="child.id" :node="child"></node-tree-test>
+        <ul v-if="props.node.children && props.node.children.length" class="nano-content ml-[15px]">
+            <node-tree-test v-for="child in props.node.children" :key="child" :node="child"></node-tree-test>
         </ul>
     </li>
 </template>
@@ -122,69 +120,8 @@ const onUpload = () => {
     border-radius: 5px;
 }
 
-.sidebar-toggle {
-    margin-left: -240px;
-}
-
 .sidebar {
-    width: -webkit-fill-available;
-    position: absolute;
-    transition: all 0.3s ease-in-out;
-    z-index: 100;
-    margin-right: 40px;
-
-    & .nano {
-        padding: 10px;
-        background: #44444482;
-        border-radius: 10px;
-        max-height: 90vh;
-
-        & .information_about_project {
-            & ul {
-                display: flex;
-                color: #fff;
-                padding: 50px 10px 10px;
-                justify-content: space-around;
-
-                & li {
-                    padding: 10px;
-
-                    & .title {
-                        font-size: 10px;
-                        display: block;
-                        text-align: center;
-                        margin: 0;
-                    }
-
-                    & .descriptions {
-                        font-size: 24px;
-                    }
-                }
-            }
-        }
-
-        & .title {
-            margin-top: 10px;
-            margin-bottom: 15px;
-            color: #fff;
-            font-size: 24px;
-            display: flex;
-        }
-
-        & .nano-content {
-            overflow: scroll;
-            max-height: 66vh;
-
-            &>li {
-                // background: #DFDFDF;
-            }
-        }
-    }
-
     & .sub-menu {
-        // background: #293949;
-        margin-bottom: 10px;
-
         & .link {
             width: 100%;
         }
@@ -227,19 +164,20 @@ const onUpload = () => {
         & .number-task {
             background: #353535;
             border-radius: 5px;
-            width: 30px;
+            min-width: 30px;
             height: 30px;
             margin-right: 5px;
             color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 5px;
         }
     }
 
     #leftside-navigation {
 
-        ul {
+    
             li {
                 list-style-type: none;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -249,11 +187,11 @@ const onUpload = () => {
                         color: #1abc9c;
                     }
 
-                    ul.content_projects {
+                    & > ul.content_projects {
                         display: block;
                     }
 
-                    & .descriptions {
+                    & > .descriptions {
                         border-radius: 0;
                     }
                 }
@@ -266,10 +204,6 @@ const onUpload = () => {
                     font-size: 12px;
                     outline: 0;
                     width: 100%;
-                    -webkit-transition: all 200ms ease-in;
-                    -moz-transition: all 200ms ease-in;
-                    -o-transition: all 200ms ease-in;
-                    -ms-transition: all 200ms ease-in;
                     transition: all 200ms ease-in;
 
                     &:hover {
@@ -289,7 +223,7 @@ const onUpload = () => {
                     }
                 }
             }
-        }
+        
 
         ul ul.content_projects {
             display: none;

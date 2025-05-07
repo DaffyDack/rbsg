@@ -2,14 +2,8 @@
 import { ref } from 'vue'
 import Avatar from 'primevue/avatar';
 import AvatarGroup from 'primevue/avatargroup';
-// import Tree from '../components/projectsListElements/TreeWrap.vue';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
-import { useToast } from "primevue/usetoast";
-const toast = useToast();
-
-
-import FileUpload from 'primevue/fileupload';
 
 
 const activeIndex = ref<number>()
@@ -32,22 +26,11 @@ const items = ref([
     }, {
       page: 'projects', id: 3.2, nameProject: 'Купить монитор'
     }]
-  },
+  }, { page: 'projects', id: 4, nameProject: 'Собрать мангал', deadline: '10.10.2026', timeExecution: '2ч', start: '12.04.2025, 14:55', cost: '12 000', preliminaryCost: '12 000' },
+  { page: 'projects', id: 5, nameProject: 'Собрать мангал', deadline: '10.10.2026', timeExecution: '2ч', start: '12.04.2025, 14:55', cost: '12 000', preliminaryCost: '12 000' },
+  { page: 'projects', id: 6, nameProject: 'Собрать мангал', deadline: '10.10.2026', timeExecution: '2ч', start: '12.04.2025, 14:55', cost: '12 000', preliminaryCost: '12 000' },
 
 ])
-
-
-
-// ТОЧНО НАБОТАЕТ!!!
-
-// const items = ref({
-//   page: 'projects', id: 1, nameProject: 'Создать рабочий стол', deadline: '10.10.2026', timeExecution: '2ч', start: '12.04.2025, 14:55', cost: '12 000', preliminaryCost: '12 000', children: [
-//     {
-//     page: 'projects', id: 1.1, nameProject: 'Купить монитор', children: [{
-//       page: 'projects', id: 1.2, nameProject: 'Купить монитор',
-//     }]
-//   }]
-// })
 
 const setActive = (index: number) => {
   console.log(index, activeIndex.value)
@@ -58,16 +41,12 @@ const setActive = (index: number) => {
   }
 }
 
-const onUpload = () => {
-  toast.add({ severity: 'secondary', summary: 'secondary', detail: 'File Uploaded', life: 3000 });
-};
-
 const changeDate = (e: number) => {
-  items.value[e-1].deadline = deadline.value 
+  items.value[e - 1].deadline = deadline.value
   deadline.value = ''
 }
 const closed = (e: number) => {
-  deadline.value = items.value[e-1].deadline
+  deadline.value = items.value[e - 1].deadline
 }
 
 </script>
@@ -87,10 +66,6 @@ const closed = (e: number) => {
           <Avatar label="+2" shape="circle" />
         </AvatarGroup>
       </div>
-      <!-- <h1>Рекурсивный компонент</h1>
-      <div v-for="(item, i) in items" :key="i">
-        <tree :tree-data="item"></tree>
-      </div> -->
       <ul class="nano-content">
         <li class="sub-menu rounded-[10px] pt-1" v-for="(item, index) in items" :key="index"
           :class="{ active: activeIndex === index }">
@@ -154,17 +129,17 @@ const closed = (e: number) => {
               </span>
               <span class="mr-2">
                 <div class="card flex justify-content-center">
-                  <Toast />
-                  <FileUpload mode="basic" name="demo[]" url="/api/upload" accept="image/*" :maxFileSize="1000000"
-                    @upload="onUpload" :auto="true" chooseLabel="Прикрепить документ" />
+               
                 </div>
               </span>
               <span></span>
             </li>
             <li>
               <span class="mr-2">
-                <Button @click="changeDate(item.id)" label="Принять исправления" severity="success" icon="pi pi-check" size="Normal" /></span>
-              <span><Button label="Отмена" @click="closed(item.id)" severity="danger" icon="pi pi-times" size="Normal" /></span>
+                <Button @click="changeDate(item.id)" label="Принять исправления" severity="success" icon="pi pi-check"
+                  size="Normal" /></span>
+              <span><Button label="Отмена" @click="closed(item.id)" severity="danger" icon="pi pi-times"
+                  size="Normal" /></span>
             </li>
           </ul>
           <template v-if="item.children?.length !== 0">
@@ -178,8 +153,8 @@ const closed = (e: number) => {
               </div>
             </div>
           </template>
-</li>
-</ul>
+        </li>
+      </ul>
       <div class="information_about_project">
         <ul>
           <li>

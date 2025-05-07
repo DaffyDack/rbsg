@@ -16,11 +16,12 @@
     "@primevue/forms": "^4.3.3",
     "@tailwindcss/postcss": "^4.1.4",
     "pinia": "^3.0.1",
-    "primeicons": "^7.0.0",
     "primevue": "^4.3.3",
     "tw-elements": "^2.0.0",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.0",
+    "@primevue/auto-import-resolver": "4.3.3",
+    "primeicons": "latest"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.1",
