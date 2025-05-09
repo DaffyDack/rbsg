@@ -7,20 +7,13 @@ const props = defineProps({
         required: true
     }
 })
+
 </script>
 
 <template>
     <div class="tree">
-        <ul class="tree-list">
+        <ul class="tree-list ml-[0]">
             <node-tree :node="props.treeData"></node-tree>
         </ul>
     </div>
 </template>
-
-
-<style>
-.tree-list ul {
-    margin: 6px 0;
-    padding-left: 16px;
-}
-</style>

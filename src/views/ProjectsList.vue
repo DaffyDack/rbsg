@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import Avatar from 'primevue/avatar';
 import AvatarGroup from 'primevue/avatargroup';
-import Tree from '../components/projectsListElements/TreeWrapTest.vue';
+import Tree from '../components/projectsListElements/TreeWrap.vue';
 
 const items = ref([
   {
@@ -65,7 +65,6 @@ const items = ref([
 </template>
 
 <style scoped lang="scss">
-
 .sidebar {
   width: -webkit-fill-available;
   position: absolute;
@@ -128,6 +127,7 @@ const items = ref([
           &>a {
             color: #1abc9c;
           }
+
           & .descriptions {
             border-radius: 0;
           }

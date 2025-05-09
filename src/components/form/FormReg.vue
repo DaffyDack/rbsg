@@ -102,7 +102,7 @@ const validateForm = () => {
 
 function isEmpty(obj: Record<string, string>) {
   let a = true
-  for (const [key,value] of Object.entries(obj)) {
+  for (const [key, value] of Object.entries(obj)) {
     console.log(value, key)
     if (value === '') {
       a = false
@@ -127,44 +127,28 @@ const toggleFavorite = () => {
 <template>
   <div>
     <form @submit.prevent="handleSubmit" class="form">
-      <div
-        class="form-control"
-        :class="{ error: errors.username, success: !errors.username && form.username != '' }"
-      >
+      <div class="form-control" :class="{ error: errors.username, success: !errors.username && form.username != '' }">
         <label for="username">Имя</label>
         <input type="text" v-model="form.username" id="username" placeholder="Введите имя" />
         <small v-if="errors.username">{{ errors.username }}</small>
       </div>
 
-      <div
-        class="form-control"
-        :class="{ error: errors.email, success: !errors.email && form.email != '' }"
-      >
+      <div class="form-control" :class="{ error: errors.email, success: !errors.email && form.email != '' }">
         <label for="email">Email</label>
-        <input type="text" v-model="form.email" id="email" placeholder="Введите email" />
+        <input type="email" v-model="form.email" id="email" placeholder="Введите email" />
         <small v-if="errors.email">{{ errors.email }}</small>
       </div>
 
-      <div
-        class="form-control"
-        :class="{ error: errors.password, success: !errors.password && form.password != '' }"
-      >
+      <div class="form-control" :class="{ error: errors.password, success: !errors.password && form.password != '' }">
         <label for="password">Пароль</label>
         <input type="password" v-model="form.password" id="password" placeholder="Введите пароль" />
         <small v-if="errors.password">{{ errors.password }}</small>
       </div>
 
-      <div
-        class="form-control"
-        :class="{ error: errors.password2, success: !errors.password2 && form.password2 != '' }"
-      >
+      <div class="form-control"
+        :class="{ error: errors.password2, success: !errors.password2 && form.password2 != '' }">
         <label for="password2">Повторите пароль</label>
-        <input
-          type="password"
-          v-model="form.password2"
-          id="password2"
-          placeholder="Повторите пароль"
-        />
+        <input type="password" v-model="form.password2" id="password2" placeholder="Повторите пароль" />
         <small v-if="errors.password2">{{ errors.password2 }}</small>
       </div>
 
@@ -175,9 +159,9 @@ const toggleFavorite = () => {
 <style scoped lang="scss">
 .form {
   padding: 0;
+
   & label {
     color: #fff;
   }
 }
-
 </style>

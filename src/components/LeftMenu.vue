@@ -64,14 +64,6 @@ function ExitStatus() {
           <span v-show="isSidebarOpen" class="namePage">Пользователи</span>
         </RouterLink>
       </li>
-      <li v-if="name.role === 'admin'">
-        <RouterLink to="/ForTest">
-          <div class="flex items-center justify-center">
-            <i class="pi pi-discord"></i>
-          </div>
-          <span v-show="isSidebarOpen" class="namePage">Для тестов</span>
-        </RouterLink>
-      </li>
     </ul>
     <div class="mt-auto flex justify-center">
       <Button @click="ExitStatus()"><i class="pi pi-sign-in"></i></Button>

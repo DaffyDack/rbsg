@@ -98,7 +98,7 @@ const toggleFavorite = () => {
   for (let index = 0; index < storeUsers.user.length; index++) {
     if (storeUsers.user[index].email === form.value.email && storeUsers.user[index].password === form.value.password) {
       registeredUser.value = false
-      localStorage.setItem('test', JSON.stringify({email: storeUsers.user[index].email, role: storeUsers.user[index].role}));
+      localStorage.setItem('test', JSON.stringify({ email: storeUsers.user[index].email, role: storeUsers.user[index].role }));
       store.registrationCompleted()
     } else {
       registeredUser.value = true
@@ -113,7 +113,7 @@ const toggleFavorite = () => {
     <form @submit.prevent="handleSubmit" class="form">
       <div class="form-control" :class="{ error: errors.email, success: !errors.email && form.email != '' }">
         <label for="emailAuto">Email</label>
-        <input type="text" v-model="form.email" id="emailAuto" placeholder="Введите email" />
+        <input type="email" v-model="form.email" id="emailAuto" placeholder="Введите email" />
         <small v-if="errors.email">{{ errors.email }}</small>
       </div>
       <div class="form-control" :class="{ error: errors.password, success: !errors.password && form.password != '' }">
