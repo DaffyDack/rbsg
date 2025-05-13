@@ -13,7 +13,18 @@ export default defineComponent({
         WrapHeader
     },
     setup() {
-        const list = ref([
+        interface Task {
+            name: string;
+            deadline: string;
+            start: string;
+            page: string;
+            id: number; // id может быть как числом, так и строкой
+            timeExecution: string;
+            preliminaryCost: string;
+            cost: string;
+            tasks: Task[]; // Рекурсивная ссылка для вложенных задач
+        }
+        const list = ref<Task[]>([
             {
                 name: 'task 1',
                 deadline: '10.10.2026',

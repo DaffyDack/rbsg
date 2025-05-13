@@ -5,13 +5,25 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Avatar from 'primevue/avatar';
 
+interface Task {
+    name: string;
+    deadline: string;
+    start: string;
+    page: string;
+    id: number; // id может быть числом или строкой, в зависимости от Вашего случая
+    timeExecution: string;
+    preliminaryCost: string;
+    cost: string;
+    tasks: Task[];
+}
 
 
 export default {
+
     props: {
         tasks: {
             required: true,
-            type: Array,
+            type: Array as () => Task[],
         },
     },
     components: {
@@ -31,7 +43,7 @@ export default {
             nameProject: '',
         })
         function setActive(index: number) {
-
+            console.log(index, 'index')
             if (activeIndex.value == index) {
                 activeIndex.value = 0
             } else {
@@ -56,7 +68,7 @@ export default {
                     <div class="number-task">
                         <div class="id">{{ el.id }}</div>
                     </div>
-                    <span class="link">{{ el.nameProject }}</span>
+                    <span class="link">{{ el.name }}</span>
                     <i class="pi pi-file-edit unwrap" @click="setActive(el.id)"></i>
                 </div>
                 <div class="descriptions p-3 bg-[#DFDFDF] ">
@@ -90,7 +102,7 @@ export default {
                     class="content_projects bg-[#DFDFDF] rounded-tl-[0] rounded-br-[10px] rounded-tr-[0] rounded-bl-[10px]">
                     <li>
                         <InputText class="w-[100%]" type="text" v-model="editingProject.nameProject"
-                            :placeholder="el.nameProject" />
+                            :placeholder="el.name" />
                     </li>
                     <li>
                         <span class="mr-2">Дата дедлайна:
