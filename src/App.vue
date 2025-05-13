@@ -23,7 +23,7 @@ onMounted(() => {
   }
 })
 
-function incrCounter () {
+function incrCounter() {
   componentKey.value++
 }
 
@@ -38,9 +38,9 @@ function incrCounter () {
     </div>
     <div v-else class="wrapper flex items-stretch">
       <div>
-        <LeftMenu :key="componentKey" @counter-event="incrCounter"/>
+        <LeftMenu :key="componentKey" @counter-event="incrCounter" />
       </div>
-      <div class="p-10">
+      <div class="p-10 w-[100%]">
         <RouterView />
       </div>
     </div>
