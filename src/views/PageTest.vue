@@ -1,36 +1,35 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, watch, reactive } from 'vue'
 import nestedDraggable from '../components/dragAndDrop/NestedList.vue'
 import WrapHeader from '@/components/dragAndDrop/WrapHeader.vue'
-// import rawDisplay from '../components/dragAndDrop/RawDisplay.vue'
 export default defineComponent({
     name: 'nested-example',
     display: 'Nested',
     order: 15,
     components: {
-        // rawDisplay,
         nestedDraggable,
         WrapHeader
     },
+
     setup() {
         interface Task {
             name: string;
             deadline: string;
             start: string;
             page: string;
-            id: number; // id может быть как числом, так и строкой
+            id: string;
             timeExecution: string;
             preliminaryCost: string;
             cost: string;
             tasks: Task[]; // Рекурсивная ссылка для вложенных задач
         }
-        const list = ref<Task[]>([
+        const list = reactive<Task[]>([
             {
                 name: 'task 1',
                 deadline: '10.10.2026',
                 start: '12.04.2025, 14:55',
                 page: 'projects',
-                id: 1,
+                id: '1',
                 timeExecution: '2ч',
                 preliminaryCost: '12 000',
                 cost: '12 000',
@@ -40,117 +39,65 @@ export default defineComponent({
                         deadline: '10.10.2026',
                         start: '12.04.2025, 14:55',
                         page: 'projects',
-                        id: 1.1,
+                        id: '1.1',
                         timeExecution: '2ч',
                         preliminaryCost: '12 000',
                         cost: '12 000',
-                        tasks: [],
+                        tasks: [{
+                            name: 'task 1.1',
+                            deadline: '10.10.2026',
+                            start: '12.04.2025, 14:55',
+                            page: 'projects',
+                            id: '1.2',
+                            timeExecution: '2ч',
+                            preliminaryCost: '12 000',
+                            cost: '12 000',
+                            tasks: [],
+                        }],
                     },
                 ],
             },
             {
                 name: 'task 2',
                 deadline: '10.10.2026',
-                page: 'projects',
                 start: '12.04.2025, 14:55',
-                id: 2,
+                page: 'projects',
+                id: '2',
                 timeExecution: '2ч',
                 preliminaryCost: '12 000',
                 cost: '12 000',
-                tasks: [
-                    {
-                        name: 'task 2.1',
-                        deadline: '10.10.2026',
-                        start: '12.04.2025, 14:55',
-                        page: 'projects',
-                        id: 2.1,
-                        timeExecution: '2ч',
-                        preliminaryCost: '12 000',
-                        cost: '12 000',
-                        tasks: [],
-                    },
-                ],
-            },
-            {
-                name: 'task 3',
-                deadline: '10.10.2026',
-                start: '12.04.2025, 14:55',
-                page: 'projects',
-                id: 3,
-                timeExecution: '2ч',
-                preliminaryCost: '12 000',
-                cost: '12 000',
-                tasks: [],
-            },
-            {
-                name: 'task 4',
-                deadline: '10.10.2026',
-                start: '12.04.2025, 14:55',
-                page: 'projects',
-                id: 4,
-                timeExecution: '2ч',
-                preliminaryCost: '12 000',
-                cost: '12 000',
-                tasks: [
-                    {
-                        name: 'task 4.1',
-                        deadline: '10.10.2026',
-                        start: '12.04.2025, 14:55',
-                        page: 'projects',
-                        id: 4.1,
-                        timeExecution: '2ч',
-                        preliminaryCost: '12 000',
-                        cost: '12 000',
-                        tasks: [],
-                    },
-                ],
-            },
-            {
-                name: 'task 5',
-                deadline: '10.10.2026',
-                start: '12.04.2025, 14:55',
-                page: 'projects',
-                id: 5,
-                timeExecution: '2ч',
-                preliminaryCost: '12 000',
-                cost: '12 000',
-                tasks: [
-                    {
-                        name: 'task 5.1',
-                        deadline: '10.10.2026',
-                        start: '12.04.2025, 14:55',
-                        page: 'projects',
-                        id: 5.1,
-                        timeExecution: '2ч',
-                        preliminaryCost: '12 000',
-                        cost: '12 000',
-                        tasks: [{
-                            name: 'task 5.2',
-                            deadline: '10.10.2026',
-                            start: '12.04.2025, 14:55',
-                            page: 'projects',
-                            id: 5.2,
-                            timeExecution: '2ч',
-                            preliminaryCost: '12 000',
-                            cost: '12 000',
-                            tasks: [],
-                        },],
-                    },
-                ],
+                tasks: []
             }
         ])
+        // const innerUpdate = (i) => {
+        //     i.tasks.forEach((task, taskIndex) => {
+        //         task.id = `${i.id}.${taskIndex + 1}`; // Обновляем id для подзадач
+        //     });
+        // }
+        // const updateIds = () => {
+        //     list.forEach((item, index) => {
+        //         item.id = String(index + 1); // Обновляем id на основе индекса
+        //         innerUpdate(item)
+        //     });
+        // };
+        function updateIds(tasks: Task[], parentId = '') {
+            tasks.forEach((task, index) => {
+                const newId = parentId ? `${parentId}.${index + 1}` : `${index + 1}`;
+                task.id = newId;
+                if (task.tasks && task.tasks.length > 0) {
+                    updateIds(task.tasks, newId);
+                }
+            });
+        }
+        watch(list, () => {
+            updateIds(list);
+        }, { deep: true });
         return { list }
     },
+
 })
 </script>
 <template>
-    <!-- <div class="flex justify-center w-[100%]">
-        <div class="w-[100%] mr-2">
-            <nested-draggable :tasks="list" />
-        </div>
-
-        <rawDisplay class="w-64" :value="list" />
-    </div> -->
     <div class="sidebar">
         <div id="leftside-navigation" class="nano">
             <WrapHeader />
