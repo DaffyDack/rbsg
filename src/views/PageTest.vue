@@ -69,17 +69,7 @@ export default defineComponent({
                 tasks: []
             }
         ])
-        // const innerUpdate = (i) => {
-        //     i.tasks.forEach((task, taskIndex) => {
-        //         task.id = `${i.id}.${taskIndex + 1}`; // Обновляем id для подзадач
-        //     });
-        // }
-        // const updateIds = () => {
-        //     list.forEach((item, index) => {
-        //         item.id = String(index + 1); // Обновляем id на основе индекса
-        //         innerUpdate(item)
-        //     });
-        // };
+
         function updateIds(tasks: Task[], parentId = '') {
             tasks.forEach((task, index) => {
                 const newId = parentId ? `${parentId}.${index + 1}` : `${index + 1}`;
