@@ -1,48 +1,98 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-import Avatar from 'primevue/avatar';
-import AvatarGroup from 'primevue/avatargroup';
-import Tree from '../components/projectsListElements/TreeWrap.vue';
-
-const items = ref([
-  {
-    page: 'projects', id: 1, nameProject: 'Создать рабочий стол', deadline: '10.10.2026', timeExecution: '2ч', start: '12.04.2025, 14:55', cost: '12 000', preliminaryCost: '12 000', children: [{
-      page: 'projects', id: 1.1, nameProject: 'Купить монитор'
-    }]
-  },
-  { page: 'projects', id: 2, nameProject: 'Собрать мангал', deadline: '10.10.2026', timeExecution: '2ч', start: '12.04.2025, 14:55', cost: '12 000', preliminaryCost: '12 000' },
-  {
-    page: 'projects', id: 3, nameProject: 'Настроить комп', deadline: '10.10.2026', timeExecution: '2ч', start: '12.04.2025, 14:55', cost: '12 000', preliminaryCost: '12 000', children: [{
-      page: 'projects', id: 3.1, nameProject: 'Купить монитор'
-    }, {
-      page: 'projects', id: 3.2, nameProject: 'Купить монитор', children: [{
-        page: 'projects', id: 3.21, nameProject: 'Купить монитор'
-      }]
-    }]
+<script lang="ts">
+import { defineComponent, watch, reactive } from 'vue'
+import nestedDraggable from '../components/dragAndDrop/NestedList.vue'
+import WrapHeader from '@/components/dragAndDrop/WrapHeader.vue'
+export default defineComponent({
+  name: 'nested-example',
+  display: 'Nested',
+  order: 15,
+  components: {
+    nestedDraggable,
+    WrapHeader
   },
 
-])
+  setup() {
+    interface Task {
+      name: string;
+      deadline: string;
+      start: string;
+      page: string;
+      id: string;
+      timeExecution: string;
+      preliminaryCost: string;
+      cost: string;
+      tasks: Task[]; // Рекурсивная ссылка для вложенных задач
+    }
+    const list = reactive<Task[]>([
+      {
+        name: 'task 1',
+        deadline: '10.10.2026',
+        start: '12.04.2025, 14:55',
+        page: 'projects',
+        id: '1',
+        timeExecution: '2ч',
+        preliminaryCost: '12 000',
+        cost: '12 000',
+        tasks: [
+          {
+            name: 'task 1.1',
+            deadline: '10.10.2026',
+            start: '12.04.2025, 14:55',
+            page: 'projects',
+            id: '1.1',
+            timeExecution: '2ч',
+            preliminaryCost: '12 000',
+            cost: '12 000',
+            tasks: [{
+              name: 'task 1.1',
+              deadline: '10.10.2026',
+              start: '12.04.2025, 14:55',
+              page: 'projects',
+              id: '1.2',
+              timeExecution: '2ч',
+              preliminaryCost: '12 000',
+              cost: '12 000',
+              tasks: [],
+            }],
+          },
+        ],
+      },
+      {
+        name: 'task 2',
+        deadline: '10.10.2026',
+        start: '12.04.2025, 14:55',
+        page: 'projects',
+        id: '2',
+        timeExecution: '2ч',
+        preliminaryCost: '12 000',
+        cost: '12 000',
+        tasks: []
+      }
+    ])
+
+    function updateIds(tasks: Task[], parentId = '') {
+      tasks.forEach((task, index) => {
+        const newId = parentId ? `${parentId}.${index + 1}` : `${index + 1}`;
+        task.id = newId;
+        if (task.tasks && task.tasks.length > 0) {
+          updateIds(task.tasks, newId);
+        }
+      });
+    }
+    watch(list, () => {
+      updateIds(list);
+    }, { deep: true });
+    return { list }
+  },
+
+})
 </script>
-
 <template>
   <div class="sidebar">
     <div id="leftside-navigation" class="nano">
-      <div class="title">
-        <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" class="mr-2" shape="circle" />
-        <div class="mr-10 ml-3">Название проекта</div>
-        <AvatarGroup>
-          <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" />
-          <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/asiyajavayant.png" shape="circle" />
-          <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/onyamalimba.png" shape="circle" />
-          <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/ionibowcher.png" shape="circle" />
-          <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/xuxuefeng.png" shape="circle" />
-          <Avatar label="+2" shape="circle" />
-        </AvatarGroup>
-      </div>
+      <WrapHeader />
       <div class="wrapper_tree_proects">
-        <div v-for="(item, i) in items" :key="i">
-          <tree :tree-data="item"></tree>
-        </div>
+        <nested-draggable :tasks="list" />
       </div>
       <div class="information_about_project">
         <ul>
@@ -63,7 +113,6 @@ const items = ref([
     </div>
   </div>
 </template>
-
 <style scoped lang="scss">
 .sidebar {
   width: -webkit-fill-available;

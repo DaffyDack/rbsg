@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const Router = require('express')
 const router = new Router()
-const userController = require('../controllers/userController')
+const typeController = require('../controllers/typeController')
 
-router.get('/auth', userController.check)
+router.post('/', typeController.create)
+// router.get('/', typeController.getAll)
 
 module.exports = router

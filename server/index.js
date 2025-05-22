@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-
 require('dotenv').config()
 const express = require('express')
 const sequelize = require('./db')
