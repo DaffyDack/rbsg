@@ -15,4 +15,11 @@ const Type = sequelize.define('type', {
   name: { type: DataTypes.STRING, unique: true, allowNull: false },
 })
 
-module.exports = { User, Type }
+const Admins = sequelize.define('admins', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+})
+
+User.hasOne(Admins)
+Admins.belongsTo(User)
+
+module.exports = { User, Type, Admins }
