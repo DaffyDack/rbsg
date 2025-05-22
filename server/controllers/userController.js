@@ -2,7 +2,7 @@
 const ApiError = require('../error/ApiError')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { User, Admins } = require('../models/models')
+const { User } = require('../models/models')
 
 const generatejwt = (id, email, role) => {
   return jwt.sign({ id, email, role }, process.env.SECRET_KEY, {
@@ -22,8 +22,7 @@ class UserController {
     }
     const hashPassword = await bcrypt.hash(password, 5)
     const user = await User.create({ email, role, password: hashPassword })
-    const admins = await Admins.create({ userId: user.id })
-    // const token = jwt.sign({ id: user.id, email, role }, process.env.SECRET_KEY, {expiresIn: '24h'});
+    // const admins = await Admins.create({ userId: user.id })
     const token = generatejwt(user.id, user.email, user.role)
 
     return res.json({ token })
@@ -41,12 +40,9 @@ class UserController {
     const token = generatejwt(user.id, user.email, user.role)
     return res.json({ token })
   }
-  async check(req, res, next) {
-    const { id } = req.query
-    if (!id) {
-      return next(ApiError.badRequest('не передан ID'))
-    }
-    res.json(id)
+  async check(req, res) {
+    const token = generatejwt(user.id, user.email, user.role)
+    return res.json({ token })
   }
 }
 
