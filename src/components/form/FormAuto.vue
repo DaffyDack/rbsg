@@ -3,12 +3,35 @@ import './style.scss'
 import { ref, watch, onMounted } from 'vue'
 import { useCounterStore } from '../../stores/counter'
 import { useUsersStore } from '../../stores/users'
+import { login } from '../../http/userAPI.ts'
+
+
 const storeUsers = useUsersStore()
 const store = useCounterStore()
 
 onMounted(() => {
   console.log(storeUsers.user, form.value)
 })
+
+
+const LoginUser = async () => {
+  console.log('функция запустилась')
+  try {
+    const response = await login(form.value.email, form.value.password)
+    registeredUser.value = true
+    store.registrationCompleted()
+    localStorage.setItem('role', response.role);
+    console.log(response)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    registeredUser.value = false
+    console.log(error.response.data.message, 'sSSS')
+  }
+
+}
+
+
+
 
 interface Form {
   email: string
@@ -41,6 +64,7 @@ watch(
     }
   },
 )
+
 
 function checkLength(err: 'password', input: string, min: number, max: number) {
   if (input.length < min) {
@@ -79,31 +103,37 @@ const validateForm = () => {
 function isEmpty(obj: Record<string, string>) {
   let a = true
   for (const [key, value] of Object.entries(obj)) {
-    console.log(value, value == '', key)
-    if (value == '') {
-      a = true
-    } else {
+    console.log(value, key)
+    if (value === '') {
       a = false
+    } else {
+      a = true
       break
     }
   }
-  if (a) toggleFavorite()
+  if (!a) LoginUser()
 }
 const handleSubmit = () => {
+  console.log('нажал на кнопку')
   validateForm()
   isEmpty(errors.value)
 }
 
+
+
+
 const toggleFavorite = () => {
-  for (let index = 0; index < storeUsers.user.length; index++) {
-    if (storeUsers.user[index].email === form.value.email && storeUsers.user[index].password === form.value.password) {
-      registeredUser.value = false
-      localStorage.setItem('test', JSON.stringify({ email: storeUsers.user[index].email, role: storeUsers.user[index].role }));
-      store.registrationCompleted()
-    } else {
-      registeredUser.value = true
-    }
-  }
+
+  // for (let index = 0; index < storeUsers.user.length; index++) {
+  //   if (storeUsers.user[index].email === form.value.email && storeUsers.user[index].password === form.value.password) {
+  // registeredUser.value = false
+  // localStorage.setItem('test', JSON.stringify({ email: storeUsers.user[index].email, role: storeUsers.user[index].role }));
+  LoginUser()
+  // store.registrationCompleted()
+  // } else {
+  //   registeredUser.value = true
+  // }
+  // }
 
 }
 </script>

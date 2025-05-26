@@ -2,6 +2,7 @@
 import './style.scss'
 import { ref, watch } from 'vue'
 import { useUsersStore } from '../../stores/users'
+import { registration } from '../../http/userAPI.ts'
 
 const store = useUsersStore()
 
@@ -53,7 +54,16 @@ watch(
     }
   },
 )
+const RegistrationUser = async () => {
+  try {
+    const response = await registration(form.value.email, form.value.password)
+    console.log(response)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (e: any) {
+    console.log(e.response.data.message)
+  }
 
+}
 function checkLength(err: string, input: string, min: number, max: number) {
   if (input.length < min) {
     if (err == 'username') {
@@ -119,6 +129,7 @@ const handleSubmit = () => {
 }
 
 const toggleFavorite = () => {
+  RegistrationUser()
   localStorage.setItem('test', 'value')
   store.registrationCompleted(form.value.email, form.value.password)
 }

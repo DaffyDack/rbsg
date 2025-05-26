@@ -5,13 +5,25 @@ import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Avatar from 'primevue/avatar';
 
+interface Task {
+    name: string;
+    deadline: string;
+    start: string;
+    page: string;
+    id: number; // id может быть числом или строкой, в зависимости от Вашего случая
+    timeExecution: string;
+    preliminaryCost: string;
+    cost: string;
+    tasks: Task[];
+}
+
 
 export default {
 
     props: {
         tasks: {
             required: true,
-            type: Array as () => any,
+            type: Array as () => Task[],
         },
     },
     components: {

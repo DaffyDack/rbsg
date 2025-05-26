@@ -12,7 +12,7 @@ const emit = defineEmits(['counterEvent'])
 const router = useRouter()
 const store = useCounterStore()
 const isSidebarOpen = shallowRef(false)
-const name = ref(JSON.parse(localStorage.getItem('test') || '""'))
+const name = ref(localStorage.getItem('role'))
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
@@ -21,7 +21,7 @@ function toggleSidebar() {
 function ExitStatus() {
   emit('counterEvent')
   store.registrationCompleted()
-  localStorage.removeItem('test')
+  localStorage.removeItem('role')
   router.push({ path: '/' })
 }
 </script>
@@ -38,7 +38,7 @@ function ExitStatus() {
         </button>
       </li>
     </ul>
-    <h4 :transparent="!isSidebarOpen">{{ name.email }}-{{ name.role }}</h4>
+    <!-- <h4 :transparent="!isSidebarOpen">{{ name.email }}-{{ name.role }}</h4> -->
     <ul>
       <li>
         <RouterLink to="/">
@@ -56,7 +56,7 @@ function ExitStatus() {
           <span v-show="isSidebarOpen" class="namePage">Мои задачи</span>
         </RouterLink>
       </li>
-      <li v-if="name.role === 'admin'">
+      <li v-if="name === 'ADMIN'">
         <RouterLink to="/UsersList">
           <div class="flex items-center justify-center">
             <i class="pi pi-user"></i>
@@ -64,7 +64,7 @@ function ExitStatus() {
           <span v-show="isSidebarOpen" class="namePage">Пользователи</span>
         </RouterLink>
       </li>
-      <li v-if="name.role === 'admin'">
+      <li v-if="name === 'ADMIN'">
         <RouterLink to="/PageTest">
           <div class="flex items-center justify-center">
             <i class="pi pi-cog"></i>

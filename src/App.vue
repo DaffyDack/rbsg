@@ -12,13 +12,16 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
+
 const componentKey = ref(0)
 
 
+
+
 onMounted(() => {
-  console.log('name', JSON.parse(localStorage.getItem('test') || '""'))
+  // console.log('name', JSON.parse(localStorage.getItem('role') || '""'))
   router.push({ path: '/' })
-  if (localStorage.getItem('test')) {
+  if (localStorage.getItem('role')) {
     store.registrationCompleted()
   }
 })
