@@ -13,7 +13,7 @@ export const login = async (email: string, password: string) => {
 }
 
 export const check = async () => {
-  const { data } = await $host.post('api/user/auth')
+  const { data } = await $host.get('api/user/auth')
   localStorage.setItem('token', data.token)
   return jwtDecode(data.token)
 }

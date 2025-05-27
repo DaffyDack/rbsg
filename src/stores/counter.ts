@@ -3,7 +3,6 @@ import { defineStore } from 'pinia'
 
 export const useCounterStore = defineStore('counter', () => {
   const count = ref(1)
-  const countw = ref(3333)
   const reg = ref(true)
   const info = ref()
 
@@ -27,7 +26,6 @@ export const useCounterStore = defineStore('counter', () => {
     reg,
     count,
     doubleCount,
-    countw,
     info,
     increment,
     decriment,

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const jwt = require('jsonwebtoken')
 
 module.exports = function (req, res, next) {
@@ -14,6 +14,6 @@ module.exports = function (req, res, next) {
     req.user = decoded
     next()
   } catch (e) {
-    res.status(401).json({ message: `Не авторизован: ${e}` })
+    res.status(401).json({ message: 'Не авторизован' })
   }
 }

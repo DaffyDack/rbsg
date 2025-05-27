@@ -4,6 +4,7 @@ import { RouterView } from 'vue-router'
 import Reg from './components/RegComponents.vue'
 import LeftMenu from './components/LeftMenu.vue'
 import { useCounterStore } from './stores/counter'
+import { check } from './http/userAPI'
 const store = useCounterStore()
 
 import { useRouter } from 'vue-router'
@@ -13,7 +14,11 @@ const router = useRouter()
 const componentKey = ref(0)
 
 onMounted(() => {
-  // console.log('name', JSON.parse(localStorage.getItem('role') || '""'))
+  check().then(data => {
+    store.registrationCompleted()
+    store.userInfo(data)
+    localStorage.setItem('role', JSON.stringify(data))
+  }).finally(() => console.log('что то случилось'))
   router.push({ path: '/' })
   if (localStorage.getItem('role')) {
     store.registrationCompleted()
