@@ -34,7 +34,7 @@ function incrCounter() {
       <div>
         <LeftMenu :key="componentKey" @counter-event="incrCounter" />
       </div>
-      <div class="p-10 w-[100%]">
+      <div class="p-10 w-[100%] wrapperRouter">
         <RouterView />
       </div>
     </div>
@@ -43,6 +43,11 @@ function incrCounter() {
 
 <style scoped lang="scss">
 @use './assets/scss/colors' as clr;
+
+.wrapperRouter {
+  height: 100vh;
+  overflow: scroll;
+}
 
 .namePage {
   min-width: 100px;

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import './style.scss'
 import { ref, watch } from 'vue'
+import Select from 'primevue/select';
 import { useUsersStore } from '../../stores/users'
 import { registration } from '../../http/userAPI.ts'
 
@@ -11,6 +12,7 @@ interface Form {
   email: string
   password: string
   password2: string
+  role: string
 }
 
 interface Errors {
@@ -25,6 +27,7 @@ const form = ref<Form>({
   email: '',
   password: '',
   password2: '',
+  role: ''
 })
 
 const errors = ref<Errors>({
@@ -33,6 +36,16 @@ const errors = ref<Errors>({
   password: '',
   password2: '',
 })
+
+const messageCondition = ref<string>('')
+const condition = ref<boolean>(false)
+const addeduser = ref<boolean>(false)
+
+const selectedCity = ref({ name: 'USER', code: 'USER' });
+const cities = ref([
+  { name: 'USER', code: 'USER' },
+  { name: 'ADMIN', code: 'ADMIN' }
+]);
 
 watch(
   () => [form.value.username, form.value.email, form.value.password, form.value.password2],
@@ -54,12 +67,28 @@ watch(
     }
   },
 )
+function set() {
+  setTimeout(() => {
+    addeduser.value = false
+  }, 2000)
+}
+function clearForm() {
+  Object.keys(form.value).forEach(key => {
+    form.value[key as keyof Form] = '';
+  });
+}
 const RegistrationUser = async () => {
   try {
-    const response = await registration(form.value.email, form.value.password)
+    const response = await registration(form.value.email, form.value.password, selectedCity.value.name)
+    condition.value = false
+    addeduser.value = true
+    set()
+    clearForm()
     console.log(response)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
+    messageCondition.value = e.response.data.message
+    condition.value = true
     console.log(e.response.data.message)
   }
 }
@@ -129,7 +158,6 @@ const handleSubmit = () => {
 
 const toggleFavorite = () => {
   RegistrationUser()
-  localStorage.setItem('test', 'value')
   store.registrationCompleted(form.value.email, form.value.password)
 }
 </script>
@@ -137,47 +165,38 @@ const toggleFavorite = () => {
 <template>
   <div>
     <form @submit.prevent="handleSubmit" class="form">
-      <div
-        class="form-control"
-        :class="{ error: errors.username, success: !errors.username && form.username != '' }"
-      >
+      <div class="form-control" :class="{ error: errors.username, success: !errors.username && form.username != '' }">
         <label for="username">Имя</label>
         <input type="text" v-model="form.username" id="username" placeholder="Введите имя" />
         <small v-if="errors.username">{{ errors.username }}</small>
       </div>
 
-      <div
-        class="form-control"
-        :class="{ error: errors.email, success: !errors.email && form.email != '' }"
-      >
+      <div class="form-control" :class="{ error: errors.email, success: !errors.email && form.email != '' }">
         <label for="email">Email</label>
         <input type="email" v-model="form.email" id="email" placeholder="Введите email" />
         <small v-if="errors.email">{{ errors.email }}</small>
       </div>
 
-      <div
-        class="form-control"
-        :class="{ error: errors.password, success: !errors.password && form.password != '' }"
-      >
+      <div class="form-control" :class="{ error: errors.password, success: !errors.password && form.password != '' }">
         <label for="password">Пароль</label>
         <input type="password" v-model="form.password" id="password" placeholder="Введите пароль" />
         <small v-if="errors.password">{{ errors.password }}</small>
       </div>
 
-      <div
-        class="form-control"
-        :class="{ error: errors.password2, success: !errors.password2 && form.password2 != '' }"
-      >
+      <div class="form-control"
+        :class="{ error: errors.password2, success: !errors.password2 && form.password2 != '' }">
         <label for="password2">Повторите пароль</label>
-        <input
-          type="password"
-          v-model="form.password2"
-          id="password2"
-          placeholder="Повторите пароль"
-        />
+        <input type="password" v-model="form.password2" id="password2" placeholder="Повторите пароль" />
         <small v-if="errors.password2">{{ errors.password2 }}</small>
       </div>
 
+      <div class="form-control">
+        <label for="selctRole">Роль пользователя</label>
+        <Select v-model="selectedCity" id="selctRole" :options="cities" optionLabel="name" placeholder="USER"
+          class="w-full " />
+      </div>
+      <div v-if="addeduser" class="text-green-600">Пользователь добавлен!</div>
+      <div v-if="condition" class="text-red-600">{{ messageCondition }}</div>
       <button type="submit">Отправить</button>
     </form>
   </div>

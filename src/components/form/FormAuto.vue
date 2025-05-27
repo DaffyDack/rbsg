@@ -8,26 +8,6 @@ import { login } from '../../http/userAPI.ts'
 const storeUsers = useUsersStore()
 const store = useCounterStore()
 
-onMounted(() => {
-  console.log(storeUsers.user, form.value)
-})
-
-const LoginUser = async () => {
-  try {
-    const response = await login(form.value.email, form.value.password)
-    registeredUser.value = true
-    store.registrationCompleted()
-    store.userInfo(response)
-    // storeUsers.registrationCompleted(response)
-    localStorage.setItem('role', JSON.stringify(response))
-    // localStorage.setItem('role', response.role)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    registeredUser.value = false
-    console.log(error.response.data.message, 'sSSS')
-  }
-}
-
 interface Form {
   email: string
   password: string
@@ -38,6 +18,8 @@ interface Errors {
   password: string
 }
 const registeredUser = ref<boolean>(false)
+const userError = ref<boolean>(false)
+const messageError = ref<string>('')
 const form = ref<Form>({
   email: '',
   password: '',
@@ -47,6 +29,28 @@ const errors = ref<Errors>({
   email: '',
   password: '',
 })
+
+onMounted(() => {
+  console.log(storeUsers.user, form.value)
+})
+
+const LoginUser = async () => {
+  try {
+    const response = await login(form.value.email, form.value.password)
+    registeredUser.value = true
+    store.registrationCompleted()
+    store.userInfo(response)
+    localStorage.setItem('role', JSON.stringify(response))
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    messageError.value = error.response.data.message
+    userError.value = true
+    registeredUser.value = false
+    console.log(error.response.data.message)
+  }
+}
+
+
 
 watch(
   () => [form.value.email, form.value.password],
@@ -127,6 +131,7 @@ const handleSubmit = () => {
         <small v-if="errors.password">{{ errors.password }}</small>
       </div>
       <div v-if="registeredUser" class="text-red-600">Не правельный email или пароль</div>
+      <div v-if="userError" class="text-red-600">{{ messageError }}</div>
       <button type="submit">Отправить</button>
     </form>
   </div>

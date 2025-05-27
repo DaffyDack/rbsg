@@ -29,6 +29,9 @@ import Column from 'primevue/column'
 </template>
 <style scoped lang="scss">
 .container {
+  max-height: 100vh;
+  overflow: scroll;
+
   & .wrapperTable {
     & h1 {
       padding: 10px 0;
