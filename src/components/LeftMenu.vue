@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shallowRef, ref } from 'vue'
-import { RouterLink, } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import IconAngle from '../components/icons/IconAngle.vue'
 import Button from 'primevue/button'
 import { useCounterStore } from '../stores/counter'
@@ -12,7 +12,7 @@ const emit = defineEmits(['counterEvent'])
 const router = useRouter()
 const store = useCounterStore()
 const isSidebarOpen = shallowRef(false)
-const name = ref(localStorage.getItem('role'))
+const name = ref(JSON.parse(localStorage.getItem('role') || ''))
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
@@ -39,7 +39,7 @@ function ExitStatus() {
         </button>
       </li>
     </ul>
-    <h4 :transparent="!isSidebarOpen">{{ name }}</h4>
+    <h4 :transparent="!isSidebarOpen">{{ name.role }}-{{ name.email }}</h4>
     <ul>
       <li>
         <RouterLink to="/">
@@ -57,7 +57,7 @@ function ExitStatus() {
           <span v-show="isSidebarOpen" class="namePage">Мои задачи</span>
         </RouterLink>
       </li>
-      <li v-if="name === 'ADMIN'">
+      <li v-if="name.role === 'ADMIN'">
         <RouterLink to="/UsersList">
           <div class="flex items-center justify-center">
             <i class="pi pi-user"></i>
@@ -65,7 +65,7 @@ function ExitStatus() {
           <span v-show="isSidebarOpen" class="namePage">Пользователи</span>
         </RouterLink>
       </li>
-      <li v-if="name === 'ADMIN'">
+      <li v-if="name.role === 'ADMIN'">
         <RouterLink to="/PageTest">
           <div class="flex items-center justify-center">
             <i class="pi pi-cog"></i>
@@ -79,7 +79,6 @@ function ExitStatus() {
     </div>
   </aside>
 </template>
-
 
 <style scoped lang="scss">
 @use '../assets/scss/colors' as clr;

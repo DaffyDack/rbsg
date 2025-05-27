@@ -5,7 +5,6 @@ import { useCounterStore } from '../../stores/counter'
 import { useUsersStore } from '../../stores/users'
 import { login } from '../../http/userAPI.ts'
 
-
 const storeUsers = useUsersStore()
 const store = useCounterStore()
 
@@ -13,23 +12,21 @@ onMounted(() => {
   console.log(storeUsers.user, form.value)
 })
 
-
 const LoginUser = async () => {
   try {
     const response = await login(form.value.email, form.value.password)
     registeredUser.value = true
     store.registrationCompleted()
-    localStorage.setItem('role', response.role);
+    store.userInfo(response)
+    // storeUsers.registrationCompleted(response)
+    localStorage.setItem('role', JSON.stringify(response))
+    // localStorage.setItem('role', response.role)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     registeredUser.value = false
     console.log(error.response.data.message, 'sSSS')
   }
-
 }
-
-
-
 
 interface Form {
   email: string
@@ -62,7 +59,6 @@ watch(
     }
   },
 )
-
 
 function checkLength(err: 'password', input: string, min: number, max: number) {
   if (input.length < min) {
@@ -115,7 +111,6 @@ const handleSubmit = () => {
   validateForm()
   isEmpty(errors.value)
 }
-
 </script>
 
 <template>

@@ -8,15 +8,9 @@ const store = useCounterStore()
 
 import { useRouter } from 'vue-router'
 
-
-
 const router = useRouter()
 
-
 const componentKey = ref(0)
-
-
-
 
 onMounted(() => {
   // console.log('name', JSON.parse(localStorage.getItem('role') || '""'))
@@ -29,9 +23,6 @@ onMounted(() => {
 function incrCounter() {
   componentKey.value++
 }
-
-
-
 </script>
 
 <template>

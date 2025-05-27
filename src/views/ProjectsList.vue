@@ -8,20 +8,20 @@ export default defineComponent({
   order: 15,
   components: {
     nestedDraggable,
-    WrapHeader
+    WrapHeader,
   },
 
   setup() {
     interface Task {
-      name: string;
-      deadline: string;
-      start: string;
-      page: string;
-      id: string;
-      timeExecution: string;
-      preliminaryCost: string;
-      cost: string;
-      tasks: Task[]; // Рекурсивная ссылка для вложенных задач
+      name: string
+      deadline: string
+      start: string
+      page: string
+      id: string
+      timeExecution: string
+      preliminaryCost: string
+      cost: string
+      tasks: Task[] // Рекурсивная ссылка для вложенных задач
     }
     const list = reactive<Task[]>([
       {
@@ -43,17 +43,19 @@ export default defineComponent({
             timeExecution: '2ч',
             preliminaryCost: '12 000',
             cost: '12 000',
-            tasks: [{
-              name: 'task 1.1',
-              deadline: '10.10.2026',
-              start: '12.04.2025, 14:55',
-              page: 'projects',
-              id: '1.2',
-              timeExecution: '2ч',
-              preliminaryCost: '12 000',
-              cost: '12 000',
-              tasks: [],
-            }],
+            tasks: [
+              {
+                name: 'task 1.1',
+                deadline: '10.10.2026',
+                start: '12.04.2025, 14:55',
+                page: 'projects',
+                id: '1.2',
+                timeExecution: '2ч',
+                preliminaryCost: '12 000',
+                cost: '12 000',
+                tasks: [],
+              },
+            ],
           },
         ],
       },
@@ -66,25 +68,28 @@ export default defineComponent({
         timeExecution: '2ч',
         preliminaryCost: '12 000',
         cost: '12 000',
-        tasks: []
-      }
+        tasks: [],
+      },
     ])
 
     function updateIds(tasks: Task[], parentId = '') {
       tasks.forEach((task, index) => {
-        const newId = parentId ? `${parentId}.${index + 1}` : `${index + 1}`;
-        task.id = newId;
+        const newId = parentId ? `${parentId}.${index + 1}` : `${index + 1}`
+        task.id = newId
         if (task.tasks && task.tasks.length > 0) {
-          updateIds(task.tasks, newId);
+          updateIds(task.tasks, newId)
         }
-      });
+      })
     }
-    watch(list, () => {
-      updateIds(list);
-    }, { deep: true });
+    watch(
+      list,
+      () => {
+        updateIds(list)
+      },
+      { deep: true },
+    )
     return { list }
   },
-
 })
 </script>
 <template>
@@ -166,14 +171,13 @@ export default defineComponent({
   }
 
   #leftside-navigation {
-
     ul {
       li {
         list-style-type: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
         &.active {
-          &>a {
+          & > a {
             color: #1abc9c;
           }
 

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import FormAuto from './form/FormAuto.vue'
-
 </script>
 
 <template>
@@ -22,7 +21,6 @@ import FormAuto from './form/FormAuto.vue'
       </div>
     </div> -->
     <FormAuto />
-
   </div>
 </template>
 
