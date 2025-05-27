@@ -15,13 +15,11 @@ onMounted(() => {
 
 
 const LoginUser = async () => {
-  console.log('функция запустилась')
   try {
     const response = await login(form.value.email, form.value.password)
     registeredUser.value = true
     store.registrationCompleted()
     localStorage.setItem('role', response.role);
-    console.log(response)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     registeredUser.value = false
@@ -114,28 +112,10 @@ function isEmpty(obj: Record<string, string>) {
   if (!a) LoginUser()
 }
 const handleSubmit = () => {
-  console.log('нажал на кнопку')
   validateForm()
   isEmpty(errors.value)
 }
 
-
-
-
-const toggleFavorite = () => {
-
-  // for (let index = 0; index < storeUsers.user.length; index++) {
-  //   if (storeUsers.user[index].email === form.value.email && storeUsers.user[index].password === form.value.password) {
-  // registeredUser.value = false
-  // localStorage.setItem('test', JSON.stringify({ email: storeUsers.user[index].email, role: storeUsers.user[index].role }));
-  LoginUser()
-  // store.registrationCompleted()
-  // } else {
-  //   registeredUser.value = true
-  // }
-  // }
-
-}
 </script>
 
 <template>

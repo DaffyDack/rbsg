@@ -5,7 +5,7 @@ const $host = axios.create({
 })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const authIntercepter = (config: any) => {
+const authIntercepter = (config: any): any => {
   config.headers.authorization = `Bearer ${localStorage.getItem('token')}`
   return config
 }

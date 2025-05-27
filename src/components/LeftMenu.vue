@@ -22,6 +22,7 @@ function ExitStatus() {
   emit('counterEvent')
   store.registrationCompleted()
   localStorage.removeItem('role')
+  localStorage.removeItem('token')
   router.push({ path: '/' })
 }
 </script>
@@ -38,7 +39,7 @@ function ExitStatus() {
         </button>
       </li>
     </ul>
-    <!-- <h4 :transparent="!isSidebarOpen">{{ name.email }}-{{ name.role }}</h4> -->
+    <h4 :transparent="!isSidebarOpen">{{ name }}</h4>
     <ul>
       <li>
         <RouterLink to="/">
