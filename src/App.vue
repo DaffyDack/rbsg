@@ -5,24 +5,26 @@ import Reg from './components/RegComponents.vue'
 import LeftMenu from './components/LeftMenu.vue'
 import { useCounterStore } from './stores/counter'
 import { check } from './http/userAPI'
+
+import ProgressSpinner from 'primevue/progressspinner';
+
 const store = useCounterStore()
 
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
 
 const componentKey = ref(0)
+const loading = ref(true)
 
 onMounted(() => {
   check().then(data => {
-    store.registrationCompleted()
-    store.userInfo(data)
-    localStorage.setItem('role', JSON.stringify(data))
-  }).finally(() => console.log('что то случилось'))
-  router.push({ path: '/' })
-  if (localStorage.getItem('role')) {
-    store.registrationCompleted()
-  }
+    if (localStorage.getItem('role')) {
+      store.registrationCompleted()
+      store.userInfo(data)
+      localStorage.setItem('role', JSON.stringify(data))
+    }
+  }).finally(() => {
+    loading.value = false
+    console.log('проверка пройдена')
+  })
 })
 
 function incrCounter() {
@@ -32,15 +34,20 @@ function incrCounter() {
 
 <template>
   <header>
-    <div v-if="store.reg" class="wrapper flex items-center justify-center h-screen">
-      <Reg />
+    <div class="card flex justify-center items-center h-screen" v-if="loading">
+      <ProgressSpinner />
     </div>
-    <div v-else class="wrapper flex items-stretch">
-      <div>
-        <LeftMenu :key="componentKey" @counter-event="incrCounter" />
+    <div v-else>
+      <div v-if="store.reg" class="wrapper flex items-center justify-center h-screen">
+        <Reg />
       </div>
-      <div class="p-10 w-[100%] wrapperRouter">
-        <RouterView />
+      <div v-else class="wrapper flex items-stretch">
+        <div>
+          <LeftMenu :key="componentKey" @counter-event="incrCounter" />
+        </div>
+        <div class="p-10 w-[100%] wrapperRouter">
+          <RouterView />
+        </div>
       </div>
     </div>
   </header>

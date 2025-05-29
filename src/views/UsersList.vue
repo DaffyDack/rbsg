@@ -1,13 +1,19 @@
 <script setup lang="ts">
-// import { ref } from 'vue';
+import { onMounted } from 'vue';
 // import { ProductService } from '../service/ProductService.js';
 import { useUsersStore } from '../stores/users'
+import { fetchUzers } from '@/http/userAPI';
 
 const store = useUsersStore()
 
 import FormReg from '../components/form/FormReg.vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
+
+
+onMounted(() => {
+  fetchUzers().then(data => store.registrationCompleted(data))
+})
 </script>
 
 <template>

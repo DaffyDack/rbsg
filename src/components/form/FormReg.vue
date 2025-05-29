@@ -3,7 +3,7 @@ import './style.scss'
 import { ref, watch } from 'vue'
 import Select from 'primevue/select';
 import { useUsersStore } from '../../stores/users'
-import { registration } from '../../http/userAPI.ts'
+import { registration, fetchUzers } from '../../http/userAPI.ts'
 
 const store = useUsersStore()
 
@@ -84,6 +84,7 @@ const RegistrationUser = async () => {
     addeduser.value = true
     set()
     clearForm()
+    fetchUzers().then(data => store.registrationCompleted(data))
     console.log(response)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
@@ -158,7 +159,8 @@ const handleSubmit = () => {
 
 const toggleFavorite = () => {
   RegistrationUser()
-  store.registrationCompleted(form.value.email, form.value.password)
+
+  // store.registrationCompleted(form.value.email, form.value.password)
 }
 </script>
 
