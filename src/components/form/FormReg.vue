@@ -3,7 +3,7 @@ import './style.scss'
 import { ref, watch } from 'vue'
 import Select from 'primevue/select';
 import { useUsersStore } from '../../stores/users'
-import { registration, fetchUzers } from '../../http/userAPI.ts'
+import { registration, fetchUzers } from '../../http/userAPI.js'
 
 const store = useUsersStore()
 

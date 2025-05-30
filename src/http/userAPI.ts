@@ -22,3 +22,8 @@ export const fetchUzers = async () => {
   const { data } = await $host.get('api/user/users')
   return data
 }
+
+export const deleleUser = async (id: number) => {
+  const { data } = await $host.delete(`api/user/delete/${id}`)
+  return data
+}

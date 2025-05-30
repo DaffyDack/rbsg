@@ -45,6 +45,19 @@ class UserController {
     return res.json({ token })
   }
 
+  async delete(req, res, next) {
+    try {
+      const { id } = req.params // id ожидают в params, например /user/123
+      const deletedCount = await User.destroy({ where: { id } })
+      if (deletedCount === 0) {
+        return res.status(404).json({ message: 'Пользователь не найден' })
+      }
+      return res.json({ message: 'Пользователь удалён' })
+    } catch (e) {
+      next(e)
+    }
+  }
+
   async fetchUzers(req, res) {
     const users = await User.findAll()
     return res.json(users)

@@ -3,7 +3,7 @@ import './style.scss'
 import { ref, watch, onMounted } from 'vue'
 import { useCounterStore } from '../../stores/counter'
 import { useUsersStore } from '../../stores/users'
-import { login } from '../../http/userAPI.ts'
+import { login } from '../../http/userAPI.js'
 
 const storeUsers = useUsersStore()
 const store = useCounterStore()
