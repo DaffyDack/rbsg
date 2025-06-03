@@ -99,7 +99,6 @@ const deleteUser = async () => {
 <style scoped lang="scss">
 .container {
   max-height: 100vh;
-  overflow: scroll;
 
   & .wrapperTable {
     & h1 {
