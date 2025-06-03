@@ -13,6 +13,7 @@ interface Form {
   password: string
   password2: string
   role: string
+  file: string
 }
 
 interface Errors {
@@ -27,7 +28,8 @@ const form = ref<Form>({
   email: '',
   password: '',
   password2: '',
-  role: ''
+  role: '',
+  file: ''
 })
 
 const errors = ref<Errors>({
@@ -41,7 +43,7 @@ const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
 const addeduser = ref<boolean>(false)
 
-const selectedCity = ref({ name: 'USER', code: 'USER' });
+const selectedRole = ref({ name: 'USER', code: 'USER' });
 const cities = ref([
   { name: 'USER', code: 'USER' },
   { name: 'ADMIN', code: 'ADMIN' }
@@ -79,7 +81,14 @@ function clearForm() {
 }
 const RegistrationUser = async () => {
   try {
-    const response = await registration(form.value.email, form.value.password, selectedCity.value.name)
+    const formData = new FormData()
+    formData.append('email', form.value.email)
+    formData.append('password', form.value.password)
+    formData.append('role', selectedRole.value.name)
+    formData.append('img', form.value.file)
+
+
+    const response = await registration(formData)
     condition.value = false
     addeduser.value = true
     set()
@@ -162,6 +171,12 @@ const toggleFavorite = () => {
 
   // store.registrationCompleted(form.value.email, form.value.password)
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function previewFiles(e: any) {
+  console.log(e.target.files[0])
+  form.value.file = e.target.files[0]
+}
 </script>
 
 <template>
@@ -194,8 +209,13 @@ const toggleFavorite = () => {
 
       <div class="form-control">
         <label for="selctRole">Роль пользователя</label>
-        <Select v-model="selectedCity" id="selctRole" :options="cities" optionLabel="name" placeholder="USER"
+        <Select v-model="selectedRole" id="selctRole" :options="cities" optionLabel="name" placeholder="USER"
           class="w-full " />
+      </div>
+
+      <div class="form-control">
+        <label for="selctFile">Грузим фото</label>
+        <input type="file" id="selctFile" @change="previewFiles" multiple />
       </div>
       <div v-if="addeduser" class="text-green-600">Пользователь добавлен!</div>
       <div v-if="condition" class="text-red-600">{{ messageCondition }}</div>

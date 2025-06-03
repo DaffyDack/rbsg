@@ -3,6 +3,7 @@ import MyProjects from '@/views/MyProjects.vue'
 import Projects from '@/views/ProjectsList.vue'
 import UsersList from '@/views/UsersList.vue'
 import PageTest from '@/views/PageTest.vue'
+import SettingProfile from '@/views/SettingProfile.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +30,11 @@ const router = createRouter({
       path: '/PageTest',
       name: 'PageTest',
       component: PageTest,
+    },
+    {
+      path: '/SettingProfile',
+      name: 'SettingProfile',
+      component: SettingProfile,
     },
     {
       path: '/projects/:id',

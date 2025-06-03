@@ -1,8 +1,9 @@
 import { $host } from './index.ts'
 import { jwtDecode } from 'jwt-decode'
 
-export const registration = async (email: string, password: string, role: string) => {
-  const { data } = await $host.post('api/user/registration', { email, password, role })
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const registration = async (formData: any) => {
+  const { data } = await $host.post('api/user/registration', formData)
   return jwtDecode(data.token)
 }
 

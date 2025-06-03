@@ -37,6 +37,7 @@ onMounted(() => {
 const LoginUser = async () => {
   try {
     const response = await login(form.value.email, form.value.password)
+    console.log(response, 'смотрим что пришло при логировании')
     registeredUser.value = true
     store.registrationCompleted()
     store.userInfo(response)

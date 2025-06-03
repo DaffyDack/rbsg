@@ -57,10 +57,18 @@ function ExitStatus() {
           <span v-show="isSidebarOpen" class="namePage">Мои задачи</span>
         </RouterLink>
       </li>
+      <li>
+        <RouterLink to="/SettingProfile">
+          <div class="flex items-center justify-center">
+            <i class="pi pi-user"></i>
+          </div>
+          <span v-show="isSidebarOpen" class="namePage">Профиль</span>
+        </RouterLink>
+      </li>
       <li v-if="name.role === 'ADMIN'">
         <RouterLink to="/UsersList">
           <div class="flex items-center justify-center">
-            <i class="pi pi-user"></i>
+            <i class="pi pi-users"></i>
           </div>
           <span v-show="isSidebarOpen" class="namePage">Пользователи</span>
         </RouterLink>
