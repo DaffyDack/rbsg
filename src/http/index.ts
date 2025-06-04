@@ -1,10 +1,8 @@
 import axios from 'axios'
 
 const $host = axios.create({
-  // baseURL: 'http://89.111.132.128',
-  baseURL: 'http://localhost:3000',
+  baseURL: import.meta.env.VITE_API_URL,
 })
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const authIntercepter = (config: any): any => {
   config.headers.authorization = `Bearer ${localStorage.getItem('token')}`

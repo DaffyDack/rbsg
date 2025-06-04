@@ -1,11 +1,21 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import { useCounterStore } from '../stores/counter'
+const store = useCounterStore()
 
+const infoProfile = ref({
+    firstname: store.info.firstname,
+    lastname: store.info.lastname,
+    patronymic: store.info.patronymic,
+    department: store.info.department,
+    positions: store.info.positions,
+})
 </script>
 <template>
     <div class="title">
         <div class="mr-10">
-            <p>Бердымухамедов Гурбангулы Мяликгулыевич</p>
-            <p class="descriptions">Бывший Президент, Администрация Президента</p>
+            <p>{{ infoProfile.lastname }} {{ infoProfile.firstname }} {{ infoProfile.patronymic }}</p>
+            <p class="descriptions">{{ infoProfile.positions }}, {{ infoProfile.department }}</p>
         </div>
         <div class="logo">
             <img src="../assets/Ateri.png" alt="logo" width="195" height="64" />
