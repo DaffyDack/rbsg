@@ -121,7 +121,6 @@ export default defineComponent({
 <style scoped lang="scss">
 .sidebar {
   width: -webkit-fill-available;
-  position: absolute;
   transition: all 0.3s ease-in-out;
   z-index: 100;
   margin-right: 40px;
@@ -177,7 +176,7 @@ export default defineComponent({
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
         &.active {
-          & > a {
+          &>a {
             color: #1abc9c;
           }
 

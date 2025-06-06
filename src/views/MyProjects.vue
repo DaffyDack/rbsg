@@ -112,10 +112,8 @@ function addProject() {
 
 .sidebar {
   width: -webkit-fill-available;
-  position: absolute;
   transition: all 0.3s ease-in-out;
   z-index: 100;
-  margin-right: 40px;
 
   & .sub-menu {
     background: #293949a1;

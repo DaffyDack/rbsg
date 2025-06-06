@@ -48,7 +48,7 @@ const deleteUser = async () => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="containerUserList">
     <div>
       <FormReg />
     </div>
@@ -92,12 +92,11 @@ const deleteUser = async () => {
           <Button label="Удалить" icon="pi pi-check" @click="deleteUser" />
         </template>
       </Dialog>
-
     </div>
   </div>
 </template>
 <style scoped lang="scss">
-.container {
+.containerUserList {
   max-height: 100vh;
 
   & .wrapperTable {

@@ -65,6 +65,14 @@ function ExitStatus() {
           <span v-show="isSidebarOpen" class="namePage">Профиль</span>
         </RouterLink>
       </li>
+      <li>
+        <RouterLink to="/PyramidManagement">
+          <div class="flex items-center justify-center">
+            <i class="pi pi-user"></i>
+          </div>
+          <span v-show="isSidebarOpen" class="namePage">Пирамида управления</span>
+        </RouterLink>
+      </li>
       <li v-if="name.role === 'ADMIN'">
         <RouterLink to="/UsersList">
           <div class="flex items-center justify-center">

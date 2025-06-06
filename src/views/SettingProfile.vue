@@ -81,7 +81,6 @@ const infoProfile = ref({
 <style scoped lang="scss">
 .sidebar {
     width: -webkit-fill-available;
-    position: absolute;
     transition: all 0.3s ease-in-out;
     z-index: 100;
     margin-right: 40px;

@@ -4,6 +4,7 @@ import Projects from '@/views/ProjectsList.vue'
 import UsersList from '@/views/UsersList.vue'
 import PageTest from '@/views/PageTest.vue'
 import SettingProfile from '@/views/SettingProfile.vue'
+import PyramidManagement from '@/views/PyramidManagement.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,6 +36,11 @@ const router = createRouter({
       path: '/SettingProfile',
       name: 'SettingProfile',
       component: SettingProfile,
+    },
+    {
+      path: '/PyramidManagement',
+      name: 'PyramidManagement',
+      component: PyramidManagement,
     },
     {
       path: '/projects/:id',

@@ -202,14 +202,48 @@ function previewFiles(e: any) {
               </TabList>
               <TabPanels>
                 <TabPanel value="0">
-                  <p class="m-0">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo
-                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                    nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                    mollit anim id est laborum.
-                  </p>
+                  <div>
+                    <div class="form-control"
+                      :class="{ error: errors.username, success: !errors.username && form.username != '' }">
+                      <label for="username">Имя</label>
+                      <input type="text" v-model="form.username" id="username" placeholder="Введите имя" />
+                      <small v-if="errors.username">{{ errors.username }}</small>
+                    </div>
+
+                    <div class="form-control"
+                      :class="{ error: errors.email, success: !errors.email && form.email != '' }">
+                      <label for="email">Email</label>
+                      <input type="email" v-model="form.email" id="email" placeholder="Введите email" />
+                      <small v-if="errors.email">{{ errors.email }}</small>
+                    </div>
+
+                    <div class="form-control"
+                      :class="{ error: errors.password, success: !errors.password && form.password != '' }">
+                      <label for="password">Пароль</label>
+                      <input type="password" v-model="form.password" id="password" placeholder="Введите пароль" />
+                      <small v-if="errors.password">{{ errors.password }}</small>
+                    </div>
+
+                    <div class="form-control"
+                      :class="{ error: errors.password2, success: !errors.password2 && form.password2 != '' }">
+                      <label for="password2">Повторите пароль</label>
+                      <input type="password" v-model="form.password2" id="password2" placeholder="Повторите пароль" />
+                      <small v-if="errors.password2">{{ errors.password2 }}</small>
+                    </div>
+
+                    <div class="form-control">
+                      <label for="selctRole">Роль пользователя</label>
+                      <Select v-model="selectedRole" id="selctRole" :options="cities" optionLabel="name"
+                        placeholder="USER" class="w-full " />
+                    </div>
+
+                    <div class="form-control">
+                      <label for="selctFile">Грузим фото</label>
+                      <input type="file" id="selctFile" @change="previewFiles" multiple />
+                    </div>
+                    <div v-if="addeduser" class="text-green-600">Пользователь добавлен!</div>
+                    <div v-if="condition" class="text-red-600">{{ messageCondition }}</div>
+                  </div>
                 </TabPanel>
                 <TabPanel value="1">
                   <p class="m-0">
@@ -234,58 +268,25 @@ function previewFiles(e: any) {
               </TabPanels>
             </Tabs>
           </div>
+          <div class="buttonWrapper form-control">
+            <button class="saveButton" @click="handleSubmit">Сохранить</button>
+            <button class="cancelButton">Отмена</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- <form @submit.prevent="handleSubmit" class="form">
-      <div class="form-control" :class="{ error: errors.username, success: !errors.username && form.username != '' }">
-        <label for="username">Имя</label>
-        <input type="text" v-model="form.username" id="username" placeholder="Введите имя" />
-        <small v-if="errors.username">{{ errors.username }}</small>
-      </div>
-
-      <div class="form-control" :class="{ error: errors.email, success: !errors.email && form.email != '' }">
-        <label for="email">Email</label>
-        <input type="email" v-model="form.email" id="email" placeholder="Введите email" />
-        <small v-if="errors.email">{{ errors.email }}</small>
-      </div>
-
-      <div class="form-control" :class="{ error: errors.password, success: !errors.password && form.password != '' }">
-        <label for="password">Пароль</label>
-        <input type="password" v-model="form.password" id="password" placeholder="Введите пароль" />
-        <small v-if="errors.password">{{ errors.password }}</small>
-      </div>
-
-      <div class="form-control"
-        :class="{ error: errors.password2, success: !errors.password2 && form.password2 != '' }">
-        <label for="password2">Повторите пароль</label>
-        <input type="password" v-model="form.password2" id="password2" placeholder="Повторите пароль" />
-        <small v-if="errors.password2">{{ errors.password2 }}</small>
-      </div>
-
-      <div class="form-control">
-        <label for="selctRole">Роль пользователя</label>
-        <Select v-model="selectedRole" id="selctRole" :options="cities" optionLabel="name" placeholder="USER"
-          class="w-full " />
-      </div>
-
-      <div class="form-control">
-        <label for="selctFile">Грузим фото</label>
-        <input type="file" id="selctFile" @change="previewFiles" multiple />
-      </div>
-      <div v-if="addeduser" class="text-green-600">Пользователь добавлен!</div>
-      <div v-if="condition" class="text-red-600">{{ messageCondition }}</div>
-      <button type="submit">Отправить</button>
-    </form>
-  </div> -->
 </template>
 <style scoped lang="scss">
-.form {
-  padding: 0;
+.wrapper_setting_profile {
+  background: #fff;
+  padding: 32px;
+  // .form {
+  //   padding: 0;
 
-  & label {
-    color: #fff;
-  }
+  //   & label {
+  //     color: #fff;
+  //   }
+  // }
 }
 </style>

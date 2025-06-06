@@ -66,7 +66,6 @@ function incrCounter() {
 }
 
 .wrapper {
-  overflow: scroll;
   background: linear-gradient(45deg,
       rgba(86, 0, 60, 1) 0%,
       rgba(7, 62, 137, 1) 35%,
