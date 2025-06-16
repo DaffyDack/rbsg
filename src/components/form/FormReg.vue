@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import './style.scss'
-import { ref, watch } from 'vue'
+import { ref, watch, type Ref } from 'vue'
 import Select from 'primevue/select';
 import { useUsersStore } from '../../stores/users'
 import { registration, fetchUzers } from '../../http/userAPI.js'
@@ -30,6 +30,9 @@ interface Errors {
   password: string
   password2: string
 }
+interface UserTab {
+  title: string;
+}
 
 const form = ref<Form>({
   username: '',
@@ -39,6 +42,21 @@ const form = ref<Form>({
   role: '',
   file: ''
 })
+
+const userTabs: Ref<UserTab[]> = ref([
+  { title: 'Профиль' },
+  { title: 'Контакты рабочие' },
+  { title: 'Данные о работе' },
+  { title: 'Личные контакты' },
+  { title: 'Паспортные данные' },
+  { title: 'Прочие личные данные' },
+  { title: 'Кадровые данные' },
+  { title: 'Эффективность работы' },
+  { title: 'Знания и аттестация' },
+  { title: 'HR профиль' },
+  { title: 'Материальная ответственность' },
+  { title: 'Заработная плата' }
+])
 
 const errors = ref<Errors>({
   username: '',
@@ -57,26 +75,7 @@ const cities = ref([
   { name: 'ADMIN', code: 'ADMIN' }
 ]);
 
-watch(
-  () => [form.value.username, form.value.email, form.value.password, form.value.password2],
-  () => {
-    if (form.value.username != '') {
-      errors.value.username = ''
-      checkLength('username', form.value.username, 3, 15)
-    }
-    if (form.value.email != '') {
-      checkEmail(form.value.email)
-    }
-    if (form.value.password) {
-      checkLength('password', form.value.password, 1, 15)
-    }
-    if (form.value.password2 !== form.value.password) {
-      errors.value.password2 = 'Пароль не совподает'
-    } else {
-      errors.value.password2 = ''
-    }
-  },
-)
+
 function set() {
   setTimeout(() => {
     addeduser.value = false
@@ -167,17 +166,11 @@ function isEmpty(obj: Record<string, string>) {
       break
     }
   }
-  if (!a) toggleFavorite()
+  if (!a) RegistrationUser()
 }
 const handleSubmit = () => {
   validateForm()
   isEmpty(errors.value)
-}
-
-const toggleFavorite = () => {
-  RegistrationUser()
-
-  // store.registrationCompleted(form.value.email, form.value.password)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -185,29 +178,74 @@ function previewFiles(e: any) {
   console.log(e.target.files[0])
   form.value.file = e.target.files[0]
 }
+
+watch(
+  () => [form.value.username, form.value.email, form.value.password, form.value.password2],
+  () => {
+    if (form.value.username != '') {
+      errors.value.username = ''
+      checkLength('username', form.value.username, 3, 15)
+    }
+    if (form.value.email != '') {
+      checkEmail(form.value.email)
+    }
+    if (form.value.password) {
+      checkLength('password', form.value.password, 1, 15)
+    }
+    if (form.value.password2 !== form.value.password) {
+      errors.value.password2 = 'Пароль не совподает'
+    } else {
+      errors.value.password2 = ''
+    }
+  },
+)
 </script>
 
 <template>
   <div>
     <div class="sidebar">
       <div class="nano">
-        Регистрация нового сотрудника
+        <div class="title_setting_profile">
+          Регистрация нового сотрудника
+        </div>
         <div class="wrapper_setting_profile">
           <div class="card">
-            <Tabs value="0">
+            <Tabs value="0" scrollable>
               <TabList>
-                <Tab value="0">Header I</Tab>
-                <Tab value="1">Header II</Tab>
-                <Tab value="2">Header III</Tab>
+                <Tab v-for="(tab, i) in userTabs" :key="i" :value="String(i)" class="toster">
+                  {{ tab.title }}
+                </Tab>
               </TabList>
               <TabPanels>
                 <TabPanel value="0">
                   <div>
-                    <div class="form-control"
-                      :class="{ error: errors.username, success: !errors.username && form.username != '' }">
-                      <label for="username">Имя</label>
-                      <input type="text" v-model="form.username" id="username" placeholder="Введите имя" />
-                      <small v-if="errors.username">{{ errors.username }}</small>
+                    <div class="group_form-control">
+                      <div class="form-control">
+                        <label for="last_name">Фамилия</label>
+                        <input type="text" id="last_name" placeholder="Фамилия" />
+                      </div>
+                      <div class="form-control"
+                        :class="{ error: errors.username, success: !errors.username && form.username != '' }">
+                        <label for="username">Имя</label>
+                        <input type="text" v-model="form.username" id="username" placeholder="Имя" />
+                        <small v-if="errors.username">{{ errors.username }}</small>
+                      </div>
+
+                      <div class="form-control">
+                        <label for="middle_name">Отчество</label>
+                        <input type="text" id="middle_name" placeholder="Отчество" />
+                      </div>
+                      <div class="form-control">
+                        <label for="middle_name">Пол</label>
+                        <select name="pets" id="middle_name">
+                          <option value="М">Муж</option>
+                          <option value="Ж">Жен</option>
+                        </select>
+                      </div>
+                      <div class="form-control">
+                        <label for="birth_day">День рождения</label>
+                        <input type="text" id="birth_day" placeholder="Отчество" />
+                      </div>
                     </div>
 
                     <div class="form-control"
@@ -257,14 +295,55 @@ function previewFiles(e: any) {
                 </TabPanel>
                 <TabPanel value="2">
                   <p class="m-0">
-                    At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
-                    deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non
-                    provident, similique sunt in culpa
-                    qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis
-                    est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil
-                    impedit quo minus.
+                    At vero eos et accusamus
                   </p>
                 </TabPanel>
+                <TabPanel value="3">
+                  <p class="m-0">
+                    At vero eos et accusamus
+                  </p>
+                </TabPanel>
+                <TabPanel value="4">
+                  <p class="m-0">
+                    At vero eos et accusamus
+                  </p>
+                </TabPanel>
+                <TabPanel value="5">
+                  <p class="m-0">
+                    At vero eos et accusamus
+                  </p>
+                </TabPanel>
+                <TabPanel value="6">
+                  <p class="m-0">
+                    At vero eos et accusamus
+                  </p>
+                </TabPanel>
+                <TabPanel value="7">
+                  <p class="m-0">
+                    At vero eos et accusamus
+                  </p>
+                </TabPanel>
+                <TabPanel value="8">
+                  <p class="m-0">
+                    At vero eos et accusamus
+                  </p>
+                </TabPanel>
+                <TabPanel value="9">
+                  <p class="m-0">
+                    At vero eos et accusamus
+                  </p>
+                </TabPanel>
+                <TabPanel value="10">
+                  <p class="m-0">
+                    At vero eos et accusamus
+                  </p>
+                </TabPanel>
+                <TabPanel value="11">
+                  <p class="m-0">
+                    At vero eos et accusamus
+                  </p>
+                </TabPanel>
+
               </TabPanels>
             </Tabs>
           </div>
@@ -277,16 +356,54 @@ function previewFiles(e: any) {
     </div>
   </div>
 </template>
-<style scoped lang="scss">
+<style lang="scss">
 .wrapper_setting_profile {
-  background: #fff;
-  padding: 32px;
-  // .form {
-  //   padding: 0;
+  .p-tablist-tab-list {
+    background: none !important;
+  }
+}
+</style>
+<style scoped lang="scss">
+.title_setting_profile {
+  font-size: 24px;
+  color: #fff;
+}
 
-  //   & label {
-  //     color: #fff;
-  //   }
-  // }
+.wrapper_setting_profile {
+  background: #ffffffe9;
+  padding: 32px;
+  border-radius: 24px;
+  margin-top: 25px;
+
+  .card {
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 16px;
+
+
+  }
+
+  .buttonWrapper {
+    color: #fff;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+
+    .saveButton {
+      background: #06A80B;
+      min-height: 42px;
+      min-width: 280px;
+      border-radius: 16px;
+      margin-right: 15px;
+    }
+
+    .cancelButton {
+      background: #37382D;
+      border-radius: 16px;
+      margin-right: 15px;
+      min-height: 42px;
+      min-width: 95px;
+    }
+  }
 }
 </style>

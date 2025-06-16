@@ -1,14 +1,17 @@
 .form {
   padding: 30px 40px;
 }
-
+.group_form-control {
+  display: grid;
+  grid-template-columns: 1.1fr 1.1fr 1.1fr 0.6fr 1.1fr;
+  grid-template-rows: 0.7fr;
+  gap: 10px 10px;
+  grid-template-areas: '. . . . .';
+}
 .form-control {
   margin-bottom: 10px;
   padding-bottom: 20px;
   position: relative;
-  .saveButton {
-    background: red;
-  }
 }
 
 .form-control label {
@@ -17,7 +20,8 @@
   margin-bottom: 5px;
 }
 
-.form-control input {
+.form-control input,
+.form-control select {
   border: 2px solid #f0f0f0;
   border-radius: 4px;
   display: block;
@@ -26,7 +30,8 @@
   font-size: 14px;
 }
 
-.form-control input:focus {
+.form-control input:focus,
+.form-control select:focus {
   outline: 0;
   border-color: #777;
 }
