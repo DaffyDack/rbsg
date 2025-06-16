@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const uuid = require('uuid')
 const path = require('path')
-const { User } = require('../models/models')
+const { User, Admins, WorkingContacts } = require('../models/models')
 
 const generatejwt = (
   id,
@@ -24,6 +24,7 @@ const generatejwt = (
   telegram,
   datebirth,
   img,
+  working_contact_workphone,
 ) => {
   return jwt.sign(
     {
@@ -44,6 +45,7 @@ const generatejwt = (
       telegram,
       datebirth,
       img,
+      working_contact_workphone,
     },
     process.env.SECRET_KEY,
     {
@@ -72,6 +74,7 @@ class UserController {
         workphone,
         telegram,
         datebirth,
+        working_contact_workphone,
       } = req.body
       const { img } = req.files
       let fileName = uuid.v4() + '.jpg'
@@ -104,7 +107,11 @@ class UserController {
         datebirth,
         img: fileName,
       })
-      // const admins = await Admins.create({ userId: user.id })
+      await Admins.create({ userId: user.id })
+      const WC = await WorkingContacts.create({
+        userId: user.id,
+        workphone: working_contact_workphone,
+      })
       const token = generatejwt(
         user.id,
         user.email,
@@ -123,6 +130,7 @@ class UserController {
         user.telegram,
         user.datebirth,
         user.img,
+        WC.workphone,
       )
 
       return res.json({ token })
@@ -133,6 +141,7 @@ class UserController {
   async login(req, res, next) {
     const { email, password } = req.body
     const user = await User.findOne({ where: { email } })
+    const WC = await WorkingContacts.findOne({ where: { userId: user.id } })
     if (!user) {
       return next(ApiError.internal('пользователь не найден'))
     }
@@ -158,6 +167,7 @@ class UserController {
       user.telegram,
       user.datebirth,
       user.img,
+      WC.workphone,
     )
     return res.json({ token })
   }
@@ -180,6 +190,7 @@ class UserController {
       req.user.telegram,
       req.user.datebirth,
       req.user.img,
+      req.WC.workphone,
     )
     return res.json({ token })
   }

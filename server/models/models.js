@@ -430,6 +430,7 @@ const SalariesAndPayments = sequelize.define('salaries_and_payments', {
 
 User.hasOne(Admins)
 Admins.belongsTo(User)
+WorkingContacts.belongsTo(User)
 
 module.exports = {
   User,
