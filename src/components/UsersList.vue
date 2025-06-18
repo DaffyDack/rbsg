@@ -19,10 +19,7 @@ const filters = ref({
 });
 const product = ref()
 
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function confirmDeleteProduct(e: any) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     product.value = store.user?.find((x: any) => x.id === e.id) ?? null;
     deleteProductDialog.value = true;
 }

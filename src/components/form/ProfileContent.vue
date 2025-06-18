@@ -5,13 +5,24 @@ import Select from 'primevue/select';
 
 type ErrorType = 'username' | 'password';
 
+interface CoosingRole {
+    name: string;
+    code: string;
+}
+
+interface Rating {
+    name: string;
+    value: number;
+}
+
 interface Form {
     username: string
     email: string
     password: string
     password2: string
-    role: string
     file: string
+    coosing_role: CoosingRole[]
+    rating: Rating[]
 }
 
 interface Errors {
@@ -26,8 +37,9 @@ const form = ref<Form>({
     email: '',
     password: '',
     password2: '',
-    role: '',
-    file: ''
+    file: '',
+    coosing_role: [{ name: 'USER', code: 'USER' }],
+    rating: [{ name: '1', value: 1 }]
 })
 const errors = ref<Errors>({
     username: '',
@@ -36,8 +48,6 @@ const errors = ref<Errors>({
     password2: '',
 })
 
-const selectedRole = ref({ name: 'USER', code: 'USER' });
-const assignRating = ref(1)
 const cities = ref([
     { name: 'USER', code: 'USER' },
     { name: 'ADMIN', code: 'ADMIN' }
@@ -48,20 +58,22 @@ const rating = ref([
     { name: '3', value: 3 },
 ])
 
-const sayHello = () => {
-    console.log('hello')
-    validateForm()
-    isEmpty(errors.value)
-}
-defineExpose({ sayHello });
-
-// eslint-disable-next-line vue/valid-define-emits
 const emit = defineEmits();
 
 const callParent = () => {
-    emit('callParentMethod'); // Эмитируем событие
+    emit('callParentMethod', form.value);
+    clearForm()
 };
-
+function clearForm() {
+    Object.keys(form.value).forEach(key => {
+        const propertyKey = key as keyof Form;
+        if (Array.isArray(form.value[propertyKey])) {
+            form.value[propertyKey] = [] as any;
+        } else {
+            form.value[propertyKey] = '';
+        }
+    });
+}
 function checkLength(err: ErrorType, input: string, min: number, max: number) {
     const messages = {
         username: {
@@ -114,19 +126,23 @@ const validateForm = () => {
 
 function isEmpty(obj: Record<string, string>) {
     console.log(obj, 'что в обьекте')
-    const hasEmptyValue = Object.values(obj).some(value => value === '');
+    const hasEmptyValue = Object.values(obj).every(value => value === '');
     console.log(hasEmptyValue, 'смотрим что в errros');
 
     if (hasEmptyValue) {
         callParent()
     }
 }
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function previewFiles(e: any) {
     console.log(e.target.files[0], e.target.files.length)
     form.value.file = e.target.files[0]
 }
+
+const CheckingProfileComponent = () => {
+    validateForm()
+    isEmpty(errors.value)
+}
+defineExpose({ CheckingProfileComponent });
 watch(
     () => [form.value.username, form.value.email, form.value.password, form.value.password2],
     () => {
@@ -147,9 +163,6 @@ watch(
         }
     },
 )
-
-
-
 </script>
 
 <template>
@@ -234,16 +247,15 @@ watch(
 
             <div class="form-control">
                 <label for="selctRole">Роль пользователя</label>
-                <Select v-model="selectedRole" id="selctRole" :options="cities" optionLabel="name" placeholder="USER"
-                    class="w-full " />
+                <Select v-model="form.coosing_role" id="selctRole" :options="cities" optionLabel="name"
+                    placeholder="USER" class="w-full " />
             </div>
             <div class="form-control">
                 <label for="assignRating">Присвоить рейтинг</label>
-                <Select v-model="assignRating" id="assignRating" :options="rating" optionLabel="name" placeholder="1"
+                <Select v-model="form.rating" id="assignRating" :options="rating" optionLabel="name" placeholder="1"
                     class="w-full " />
             </div>
         </div>
-
         <div class="form-control">
             <label for="selctFile">Грузим фото</label>
             <input type="file" id="selctFile" @change="previewFiles" multiple />

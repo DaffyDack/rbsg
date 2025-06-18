@@ -77,7 +77,7 @@ class UserController {
         working_contact_workphone,
       } = req.body
       const { img } = req.files
-      let fileName = uuid.v4()
+      let fileName = uuid.v4() + '.jpg'
       img.mv(path.resolve(__dirname, '..', 'static', fileName))
 
       // if (!Array.isArray(img)) {

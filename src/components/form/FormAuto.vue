@@ -42,7 +42,6 @@ const LoginUser = async () => {
     store.registrationCompleted()
     store.userInfo(response)
     localStorage.setItem('role', JSON.stringify(response))
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     messageError.value = error.response.data.message
     userError.value = true

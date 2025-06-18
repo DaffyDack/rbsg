@@ -11,7 +11,6 @@ export default {
   props: {
     tasks: {
       required: true,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       type: Array as () => any[],
     },
   },

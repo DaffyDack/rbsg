@@ -4,7 +4,7 @@ import { ref, type Ref } from 'vue'
 import { useUsersStore } from '../../stores/users'
 import { registration, fetchUzers } from '../../http/userAPI.js'
 
-import ProfileContact from './tabsContent/ProfileContent.vue'
+import ProfileContact from './ProfileContent.vue'
 
 
 import Tabs from 'primevue/tabs';
@@ -14,7 +14,7 @@ import TabPanels from 'primevue/tabpanels';
 import TabPanel from 'primevue/tabpanel';
 
 
-const myChild = ref()
+const RequestProfileComponent = ref()
 
 const store = useUsersStore()
 
@@ -69,29 +69,14 @@ function set() {
     addeduser.value = false
   }, 2000)
 }
-function clearForm() {
-  Object.keys(form.value).forEach(key => {
-    form.value[key as keyof Form] = '';
-  });
-}
-const RegistrationUser = async () => {
+const RegistrationUser = async (formData: any) => {
   try {
-    const formData = new FormData()
-    formData.append('email', form.value.email)
-    formData.append('password', form.value.password)
-    formData.append('role', selectedRole.value.name)
-    formData.append('img', form.value.file)
-    formData.append('working_contact_workphone', working_contact.value.working_contact_workphone)
-
-
     const response = await registration(formData)
     condition.value = false
     addeduser.value = true
     set()
-    clearForm()
     fetchUzers().then(data => store.registrationCompleted(data))
     console.log(response)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
     messageCondition.value = e.response.data.message
     condition.value = true
@@ -100,12 +85,17 @@ const RegistrationUser = async () => {
 }
 
 const handleSubmit = () => {
-  myChild.value.sayHello();
-
+  RequestProfileComponent.value.CheckingProfileComponent();
 }
 
-const handleParentMethod = () => {
-  console.log('в дочернем елементе все впорядке')
+const handleParentMethod = (e: any) => {
+  const formData = new FormData()
+  formData.append('email', e.email)
+  formData.append('password', e.password)
+  formData.append('role', e.coosing_role.name)
+  formData.append('img', e.file)
+  formData.append('img', working_contact.value.working_contact_workphone)
+  RegistrationUser(formData)
 }
 
 </script>
@@ -127,7 +117,7 @@ const handleParentMethod = () => {
               </TabList>
               <TabPanels>
                 <TabPanel value="0">
-                  <ProfileContact ref="myChild" @callParentMethod="handleParentMethod" />
+                  <ProfileContact ref="RequestProfileComponent" @callParentMethod="handleParentMethod" />
                   <div v-if="addeduser" class="text-green-600">Пользователь добавлен!</div>
                   <div v-if="condition" class="text-red-600">{{ messageCondition }}</div>
 
