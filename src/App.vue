@@ -15,7 +15,6 @@ const componentKey = ref(0)
 const loading = ref(true)
 
 onMounted(() => {
-  console.log('тестим порт env', import.meta.env.VITE_PORT)
   check().then(data => {
     if (localStorage.getItem('role')) {
       store.registrationCompleted()
@@ -24,7 +23,6 @@ onMounted(() => {
     }
   }).finally(() => {
     loading.value = false
-    console.log('проверка пройдена')
   })
 })
 

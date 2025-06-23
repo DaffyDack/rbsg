@@ -37,7 +37,6 @@ onMounted(() => {
 const LoginUser = async () => {
   try {
     const response = await login(form.value.email, form.value.password)
-    console.log(response, 'смотрим что пришло при логировании')
     registeredUser.value = true
     store.registrationCompleted()
     store.userInfo(response)
@@ -99,17 +98,8 @@ const validateForm = () => {
 }
 
 function isEmpty(obj: Record<string, string>) {
-  let a = true
-  for (const [key, value] of Object.entries(obj)) {
-    console.log(value, key)
-    if (value === '') {
-      a = false
-    } else {
-      a = true
-      break
-    }
-  }
-  if (!a) LoginUser()
+  const hasEmptyValue = Object.values(obj).every(value => value === '');
+  if (hasEmptyValue) LoginUser()
 }
 const handleSubmit = () => {
   validateForm()

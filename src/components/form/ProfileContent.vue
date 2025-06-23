@@ -5,7 +5,7 @@ import Select from 'primevue/select';
 
 type ErrorType = 'username' | 'password';
 
-interface CoosingRole {
+interface ChoosingRole {
     name: string;
     code: string;
 }
@@ -21,7 +21,7 @@ interface Form {
     password: string
     password2: string
     file: string
-    coosing_role: CoosingRole[]
+    coosing_role: ChoosingRole[]
     rating: Rating[]
 }
 
@@ -32,15 +32,18 @@ interface Errors {
     password2: string
 }
 
-const form = ref<Form>({
-    username: '',
-    email: '',
-    password: '',
-    password2: '',
-    file: '',
-    coosing_role: [{ name: 'USER', code: 'USER' }],
-    rating: [{ name: '1', value: 1 }]
-})
+const form: { value: Form } = {
+    value: {
+        username: '',
+        email: '',
+        password: 'ds',
+        password2: '',
+        file: '',
+        coosing_role: [{ name: 'USER', code: 'USER' }],
+        rating: [{ name: '1', value: 1 }]
+    }
+}
+
 const errors = ref<Errors>({
     username: '',
     email: '',
@@ -64,13 +67,23 @@ const callParent = () => {
     emit('callParentMethod', form.value);
     clearForm()
 };
+
+
+type FilterKeysByValue<O, V> = keyof { [K in keyof O as O[K] extends V ? K : never]: O[K]; };
+
+function isKeyForValue<T, O>(key: PropertyKey, obj: O, guard: (v: unknown) => v is T): key is FilterKeysByValue<O, T> {
+    return obj != null && guard(obj[key as keyof O]);
+}
+
 function clearForm() {
     Object.keys(form.value).forEach(key => {
-        const propertyKey = key as keyof Form;
-        if (Array.isArray(form.value[propertyKey])) {
-            form.value[propertyKey] = [] as any;
-        } else {
-            form.value[propertyKey] = '';
+        if (isKeyForValue(key, form.value, Array.isArray)) {
+            // Если поле - массив, очищаем его
+            form.value[key] = [];
+        }
+        if (isKeyForValue(key, form.value, (v) => typeof v === 'string')) {
+            // Если поле - строка, присваиваем пустую строку
+            form.value[key] = '';
         }
     });
 }
@@ -125,10 +138,7 @@ const validateForm = () => {
 }
 
 function isEmpty(obj: Record<string, string>) {
-    console.log(obj, 'что в обьекте')
     const hasEmptyValue = Object.values(obj).every(value => value === '');
-    console.log(hasEmptyValue, 'смотрим что в errros');
-
     if (hasEmptyValue) {
         callParent()
     }

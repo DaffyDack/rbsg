@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useUsersStore } from '../stores/users'
-// import UsersList from '@/components/UsersList.vue';
+import UsersList from '@/components/UsersList.vue';
 import FormReg from '../components/form/FormReg.vue'
 import { fetchUzers } from '@/http/userAPI';
 
@@ -18,7 +18,7 @@ onMounted(() => {
       <FormReg />
     </div>
     <div>
-      <!-- <UsersList /> -->
+      <UsersList />
     </div>
   </div>
 </template>

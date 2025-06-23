@@ -5,6 +5,7 @@ import { useUsersStore } from '../../stores/users'
 import { registration, fetchUzers } from '../../http/userAPI.js'
 
 import ProfileContact from './ProfileContent.vue'
+import JobInformationContentfrom from './JobInformationContent.vue'
 
 
 import Tabs from 'primevue/tabs';
@@ -30,15 +31,6 @@ interface Form {
 interface UserTab {
   title: string;
 }
-
-const form = ref<Form>({
-  username: '',
-  email: '',
-  password: '',
-  password2: '',
-  role: '',
-  file: ''
-})
 
 const userTabs: Ref<UserTab[]> = ref([
   { title: 'Профиль' },
@@ -118,9 +110,6 @@ const handleParentMethod = (e: any) => {
               <TabPanels>
                 <TabPanel value="0">
                   <ProfileContact ref="RequestProfileComponent" @callParentMethod="handleParentMethod" />
-                  <div v-if="addeduser" class="text-green-600">Пользователь добавлен!</div>
-                  <div v-if="condition" class="text-red-600">{{ messageCondition }}</div>
-
                 </TabPanel>
                 <TabPanel value="1">
                   <div>
@@ -132,12 +121,9 @@ const handleParentMethod = (e: any) => {
                       </div>
                     </div>
                   </div>
-
                 </TabPanel>
                 <TabPanel value="2">
-                  <p class="m-0">
-                    At vero eos et accusamus
-                  </p>
+                  <JobInformationContentfrom />
                 </TabPanel>
                 <TabPanel value="3">
                   <p class="m-0">
@@ -189,6 +175,10 @@ const handleParentMethod = (e: any) => {
             </Tabs>
           </div>
           <div class="buttonWrapper form-control">
+            <div>
+              <div v-if="addeduser" class="text-green-600 mb-5">Пользователь добавлен!</div>
+              <div v-if="condition" class="text-red-600 mb-5">{{ messageCondition }}</div>
+            </div>
             <button class="saveButton" @click="handleSubmit">Сохранить</button>
             <button class="cancelButton">Отмена</button>
           </div>
