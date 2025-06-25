@@ -1,6 +1,62 @@
 <script setup lang="ts">
 import { ref, watch, defineEmits } from 'vue'
-import Select from 'primevue/select';
+import { checkLength } from '../../utils/helper.js'
+
+const emit = defineEmits();
+
+interface Errors {
+    startDate: string
+}
+interface Form {
+    startDate: string
+}
+
+const form = ref<Form>({
+    startDate: '',
+})
+
+const errors = ref<Errors>({
+    startDate: '',
+})
+const CheckingJobInformationComponent = () => {
+    validateForm()
+    isEmpty(errors.value)
+}
+
+function isEmpty(obj: Record<string, string>) {
+    const hasEmptyValue = Object.values(obj).every(value => value === '');
+    if (hasEmptyValue) {
+        emit('callParentMethod', 'test');
+    } else {
+        emit('callErrorProfile', 'JobInformationContent')
+    }
+}
+
+const validateForm = () => {
+    const validations: Array<{ field: keyof Form; message: string }> = [
+        { field: 'startDate', message: 'Имя обязательно' },
+    ];
+
+    validations.forEach(({ field, message }) => {
+        if (!form.value[field]) {
+            errors.value[field as keyof Errors] = message;
+        }
+    });
+
+}
+
+watch(
+    () => [form.value.startDate],
+    () => {
+        if (form.value.startDate != '') {
+            errors.value.startDate = ''
+            errors.value['startDate'] = checkLength('startDate', form.value.startDate, 3, 15)
+        }
+    },
+)
+
+
+defineExpose({ CheckingJobInformationComponent });
 </script>
 <template>
     <div>
@@ -44,9 +100,11 @@ import Select from 'primevue/select';
                     <label for="DateOfficialEmployment">Дата официального трудоустройства</label>
                     <input type="text" id="DateOfficialEmployment" placeholder="Дата официального трудоустройства" />
                 </div>
-                <div class="form-control">
+                <div class="form-control"
+                    :class="{ error: errors.startDate, success: !errors.startDate && form.startDate != '' }">
                     <label for="StartDate">Дата начала работы</label>
-                    <input type="text" id="StartDate" placeholder="Дата начала работы" />
+                    <input type="text" v-model="form.startDate" id="StartDate" placeholder="Дата начала работы" />
+                    <small v-if="errors.startDate">{{ errors.startDate }}</small>
                 </div>
                 <div class="form-control">
                     <label for="ProbationPeriodUntil">Испытательный срок до</label>

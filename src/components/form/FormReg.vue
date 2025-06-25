@@ -16,43 +16,45 @@ import TabPanel from 'primevue/tabpanel';
 
 
 const RequestProfileComponent = ref()
+const RequestJobInformationComponent = ref()
 
 const store = useUsersStore()
 
 
-interface Form {
-  username: string
-  email: string
-  password: string
-  password2: string
-  role: string
-  file: string
-}
 interface UserTab {
+  component: string
   title: string;
+  errors: boolean;
+}
+interface formDataTest {
+  email?: string,
+  password?: string
+  role?: string
+  img?: string
+  workphone?: string
 }
 
 const userTabs: Ref<UserTab[]> = ref([
-  { title: 'Профиль' },
-  { title: 'Контакты рабочие' },
-  { title: 'Данные о работе' },
-  { title: 'Личные контакты' },
-  { title: 'Паспортные данные' },
-  { title: 'Прочие личные данные' },
-  { title: 'Кадровые данные' },
-  { title: 'Эффективность работы' },
-  { title: 'Знания и аттестация' },
-  { title: 'HR профиль' },
-  { title: 'Материальная ответственность' },
-  { title: 'Заработная плата' }
+  { component: 'ProfileContent', title: 'Профиль', errors: false },
+  { component: '', title: 'Контакты рабочие', errors: false },
+  { component: 'JobInformationContent', title: 'Данные о работе', errors: false },
+  { component: '', title: 'Личные контакты', errors: false },
+  { component: '', title: 'Паспортные данные', errors: false },
+  { component: '', title: 'Прочие личные данные', errors: false },
+  { component: '', title: 'Кадровые данные', errors: false },
+  { component: '', title: 'Эффективность работы', errors: false },
+  { component: '', title: 'Знания и аттестация', errors: false },
+  { component: '', title: 'HR профиль', errors: false },
+  { component: '', title: 'Материальная ответственность', errors: false },
+  { component: '', title: 'Заработная плата', errors: false }
 ])
-
+const formDataTest = ref<formDataTest>({})
 const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
 const addeduser = ref<boolean>(false)
 
 const working_contact = ref({
-  working_contact_workphone: ''
+  working_contact_workphone: '111'
 })
 
 
@@ -77,17 +79,40 @@ const RegistrationUser = async (formData: any) => {
 }
 
 const handleSubmit = () => {
-  RequestProfileComponent.value.CheckingProfileComponent();
-}
+  RequestProfileComponent.value.CheckingProfileComponent()
+  RequestJobInformationComponent.value.CheckingJobInformationComponent()
+  const hasErrorValue = Object.values(userTabs.value).every(value => value.errors === false);
+  if (hasErrorValue) {
+    console.log('Все норм', formDataTest.value.img)
+    // RegistrationUser(formDataTest)
+  } else {
+    console.log('Есть ошибки', hasErrorValue)
+  }
 
-const handleParentMethod = (e: any) => {
-  const formData = new FormData()
-  formData.append('email', e.email)
-  formData.append('password', e.password)
-  formData.append('role', e.coosing_role.name)
-  formData.append('img', e.file)
-  formData.append('img', working_contact.value.working_contact_workphone)
-  RegistrationUser(formData)
+}
+const handleParentMethod = (e: any, tr: boolean) => {
+  errorProfile('ProfileContent', true)
+  // const formData = new FormData()
+  // formData.append('email', e.email)
+  // formData.append('password', e.password)
+  // formData.append('role', e.choosing_role.name)
+  // formData.append('img', e.file)
+  // formData.append('workphone', working_contact.value.working_contact_workphone)
+  console.log(e.file, 'че там')
+  formDataTest.value['email'] = e.email
+  formDataTest.value['password'] = e.password
+  formDataTest.value['role'] = e.choosing_role.name
+  formDataTest.value['img'] = e.file
+  formDataTest.value['workphone'] = working_contact.value.working_contact_workphone
+  // RegistrationUser(formData)
+}
+const JobInformationMethod = (e: any) => {
+  errorProfile('JobInformationContent', true)
+  console.log(e, 'JobInformationMethod')
+}
+const errorProfile = (e: any, tr: boolean) => {
+  const profileTab = userTabs.value.find(tab => tab.component === e);
+  if (profileTab) profileTab.errors = !tr
 }
 
 </script>
@@ -103,13 +128,15 @@ const handleParentMethod = (e: any) => {
           <div class="card">
             <Tabs value="0" scrollable>
               <TabList>
-                <Tab v-for="(tab, i) in userTabs" :key="i" :value="String(i)" class="toster">
+                <Tab v-for="(tab, i) in userTabs" :key="i" :value="String(i)" class="tag_error">
+                  <span class="tag" :class="{ 'error': tab.errors }"></span>
                   {{ tab.title }}
                 </Tab>
               </TabList>
               <TabPanels>
                 <TabPanel value="0">
-                  <ProfileContact ref="RequestProfileComponent" @callParentMethod="handleParentMethod" />
+                  <ProfileContact ref="RequestProfileComponent" @callParentMethod="handleParentMethod"
+                    @callErrorProfile="errorProfile" />
                 </TabPanel>
                 <TabPanel value="1">
                   <div>
@@ -123,7 +150,8 @@ const handleParentMethod = (e: any) => {
                   </div>
                 </TabPanel>
                 <TabPanel value="2">
-                  <JobInformationContentfrom />
+                  <JobInformationContentfrom ref="RequestJobInformationComponent"
+                    @callParentMethod="JobInformationMethod" @callErrorProfile="errorProfile" />
                 </TabPanel>
                 <TabPanel value="3">
                   <p class="m-0">
@@ -211,7 +239,25 @@ const handleParentMethod = (e: any) => {
     overflow: hidden;
     margin-bottom: 16px;
 
+    .tag_error {
+      position: relative;
 
+      .tag {
+        display: block;
+        opacity: 0;
+        width: 10px;
+        height: 10px;
+        background: red;
+        position: absolute;
+        right: 8px;
+        top: 16px;
+        border-radius: 100%;
+
+        &.error {
+          opacity: 1;
+        }
+      }
+    }
   }
 
   .buttonWrapper {

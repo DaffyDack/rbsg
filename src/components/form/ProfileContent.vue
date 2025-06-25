@@ -2,6 +2,8 @@
 import { ref, watch, defineEmits } from 'vue'
 import Select from 'primevue/select';
 
+import { checkEmail, checkLength } from '../../utils/helper.js'
+
 
 type ErrorType = 'username' | 'password';
 
@@ -12,7 +14,7 @@ interface ChoosingRole {
 
 interface Rating {
     name: string;
-    value: number;
+    value: string;
 }
 
 interface Form {
@@ -21,8 +23,8 @@ interface Form {
     password: string
     password2: string
     file: string
-    coosing_role: ChoosingRole[]
-    rating: Rating[]
+    choosing_role: ChoosingRole
+    rating: Rating
 }
 
 interface Errors {
@@ -32,17 +34,15 @@ interface Errors {
     password2: string
 }
 
-const form: { value: Form } = {
-    value: {
-        username: '',
-        email: '',
-        password: 'ds',
-        password2: '',
-        file: '',
-        coosing_role: [{ name: 'USER', code: 'USER' }],
-        rating: [{ name: '1', value: 1 }]
-    }
-}
+const form = ref<Form>({
+    username: '',
+    email: '',
+    password: '',
+    password2: '',
+    file: '',
+    choosing_role: { name: 'USER', code: 'USER' },
+    rating: { name: '1', value: '1' }
+})
 
 const errors = ref<Errors>({
     username: '',
@@ -77,47 +77,16 @@ function isKeyForValue<T, O>(key: PropertyKey, obj: O, guard: (v: unknown) => v 
 
 function clearForm() {
     Object.keys(form.value).forEach(key => {
-        if (isKeyForValue(key, form.value, Array.isArray)) {
-            // Если поле - массив, очищаем его
-            form.value[key] = [];
-        }
         if (isKeyForValue(key, form.value, (v) => typeof v === 'string')) {
-            // Если поле - строка, присваиваем пустую строку
             form.value[key] = '';
+        } else if (key === 'choosing_role') {
+            form.value[key] = { name: 'USER', code: 'USER' };
+        } else if (key === 'rating') {
+            form.value[key] = { name: '1', value: '1' };
         }
     });
 }
-function checkLength(err: ErrorType, input: string, min: number, max: number) {
-    const messages = {
-        username: {
-            tooShort: 'меньше чем надо',
-            tooLong: 'Больше чем надо',
-            valid: ''
-        },
-        password: {
-            tooShort: 'меньше чем надо',
-            tooLong: 'Больше чем надо',
-            valid: ''
-        }
-    };
 
-    if (input.length < min) {
-        errors.value[err] = messages[err].tooShort;
-    } else if (input.length > max) {
-        errors.value[err] = messages[err].tooLong;
-    } else {
-        errors.value[err] = messages[err].valid;
-    }
-}
-function checkEmail(input: string) {
-    const re =
-        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    if (re.test(input.trim())) {
-        errors.value.email = ''
-    } else {
-        errors.value.email = 'Не корректный Email'
-    }
-}
 
 const validateForm = () => {
     const validations: Array<{ field: keyof Form; message: string }> = [
@@ -141,10 +110,12 @@ function isEmpty(obj: Record<string, string>) {
     const hasEmptyValue = Object.values(obj).every(value => value === '');
     if (hasEmptyValue) {
         callParent()
+    } else {
+        emit('callErrorProfile', 'ProfileContent')
     }
 }
 function previewFiles(e: any) {
-    console.log(e.target.files[0], e.target.files.length)
+    console.log(e.target.files[0])
     form.value.file = e.target.files[0]
 }
 
@@ -158,13 +129,13 @@ watch(
     () => {
         if (form.value.username != '') {
             errors.value.username = ''
-            checkLength('username', form.value.username, 3, 15)
+            errors.value['username'] = checkLength('username', form.value.username, 3, 15)
         }
         if (form.value.email != '') {
-            checkEmail(form.value.email)
+            errors.value.email = checkEmail(form.value.email)
         }
         if (form.value.password) {
-            checkLength('password', form.value.password, 1, 15)
+            errors.value['password'] = checkLength('password', form.value.username, 3, 15)
         }
         if (form.value.password2 !== form.value.password) {
             errors.value.password2 = 'Пароль не совподает'
@@ -257,7 +228,7 @@ watch(
 
             <div class="form-control">
                 <label for="selctRole">Роль пользователя</label>
-                <Select v-model="form.coosing_role" id="selctRole" :options="cities" optionLabel="name"
+                <Select v-model="form.choosing_role" id="selctRole" :options="cities" optionLabel="name"
                     placeholder="USER" class="w-full " />
             </div>
             <div class="form-control">

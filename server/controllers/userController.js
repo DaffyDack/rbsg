@@ -74,32 +74,10 @@ class UserController {
         workphone,
         telegram,
         datebirth,
-        working_contact_workphone,
       } = req.body
       const { img } = req.files
       let fileName = uuid.v4() + '.jpg'
       img.mv(path.resolve(__dirname, '..', 'static', fileName))
-
-      // if (!Array.isArray(img)) {
-      //   const fileUploadPromises = img.map((file) => {
-      //     const fileName = uuid.v4() // Сохраняем расширение файла
-      //     return file.mv(path.resolve(__dirname, '..', 'static', fileName)).then(() => {
-      //       // Можно возвращать имя файла или другую информацию
-      //       return fileName
-      //     })
-      //   })
-      //   try {
-      //     // Ждем завершения всех загрузок
-      //     const uploadedFiles = await Promise.all(fileUploadPromises)
-      //     res.status(200).json({ message: 'Файлы успешно загружены', files: uploadedFiles })
-      //   } catch (error) {
-      //     console.error(error)
-      //     res.status(500).send('Ошибка при загрузке файлов')
-      //   }
-      // } else {
-      //   let fileName = uuid.v4()
-      //   img.mv(path.resolve(__dirname, '..', 'static', fileName))
-      // }
 
       if (!email || !password) {
         return next(ApiError.badRequest('не верный логин или пароль!'))
@@ -131,7 +109,7 @@ class UserController {
       await Admins.create({ userId: user.id })
       const WC = await WorkingContacts.create({
         userId: user.id,
-        workphone: working_contact_workphone,
+        workphone: workphone,
       })
       const token = generatejwt(
         user.id,
