@@ -21,6 +21,7 @@ const RequestJobInformationComponent = ref()
 const store = useUsersStore()
 
 
+
 interface UserTab {
   component: string
   title: string;
@@ -30,7 +31,7 @@ interface formDataTest {
   email?: string,
   password?: string
   role?: string
-  img?: string
+  img?: File | null;
   workphone?: string
 }
 
@@ -64,6 +65,7 @@ function set() {
   }, 2000)
 }
 const RegistrationUser = async (formData: any) => {
+  console.log(formDataTest.value.img, 'При передаче в функцию файле есть!!!')
   try {
     const response = await registration(formData)
     condition.value = false
@@ -83,8 +85,15 @@ const handleSubmit = () => {
   RequestJobInformationComponent.value.CheckingJobInformationComponent()
   const hasErrorValue = Object.values(userTabs.value).every(value => value.errors === false);
   if (hasErrorValue) {
-    console.log('Все норм', formDataTest.value.img)
-    // RegistrationUser(formDataTest)
+    const formData = new FormData();
+    formData.append('email', formDataTest.value.email || '');
+    formData.append('password', formDataTest.value.password || '');
+    formData.append('role', formDataTest.value.role || '');
+    if (formDataTest.value.img) {
+      formData.append('img', formDataTest.value.img);
+    }
+    formData.append('workphone', formDataTest.value.workphone || '');
+    RegistrationUser(formData);
   } else {
     console.log('Есть ошибки', hasErrorValue)
   }
@@ -92,19 +101,11 @@ const handleSubmit = () => {
 }
 const handleParentMethod = (e: any, tr: boolean) => {
   errorProfile('ProfileContent', true)
-  // const formData = new FormData()
-  // formData.append('email', e.email)
-  // formData.append('password', e.password)
-  // formData.append('role', e.choosing_role.name)
-  // formData.append('img', e.file)
-  // formData.append('workphone', working_contact.value.working_contact_workphone)
-  console.log(e.file, 'че там')
-  formDataTest.value['email'] = e.email
-  formDataTest.value['password'] = e.password
-  formDataTest.value['role'] = e.choosing_role.name
-  formDataTest.value['img'] = e.file
-  formDataTest.value['workphone'] = working_contact.value.working_contact_workphone
-  // RegistrationUser(formData)
+  formDataTest.value.email = e.email;
+  formDataTest.value.password = e.password;
+  formDataTest.value.role = e.choosing_role.name;
+  formDataTest.value.img = e.file;
+  formDataTest.value.workphone = working_contact.value.working_contact_workphone;
 }
 const JobInformationMethod = (e: any) => {
   errorProfile('JobInformationContent', true)

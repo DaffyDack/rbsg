@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const uuid = require('uuid')
 const path = require('path')
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/' })
 const { User, Admins, WorkingContacts } = require('../models/models')
 
 const generatejwt = (
@@ -75,7 +77,12 @@ class UserController {
         telegram,
         datebirth,
       } = req.body
-      const { img } = req.files
+
+      const { img } = req.files // Дефолтное значение для img
+      // if (!img) {
+      //   return next(ApiError.badRequest('Файл не был загружен!'))
+      // }
+
       let fileName = uuid.v4() + '.jpg'
       img.mv(path.resolve(__dirname, '..', 'static', fileName))
 
