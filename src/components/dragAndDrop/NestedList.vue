@@ -5,8 +5,6 @@ import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import Avatar from 'primevue/avatar'
 
-
-
 export default {
   props: {
     tasks: {
@@ -46,11 +44,16 @@ export default {
 <template>
   <div>
     <draggable class="dragArea" tag="ul" :list="tasks" :group="{ name: 'g1' }">
-      <li v-for="el in tasks" :key="el.name" class="sub-menu rounded-[10px] pt-1"
-        :class="{ active: activeIndex === el.id }">
+      <li
+        v-for="el in tasks"
+        :key="el.name"
+        class="sub-menu rounded-[10px] pt-1"
+        :class="{ active: activeIndex === el.id }"
+      >
         <!-- <p>Название проекта: {{ el.name }} Начало проекта: {{ el.start }} Дедлайн: {{ el.deadline }}</p> -->
         <div
-          class="flex items-center p-3 bg-[#DFDFDF] rounded-tl-[10px] rounded-br-[0] rounded-tr-[10px] rounded-bl-[0]">
+          class="flex items-center p-3 bg-[#DFDFDF] rounded-tl-[10px] rounded-br-[0] rounded-tr-[10px] rounded-bl-[0]"
+        >
           <div class="number-task">
             <div class="id">{{ el.id }}</div>
           </div>
@@ -72,44 +75,77 @@ export default {
             <ul>
               <li>
                 <span>Исполнитель:</span>
-                <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" class="ml-2"
-                  shape="circle" />
+                <Avatar
+                  image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
+                  class="ml-2"
+                  shape="circle"
+                />
               </li>
               <li>
                 <span>Наблюдатель:</span>
-                <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/onyamalimba.png" class="ml-2"
-                  shape="circle" />
+                <Avatar
+                  image="https://primefaces.org/cdn/primevue/images/avatar/onyamalimba.png"
+                  class="ml-2"
+                  shape="circle"
+                />
               </li>
               <li>
                 <span>Утверждает:</span>
-                <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/xuxuefeng.png" class="ml-2"
-                  shape="circle" />
+                <Avatar
+                  image="https://primefaces.org/cdn/primevue/images/avatar/xuxuefeng.png"
+                  class="ml-2"
+                  shape="circle"
+                />
               </li>
             </ul>
           </div>
         </div>
-        <ul class="content_projects bg-[#DFDFDF] rounded-tl-[0] rounded-br-[10px] rounded-tr-[0] rounded-bl-[10px]">
+        <ul
+          class="content_projects bg-[#DFDFDF] rounded-tl-[0] rounded-br-[10px] rounded-tr-[0] rounded-bl-[10px]"
+        >
           <li>
-            <InputText class="w-[100%]" type="text" v-model="editingProject.nameProject" :placeholder="el.name" />
+            <InputText
+              class="w-[100%]"
+              type="text"
+              v-model="editingProject.nameProject"
+              :placeholder="el.name"
+            />
           </li>
           <li>
-            <span class="mr-2">Дата дедлайна:
+            <span class="mr-2"
+              >Дата дедлайна:
               <InputText type="text" v-model="editingProject.deadline" :placeholder="el.deadline" />
             </span>
-            <span class="mr-2">Время на исполнение:
-              <InputText type="text" v-model="editingProject.timeExecution" :placeholder="el.timeExecution" />
+            <span class="mr-2"
+              >Время на исполнение:
+              <InputText
+                type="text"
+                v-model="editingProject.timeExecution"
+                :placeholder="el.timeExecution"
+              />
             </span>
-            <span class="mr-2">Начать:
+            <span class="mr-2"
+              >Начать:
               <InputText type="text" v-model="editingProject.start" :placeholder="el.start" />
             </span>
           </li>
           <li class="flex">
-            <span class="mr-2">Предварительная стоимость:
-              <InputText type="text" v-model="editingProject.preliminaryCost" :placeholder="el.preliminaryCost" />
+            <span class="mr-2"
+              >Предварительная стоимость:
+              <InputText
+                type="text"
+                v-model="editingProject.preliminaryCost"
+                :placeholder="el.preliminaryCost"
+              />
             </span>
-            <span class="mr-2">Прикрепленные документы:
-              <ButtonSpecial label="Прикрепленные документы" severity="secondary" icon="pi pi-file-plus"
-                size="Normal" />
+            <span class="mr-2"
+              >Прикрепленные документы:
+              <ButtonSpecial
+                label="Прикрепленные документы"
+                severity="secondary"
+                icon="pi pi-file-plus"
+                size="Normal"
+              />
             </span>
             <span class="mr-2">
               <div class="card flex justify-content-center"></div>
@@ -118,7 +154,12 @@ export default {
           </li>
           <li>
             <span class="mr-2">
-              <ButtonSpecial label="Принять исправления" severity="success" icon="pi pi-check" size="Normal" />
+              <ButtonSpecial
+                label="Принять исправления"
+                severity="success"
+                icon="pi pi-check"
+                size="Normal"
+              />
             </span>
             <span>
               <ButtonSpecial label="Отмена" severity="danger" icon="pi pi-times" size="Normal" />
@@ -203,15 +244,15 @@ export default {
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
       &.active {
-        &>a {
+        & > a {
           color: #1abc9c;
         }
 
-        &>ul.content_projects {
+        & > ul.content_projects {
           display: block;
         }
 
-        &>.descriptions {
+        & > .descriptions {
           border-radius: 0;
         }
       }
@@ -235,7 +276,6 @@ export default {
         }
 
         i {
-
           .fa-angle-left,
           .fa-angle-right {
             padding-top: 3px;

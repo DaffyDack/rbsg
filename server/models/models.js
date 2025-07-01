@@ -38,6 +38,7 @@ const WorkingContacts = sequelize.define('working_contact', {
   workphone2: { type: DataTypes.STRING, defaultValue: 'workPhone2' },
   email: { type: DataTypes.STRING, defaultValue: 'email' },
   email2: { type: DataTypes.STRING, defaultValue: 'email2' },
+  userId: { type: DataTypes.INTEGER, primaryKey: true },
 })
 
 const PersonalContacts = sequelize.define('personal_contact', {

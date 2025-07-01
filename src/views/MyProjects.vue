@@ -46,25 +46,47 @@ function addProject() {
     </div>
     <div id="leftside-navigation" class="nano mt-5">
       <ul class="nano-content">
-        <li class="sub-menu rounded-[10px]" v-for="(item, index) in filteredList" :key="index"
-          :class="{ active: activeIndex === index }">
+        <li
+          class="sub-menu rounded-[10px]"
+          v-for="(item, index) in filteredList"
+          :key="index"
+          :class="{ active: activeIndex === index }"
+        >
           <div class="flex items-center">
             <i class="pi pi-angle-down unwrap" @click="setActive(index)"></i>
             <RouterLink :to="{ name: item.page, params: { id: item.id } }">
               <i class="pi pi-file-edit unwrap"></i>
             </RouterLink>
             <div class="link">
-              <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/asiyajavayant.png" class="mr-2"
-                shape="circle" />
+              <Avatar
+                image="https://primefaces.org/cdn/primevue/images/avatar/asiyajavayant.png"
+                class="mr-2"
+                shape="circle"
+              />
               {{ item.nameProject }}
             </div>
             <div class="link">
               <AvatarGroup>
-                <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" />
-                <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/asiyajavayant.png" shape="circle" />
-                <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/onyamalimba.png" shape="circle" />
-                <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/ionibowcher.png" shape="circle" />
-                <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/xuxuefeng.png" shape="circle" />
+                <Avatar
+                  image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
+                  shape="circle"
+                />
+                <Avatar
+                  image="https://primefaces.org/cdn/primevue/images/avatar/asiyajavayant.png"
+                  shape="circle"
+                />
+                <Avatar
+                  image="https://primefaces.org/cdn/primevue/images/avatar/onyamalimba.png"
+                  shape="circle"
+                />
+                <Avatar
+                  image="https://primefaces.org/cdn/primevue/images/avatar/ionibowcher.png"
+                  shape="circle"
+                />
+                <Avatar
+                  image="https://primefaces.org/cdn/primevue/images/avatar/xuxuefeng.png"
+                  shape="circle"
+                />
                 <Avatar label="+2" shape="circle" />
               </AvatarGroup>
               <div class="ml-4">Завершить до: {{ item.data }}</div>
@@ -80,7 +102,9 @@ function addProject() {
                 <div class="w-[70%] flex-1">02</div>
                 <div class="w-[15%] flex justify-center content-center items-center">
                   <span>
-                    <div class="w-[80%] text-center text-[#fff] bg-[#6ada11] p-[10px] rounded-[10px]">
+                    <div
+                      class="w-[80%] text-center text-[#fff] bg-[#6ada11] p-[10px] rounded-[10px]"
+                    >
                       Проект завершен
                     </div>
                   </span>
@@ -121,7 +145,6 @@ function addProject() {
   }
 
   #leftside-navigation {
-
     ul,
     ul ul {
       margin: -2px 0 0;
@@ -140,7 +163,7 @@ function addProject() {
           flex-direction: column;
           padding: 5px;
 
-          &>div {
+          & > div {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -157,7 +180,7 @@ function addProject() {
         }
 
         &.active {
-          &>a {
+          & > a {
             color: #1abc9c;
           }
 
@@ -191,7 +214,6 @@ function addProject() {
           }
 
           i {
-
             .fa-angle-left,
             .fa-angle-right {
               padding-top: 3px;

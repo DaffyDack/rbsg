@@ -6,8 +6,6 @@ import Button from 'primevue/button'
 import { useCounterStore } from '../stores/counter'
 import { useRouter } from 'vue-router'
 
-
-
 const emit = defineEmits(['counterEvent'])
 const router = useRouter()
 const store = useCounterStore()
@@ -68,7 +66,7 @@ function ExitStatus() {
       <li>
         <RouterLink to="/PyramidManagement">
           <div class="flex items-center justify-center">
-            <i class="pi pi-user"></i>
+            <i class="pi pi-share-alt"></i>
           </div>
           <span v-show="isSidebarOpen" class="namePage">Пирамида управления</span>
         </RouterLink>

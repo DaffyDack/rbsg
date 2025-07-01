@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted } from 'vue'
 import { useUsersStore } from '../stores/users'
-import UsersList from '@/components/UsersList.vue';
+import UsersList from '@/components/UsersList.vue'
 import FormReg from '../components/form/FormReg.vue'
-import { fetchUzers } from '@/http/userAPI';
+import { fetchUzers } from '@/http/userAPI'
 
 const store = useUsersStore()
 
 onMounted(() => {
-  fetchUzers().then(data => store.registrationCompleted(data))
+  fetchUzers().then((data) => store.registrationCompleted(data))
 })
 </script>
 

@@ -143,18 +143,18 @@ import FormAuto from './form/FormAuto.vue'
   border-bottom: 2px solid #fd264f;
 }
 
-.tabs [class^='tab'] [type='radio']:checked~label,
-.tabs [class*=' tab'] [type='radio']:checked~label {
+.tabs [class^='tab'] [type='radio']:checked ~ label,
+.tabs [class*=' tab'] [type='radio']:checked ~ label {
   color: #2ecc71;
 }
 
-.tabs [class^='tab'] [type='radio']:checked+div,
-.tabs [class*=' tab'] [type='radio']:checked+div {
+.tabs [class^='tab'] [type='radio']:checked + div,
+.tabs [class*=' tab'] [type='radio']:checked + div {
   opacity: 1;
 }
 
-.tabs [class^='tab'] [type='radio']+div,
-.tabs [class*=' tab'] [type='radio']+div {
+.tabs [class^='tab'] [type='radio'] + div,
+.tabs [class*=' tab'] [type='radio'] + div {
   display: block;
   opacity: 0;
   width: 90%;
@@ -165,20 +165,20 @@ import FormAuto from './form/FormAuto.vue'
   width: 50%;
 }
 
-.tabs .tab-2 [type='radio']+div {
+.tabs .tab-2 [type='radio'] + div {
   width: 200%;
   margin-left: 200%;
 }
 
-.tabs .tab-2 [type='radio']:checked+div {
+.tabs .tab-2 [type='radio']:checked + div {
   margin-left: 0;
 }
 
-.tabs .tab-2:last-child [type='radio']+div {
+.tabs .tab-2:last-child [type='radio'] + div {
   margin-left: 100%;
 }
 
-.tabs .tab-2:last-child [type='radio']:checked+div {
+.tabs .tab-2:last-child [type='radio']:checked + div {
   margin-left: -100%;
 }
 </style>

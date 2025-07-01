@@ -4,8 +4,6 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const uuid = require('uuid')
 const path = require('path')
-const multer = require('multer')
-const upload = multer({ dest: 'uploads/' })
 const { User, Admins, WorkingContacts } = require('../models/models')
 
 const generatejwt = (

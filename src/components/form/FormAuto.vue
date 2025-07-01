@@ -49,8 +49,6 @@ const LoginUser = async () => {
   }
 }
 
-
-
 watch(
   () => [form.value.email, form.value.password],
   () => {
@@ -98,7 +96,7 @@ const validateForm = () => {
 }
 
 function isEmpty(obj: Record<string, string>) {
-  const hasEmptyValue = Object.values(obj).every(value => value === '');
+  const hasEmptyValue = Object.values(obj).every((value) => value === '')
   if (hasEmptyValue) LoginUser()
 }
 const handleSubmit = () => {
@@ -110,14 +108,25 @@ const handleSubmit = () => {
 <template>
   <div>
     <form @submit.prevent="handleSubmit" class="form">
-      <div class="form-control" :class="{ error: errors.email, success: !errors.email && form.email != '' }">
+      <div
+        class="form-control"
+        :class="{ error: errors.email, success: !errors.email && form.email != '' }"
+      >
         <label for="emailAuto">Email</label>
         <input type="email" v-model="form.email" id="emailAuto" placeholder="Введите email" />
         <small v-if="errors.email">{{ errors.email }}</small>
       </div>
-      <div class="form-control" :class="{ error: errors.password, success: !errors.password && form.password != '' }">
+      <div
+        class="form-control"
+        :class="{ error: errors.password, success: !errors.password && form.password != '' }"
+      >
         <label for="passwordAuto">Пароль</label>
-        <input type="password" v-model="form.password" id="passwordAuto" placeholder="Введите пароль" />
+        <input
+          type="password"
+          v-model="form.password"
+          id="passwordAuto"
+          placeholder="Введите пароль"
+        />
         <small v-if="errors.password">{{ errors.password }}</small>
       </div>
       <div v-if="registeredUser" class="text-red-600">Не правельный email или пароль</div>

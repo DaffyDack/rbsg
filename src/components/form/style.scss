@@ -8,6 +8,13 @@
   gap: 10px 10px;
   grid-template-areas: '. . . . .';
 }
+.group_form-control-five-evenly {
+  display: grid;
+  grid-template-columns: 1.1fr 1.1fr 1.1fr 1.1fr 1.1fr;
+  grid-template-rows: 0.7fr;
+  gap: 10px 10px;
+  grid-template-areas: '. . . . .';
+}
 .group_form-control-four {
   display: grid;
   grid-auto-flow: row dense;
@@ -24,8 +31,15 @@
   gap: 10px 10px;
   grid-template-areas: '. . .';
 }
+.group_form-control-two {
+  display: grid;
+  grid-auto-flow: row dense;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1.5fr;
+  gap: 10px 10px;
+  grid-template-areas: '. . ';
+}
 .form-control {
-  margin-bottom: 10px;
   padding-bottom: 20px;
   position: relative;
 }
@@ -37,7 +51,8 @@
 }
 
 .form-control input,
-.form-control select {
+.form-control select,
+.form-control textarea {
   border: 2px solid #f0f0f0;
   border-radius: 4px;
   display: block;
@@ -47,7 +62,8 @@
 }
 
 .form-control input:focus,
-.form-control select:focus {
+.form-control select:focus,
+.form-control textarea:focus {
   outline: 0;
   border-color: #777;
 }

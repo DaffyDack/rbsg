@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 require('dotenv').config()
 const express = require('express')
+const connectHistory = require('connect-history-api-fallback')
 const sequelize = require('./db')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const modules = require('./models/models')
@@ -18,6 +19,7 @@ app.use(express.json())
 app.use(express.static(path.resolve(__dirname, 'static')))
 app.use(fileUpload({}))
 app.use('/api', routes)
+app.use(connectHistory())
 
 const start = async () => {
   try {

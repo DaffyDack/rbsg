@@ -176,7 +176,7 @@ export default defineComponent({
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 
         &.active {
-          &>a {
+          & > a {
             color: #1abc9c;
           }
 
