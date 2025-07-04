@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import { useCounterStore } from '../stores/counter'
 
 import Button from 'primevue/button'
+import Tabs from 'primevue/tabs'
+import TabList from 'primevue/tablist'
+import Tab from 'primevue/tab'
+import TabPanels from 'primevue/tabpanels'
+import TabPanel from 'primevue/tabpanel'
 
 import HeaderSettingProfile from '@/components/HeaderSettingProfile.vue'
 const store = useCounterStore()
@@ -10,8 +15,13 @@ const store = useCounterStore()
 const imgW = ref({
   imgUrl: import.meta.env.VITE_API_URL,
 })
+
+interface UserTab {
+  component: string
+  title: string
+  errors: boolean
+}
 const infoProfile = ref({
-  img: store.info.img,
   id: store.info.id,
   email: store.info.email,
   role: store.info.role,
@@ -24,58 +34,93 @@ const infoProfile = ref({
   telegram: store.info.telegram,
   datebirth: store.info.datebirth,
 })
+
+const userTabs: Ref<UserTab[]> = ref([
+  { component: 'ProfileContent', title: 'Профиль', errors: false },
+  { component: '', title: 'Контакты рабочие', errors: false },
+  { component: 'JobInformationContent', title: 'Данные о работе', errors: false },
+])
 </script>
 <template>
-  <div class="sidebar">
+  <div class="sidebar profile">
     <div class="nano">
-      <HeaderSettingProfile />
-      <div class="wrapper_setting_profile">
-        <div class="container">
-          <div class="е1">
-            <div class="img">
-              <img :src="imgW.imgUrl + '/' + infoProfile.img" />
+      <Tabs value="0" scrollable>
+        <TabList>
+          <Tab v-for="(tab, i) in userTabs" :key="i" :value="String(i)" class="tag_error">
+            <span class="tag" :class="{ error: tab.errors }"></span>
+            {{ tab.title }}
+          </Tab>
+        </TabList>
+        <HeaderSettingProfile class="HeaderSettingProfile" />
+        <TabPanels>
+          <TabPanel value="0">
+            <h1 class="nameTab">Профиль</h1>
+            <div class="wrapper_setting_profile">
+              <div class="group_form-control-two">
+                <div>
+                  <div>Контакты</div>
+                  <div class="labelContact">
+                    <div>Мобильный телефон:</div>
+                    <div>{{ infoProfile.mobilephone }}</div>
+                    <div>Рабочий телефон:</div>
+                    <div>{{ infoProfile.workphone }}</div>
+                    <div>добавочный номер:</div>
+                    <div>123</div>
+                    <div>Почта:</div>
+                    <div>{{ infoProfile.email }}</div>
+                    <div>Локация:</div>
+                    <div>{{ infoProfile.locations }}</div>
+                  </div>
+                </div>
+                <div>
+                  <div>Личные данные</div>
+                </div>
+              </div>
+              <div class="group_form-control-tree">
+                <div>
+                  <div>Совмещение №1</div>
+                  <div class="labelContact">
+                    <div>Должность:</div>
+                    <div>Курьер</div>
+                    <div>Руководитель:</div>
+                    <div>Сухов Даниил Иванович</div>
+                    <div>Локация:</div>
+                    <div>Центральный офис. ш. Энтузиастов 56с44 - 11</div>
+                    <div>Должностные функции:</div>
+                    <div>Делать хорошо, а плохо не надо делать</div>
+                  </div>
+                </div>
+                <div>Совмещение №2</div>
+                <div>Совмещение №3</div>
+              </div>
             </div>
-            <div class="title">Какие то данные</div>
-            <div class="des">
-              <div>{{ infoProfile.gender }}</div>
-              <div>{{ infoProfile.company }}</div>
-            </div>
-          </div>
-          <div class="е2 info">
-            <label for="tel">Мобильный телефон</label>
-            <p>{{ infoProfile.mobilephone }}</p>
-            <label for="tel">Мобильный телефон (личный)</label>
-            <p>mabile</p>
-            <label for="tel">Рабочий телефон</label>
-            <p>{{ infoProfile.workphone }}</p>
-            <label for="tel">Почта</label>
-            <p>{{ infoProfile.email }}</p>
-            <label for="tel">Дата рождения</label>
-            <p>{{ infoProfile.datebirth }}</p>
-          </div>
-          <div class="е3">Какие то данные</div>
-          <div class="е4 info">
-            <label>Должностные функции</label>
-            <p>{{ infoProfile.jobfunctions }}</p>
-          </div>
-          <div class="е6">
-            <span
-              >Личные данный:
-              <Button class="ml-2" label="паспорт.pdf" severity="secondary" icon="pi pi-check" />
-              <Button
-                class="ml-2"
-                label="Водительское удостоверение.pdf"
-                severity="secondary"
-                icon="pi pi-check"
-              />
-              <Button class="ml-2" label="СНИЛС.pdf" severity="secondary" icon="pi pi-check" />
-            </span>
-          </div>
-        </div>
-      </div>
+          </TabPanel>
+          <TabPanel value="1">
+            <h1 class="nameTab">Контакты рабочие</h1>
+          </TabPanel>
+          <TabPanel value="2">
+            <h1 class="nameTab">Данные о работе</h1>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
     </div>
   </div>
 </template>
+<style lang="scss">
+.sidebar.profile {
+  .nano {
+    .p-tablist-tab-list {
+      background: none !important;
+      border: none !important;
+    }
+
+    .p-tabpanels {
+      background: none;
+      padding: 0;
+    }
+  }
+}
+</style>
 <style scoped lang="scss">
 .sidebar {
   width: -webkit-fill-available;
@@ -83,11 +128,54 @@ const infoProfile = ref({
   z-index: 100;
   margin-right: 40px;
 
+  .HeaderSettingProfile {
+    display: flex;
+    background: #fff;
+    padding: 12px;
+    border-radius: 12px;
+    margin: 0;
+  }
+
+  .nameTab {
+    color: #fff;
+    font-size: 24px;
+    margin: 12px 0;
+  }
+
   .wrapper_setting_profile {
     max-height: 66vh;
     overflow: scroll;
-    display: flex;
-    justify-content: center;
+
+    .group_form-control-two,
+    .group_form-control-tree {
+      margin-bottom: 10px;
+
+      > div {
+        background: #fff;
+        border-radius: 15px;
+        padding: 24px;
+      }
+
+      .labelContact {
+        div:nth-child(odd) {
+          color: #939393;
+          font-size: 10px;
+        }
+
+        div:nth-child(even) {
+          color: #202224;
+          font-size: 14px;
+        }
+      }
+    }
+
+    .group_form-control-tree {
+      > div {
+        background: #fff;
+        border-radius: 15px;
+        padding: 24px;
+      }
+    }
 
     & .container {
       display: grid;

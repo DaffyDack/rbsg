@@ -5,19 +5,39 @@ import Select from 'primevue/select'
 const props = defineProps(['check'])
 
 const emit = defineEmits()
-
+interface Company {
+    name: string
+    code: string
+}
 interface Errors {
     startDate: string
 }
 interface Form {
+    company: Company
+    brand: Company
+    department: Company
+    positions: Company
+    dateEmployment: string
     startDate: string
+    probationPeriod: string
+    combiningPosition: string
+    combiningCompfny: string
+    combiningBrand: string
+    combiningDepartment: string
+    combiningStartDateOfCombination: string
+    TwoCombiningPosition: string
+    TwoCombiningCompfny: string
+    TwoCombiningBrand: string
+    TwoCombiningDepartment: string
+    TwoCombiningStartDateOfCombination: string
 }
+
 
 const form = ref<Form>({
     company: { name: 'TOYOTA', code: 'BMW' },
     brand: { name: 'Land Cruiser', code: 'Land Cruiser' },
-    department: { name: 'Убойный', code: 'Убойный' },
-    position: { name: 'Гендир', code: 'Гендир' },
+    department: { name: 'IT отдел', code: 'IT отдел' },
+    positions: { name: 'Генеральный директор', code: 'Генеральный директор' },
     dateEmployment: '',
     startDate: '',
     probationPeriod: '',
@@ -30,11 +50,25 @@ const form = ref<Form>({
     TwoCombiningCompfny: '',
     TwoCombiningBrand: '',
     TwoCombiningDepartment: '',
-    TwoCombiningStartDateOfCombination: ''
+    TwoCombiningStartDateOfCombination: '',
 })
 const kompany = ref([
+    { name: 'ООО "NIKE"', code: 'ООО "NIKE"' },
+    { name: 'ООО "IKEA"', code: 'ООО "IKEA"' },
+])
+const brand = ref([
     { name: 'NIKE', code: 'NIKE' },
     { name: 'IKEA', code: 'IKEA' },
+])
+const positions = ref([
+    { name: 'Генеральный директор', code: 'Генеральный директор' },
+    { name: 'Испольнительный директор', code: 'Испольнительный директор' },
+    { name: 'Финансовый директор', code: 'Финансовый директор' },
+])
+const department = ref([
+    { name: 'IT отдел', code: 'IT отдел' },
+    { name: 'Маркетинг', code: 'Маркетинг' },
+    { name: 'Продажи', code: 'Продажи' },
 ])
 
 const errors = ref<Errors>({
@@ -89,26 +123,18 @@ defineExpose({ CheckingJobInformationComponent })
                 </div>
                 <div class="form-control">
                     <label for="jobInformationBrand">Бренд</label>
-                    <select name="pets" id="jobInformationBrand">
-                        <option value="Генеральный директор">Генеральный директор</option>
-                        <option value="Испольнительный директор">Испольнительный директор</option>
-                        <option value="Финансовый директор">Финансовый директор</option>
-                    </select>
+                    <Select v-model="form.brand" id="jobInformationBrand" :options="brand" optionLabel="name"
+                        placeholder="Компания" class="w-full" />
                 </div>
                 <div class="form-control">
                     <label for="jobInformationDepartment">Отдел</label>
-                    <select name="pets" id="jobInformationDepartment">
-                        <option value="М">Муж</option>
-                        <option value="Ж">Жен</option>
-                    </select>
+                    <Select v-model="form.department" id="jobInformationPost" :options="department" optionLabel="name"
+                        placeholder="Компания" class="w-full" />
                 </div>
                 <div class="form-control">
                     <label for="jobInformationPost">Должность</label>
-                    <select name="pets" id="jobInformationPost">
-                        <option value="Генеральный директор">Генеральный директор</option>
-                        <option value="Испольнительный директор">Испольнительный директор</option>
-                        <option value="Финансовый директор">Финансовый директор</option>
-                    </select>
+                    <Select v-model="form.positions" id="jobInformationPost" :options="positions" optionLabel="name"
+                        placeholder="Компания" class="w-full" />
                 </div>
             </div>
             <div class="group_form-control-tree">

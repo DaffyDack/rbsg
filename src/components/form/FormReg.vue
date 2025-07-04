@@ -32,14 +32,16 @@ interface formDataTest {
   patronymic?: string
   email?: string
   datebirth?: string
-  mobilephone?: string,
+  mobilephone?: string
   gender?: string
   password?: string
   role?: string
   img?: File | null
   workphone?: string
+  positions?: string
+  department?: string
+  locations?: string
 }
-
 
 const userTabs: Ref<UserTab[]> = ref([
   { component: 'ProfileContent', title: 'Профиль', errors: false },
@@ -67,6 +69,9 @@ const formDataTest = ref<formDataTest>({
   role: '',
   img: null,
   workphone: '',
+  positions: '',
+  department: '',
+  locations: '',
 })
 const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
@@ -82,7 +87,6 @@ function set() {
   }, 2000)
 }
 const RegistrationUser = async (formData: any) => {
-
   try {
     const response = await registration(formData)
     condition.value = false
@@ -103,16 +107,18 @@ const handleParentMethod = (e: any, tr: boolean) => {
   formDataTest.value.email = e.email
   formDataTest.value.mobilephone = e.mobilephone
   formDataTest.value.gender = e.gender.name
-  formDataTest.value.datebirth = e.datebirth
+  formDataTest.value.datebirth = String(e.datebirth)
   formDataTest.value.password = e.password
   formDataTest.value.role = e.choosing_role.name
   formDataTest.value.img = e.file
+  formDataTest.value.locations = e.locations
   formDataTest.value.workphone = working_contact.value.working_contact_workphone
-
 }
 const JobInformationMethod = (e: any) => {
   errorProfile('JobInformationContent', true)
   console.log(e, 'JobInformationMethod')
+  formDataTest.value.positions = e.positions.name
+  formDataTest.value.department = e.department.name
 }
 
 const handleSubmit = () => {
@@ -123,22 +129,21 @@ const handleSubmit = () => {
     const formData = new FormData()
     Object.entries(formDataTest.value).forEach(([key, value]) => {
       if (value instanceof Blob) {
-        formData.append(key, value);
+        formData.append(key, value)
       } else if (typeof value === 'string') {
-        formData.append(key, value);
+        formData.append(key, value)
       } else {
-        console.warn(`Неподдерживаемый тип для ключа ${key}:`, value);
+        console.warn(`Неподдерживаемый тип для ключа ${key}:`, value)
       }
-    });
-    console.log(formData, 'собралось?')
+    })
     RegistrationUser(formData)
   } else {
     console.log('Есть ошибки', hasErrorValue)
   }
 }
 function updateErrors(componentName: string) {
-  const tab = userTabs.value.find(tab => tab.component === componentName[0]);
-  if (tab) tab.errors = false;
+  const tab = userTabs.value.find((tab) => tab.component === componentName[0])
+  if (tab) tab.errors = false
 }
 const errorProfile = (e: any, tr: boolean) => {
   const profileTab = userTabs.value.find((tab) => tab.component === e)
@@ -162,16 +167,23 @@ const errorProfile = (e: any, tr: boolean) => {
               </TabList>
               <TabPanels>
                 <TabPanel value="0">
-                  <ProfileContact ref="RequestProfileComponent" @callParentMethod="handleParentMethod"
-                    @callErrorProfile="errorProfile" @callNormComponent="updateErrors" />
+                  <ProfileContact
+                    ref="RequestProfileComponent"
+                    @callParentMethod="handleParentMethod"
+                    @callErrorProfile="errorProfile"
+                    @callNormComponent="updateErrors"
+                  />
                 </TabPanel>
                 <TabPanel value="1">
                   <JobContactComponent />
                 </TabPanel>
                 <TabPanel value="2">
-                  <JobInformationContentfrom ref="RequestJobInformationComponent"
-                    @callParentMethod="JobInformationMethod" @callErrorProfile="errorProfile"
-                    @callNormComponent="updateErrors" />
+                  <JobInformationContentfrom
+                    ref="RequestJobInformationComponent"
+                    @callParentMethod="JobInformationMethod"
+                    @callErrorProfile="errorProfile"
+                    @callNormComponent="updateErrors"
+                  />
                 </TabPanel>
                 <TabPanel value="3">
                   <PersonalContactsComponent />
