@@ -20,9 +20,7 @@ const infoProfile = ref({
 <template>
   <div class="title">
     <div class="container">
-      <div>
-        <img :src="imgW.imgUrl + '/' + infoProfile.img" style="width: 127px" />
-      </div>
+      <div class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + infoProfile.img + ')' }"></div>
       <div class="container_description">
         <div class="mr-10">
           <div class="id">ID {{ infoProfile.id }}</div>
@@ -57,6 +55,23 @@ const infoProfile = ref({
 
   .container {
     display: flex;
+
+    .img {
+      max-width: 200px;
+      max-height: 200px;
+      min-width: 200px;
+      min-height: 200px;
+      border-radius: 100%;
+      overflow: hidden;
+      margin-right: 10px;
+      background-size: cover;
+    }
+
+    .avatar {
+      margin-right: 10px;
+      border-radius: 100%;
+      overflow: hidden;
+    }
   }
 
   .container_description {

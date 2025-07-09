@@ -112,7 +112,8 @@ const handleParentMethod = (e: any, tr: boolean) => {
   formDataTest.value.role = e.choosing_role.name
   formDataTest.value.img = e.file
   formDataTest.value.locations = e.locations
-  formDataTest.value.workphone = working_contact.value.working_contact_workphone
+  // formDataTest.value.workphone = working_contact.value.working_contact_workphone
+  formDataTest.value.workphone = e.workphone
 }
 const JobInformationMethod = (e: any) => {
   errorProfile('JobInformationContent', true)
@@ -167,23 +168,16 @@ const errorProfile = (e: any, tr: boolean) => {
               </TabList>
               <TabPanels>
                 <TabPanel value="0">
-                  <ProfileContact
-                    ref="RequestProfileComponent"
-                    @callParentMethod="handleParentMethod"
-                    @callErrorProfile="errorProfile"
-                    @callNormComponent="updateErrors"
-                  />
+                  <ProfileContact ref="RequestProfileComponent" @callParentMethod="handleParentMethod"
+                    @callErrorProfile="errorProfile" @callNormComponent="updateErrors" />
                 </TabPanel>
                 <TabPanel value="1">
                   <JobContactComponent />
                 </TabPanel>
                 <TabPanel value="2">
-                  <JobInformationContentfrom
-                    ref="RequestJobInformationComponent"
-                    @callParentMethod="JobInformationMethod"
-                    @callErrorProfile="errorProfile"
-                    @callNormComponent="updateErrors"
-                  />
+                  <JobInformationContentfrom ref="RequestJobInformationComponent"
+                    @callParentMethod="JobInformationMethod" @callErrorProfile="errorProfile"
+                    @callNormComponent="updateErrors" />
                 </TabPanel>
                 <TabPanel value="3">
                   <PersonalContactsComponent />

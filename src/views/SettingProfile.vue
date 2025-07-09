@@ -118,6 +118,17 @@ const userTabs: Ref<UserTab[]> = ref([
       background: none;
       padding: 0;
     }
+
+    .p-tab-active {
+      color: #fff;
+    }
+
+    // .p-tab {
+    //   color: #fff;
+    // }
+    .p-tab:not(.p-tab-active):not(.p-disabled):hover {
+      color: #ccc !important;
+    }
   }
 }
 </style>
@@ -150,7 +161,7 @@ const userTabs: Ref<UserTab[]> = ref([
     .group_form-control-tree {
       margin-bottom: 10px;
 
-      > div {
+      >div {
         background: #fff;
         border-radius: 15px;
         padding: 24px;
@@ -170,7 +181,7 @@ const userTabs: Ref<UserTab[]> = ref([
     }
 
     .group_form-control-tree {
-      > div {
+      >div {
         background: #fff;
         border-radius: 15px;
         padding: 24px;
@@ -189,7 +200,7 @@ const userTabs: Ref<UserTab[]> = ref([
         'е4 е4'
         'е6 е6';
 
-      > div {
+      >div {
         background: #fff;
         border-radius: 15px;
         padding: 24px;

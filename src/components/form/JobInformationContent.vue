@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, watch, defineEmits } from 'vue'
+import { ref, watch, defineEmits, onMounted } from 'vue'
 import { checkLength } from '../../utils/helper.js'
 import Select from 'primevue/select'
 const props = defineProps(['check'])
-
+const test = ref()
 const emit = defineEmits()
 interface Company {
     name: string
@@ -63,12 +63,40 @@ const brand = ref([
 const positions = ref([
     { name: 'Генеральный директор', code: 'Генеральный директор' },
     { name: 'Испольнительный директор', code: 'Испольнительный директор' },
+    { name: 'Учредитель', code: 'Финансовый директор' },
+    { name: 'Административный директор', code: 'Финансовый директор' },
     { name: 'Финансовый директор', code: 'Финансовый директор' },
+    { name: 'Директор по маркетингу', code: 'Финансовый директор' },
+    { name: 'Коммерческий директор', code: 'Финансовый директор' },
+    { name: 'Технический директор', code: 'Финансовый директор' },
+    { name: 'Директор по строительству', code: 'Финансовый директор' }
 ])
 const department = ref([
-    { name: 'IT отдел', code: 'IT отдел' },
-    { name: 'Маркетинг', code: 'Маркетинг' },
-    { name: 'Продажи', code: 'Продажи' },
+    { name: 'Администрация', code: '0' },
+
+    { name: 'Административный отдел', code: '0-0' },
+    { name: 'Финансовый отдел', code: '0-1' },
+    { name: 'Маркетинговый отдел', code: '0-2' },
+    { name: 'Коммерческий отдел', code: '0-3' },
+
+    { name: 'Отдел кадров', code: '0-0-0' },
+    { name: 'Юридический отдел', code: '0-0-1' },
+    { name: 'Отдел АХО', code: '0-0-2' },
+
+
+    { name: 'Бухгалтерия', code: '0-1-0' },
+
+    { name: 'IT отдел', code: '0-2-0' },
+    { name: 'Отдел маркетинго', code: '0-2-1' },
+
+    { name: 'Отдел развития', code: '0-3-0' },
+    { name: 'Отдел продаж KRAFTER', code: '0-3-1' },
+    { name: 'Отдел продаж листовой HPL', code: '0-3-2' },
+    { name: 'Отдел продаж KRAFTER Мебель', code: '0-3-3' },
+    { name: 'Отдел продаж Атэри', code: '0-3-4' },
+    { name: 'Отдел продаж фурнитура', code: '0-3-5' },
+    { name: 'Тендерный отдел', code: '0-3-6' },
+    { name: 'Сметно-договорной отдел', code: '0-3-7' },
 ])
 
 const errors = ref<Errors>({
@@ -129,12 +157,12 @@ defineExpose({ CheckingJobInformationComponent })
                 <div class="form-control">
                     <label for="jobInformationDepartment">Отдел</label>
                     <Select v-model="form.department" id="jobInformationPost" :options="department" optionLabel="name"
-                        placeholder="Компания" class="w-full" />
+                        placeholder="Отдел" class="w-full" />
                 </div>
                 <div class="form-control">
                     <label for="jobInformationPost">Должность</label>
                     <Select v-model="form.positions" id="jobInformationPost" :options="positions" optionLabel="name"
-                        placeholder="Компания" class="w-full" />
+                        placeholder="Должность" class="w-full" />
                 </div>
             </div>
             <div class="group_form-control-tree">

@@ -71,6 +71,14 @@ function ExitStatus() {
           <span v-show="isSidebarOpen" class="namePage">Пирамида управления</span>
         </RouterLink>
       </li>
+      <li>
+        <RouterLink to="/PyramidTree">
+          <div class="flex items-center justify-center">
+            <i class="pi pi-share-alt"></i>
+          </div>
+          <span v-show="isSidebarOpen" class="namePage">Пирамида древом</span>
+        </RouterLink>
+      </li>
       <li v-if="name.role === 'ADMIN'">
         <RouterLink to="/UsersList">
           <div class="flex items-center justify-center">
@@ -103,12 +111,10 @@ function ExitStatus() {
 
 .wrapper {
   overflow: scroll;
-  background: linear-gradient(
-    45deg,
-    rgba(86, 0, 60, 1) 0%,
-    rgba(7, 62, 137, 1) 35%,
-    rgba(41, 182, 253, 1) 100%
-  );
+  background: linear-gradient(45deg,
+      rgba(86, 0, 60, 1) 0%,
+      rgba(7, 62, 137, 1) 35%,
+      rgba(41, 182, 253, 1) 100%);
 }
 
 $sidebar-width: 4rem;

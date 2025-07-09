@@ -112,10 +112,10 @@ class UserController {
         img: fileName,
       })
       await Admins.create({ userId: user.id })
-      const WC = await WorkingContacts.create({
-        userId: user.id,
-        workphone: workphone,
-      })
+      // const WC = await WorkingContacts.create({
+      //   userId: user.id,
+      //   workphone: workphone,
+      // })
       const token = generatejwt(
         user.id,
         user.email,
@@ -134,7 +134,7 @@ class UserController {
         user.telegram,
         user.datebirth,
         user.img,
-        WC?.workphone,
+        // WC?.workphone,
       )
 
       return res.json({ token })
@@ -171,7 +171,7 @@ class UserController {
       user.telegram,
       user.datebirth,
       user.img,
-      WC?.workphone,
+      // WC?.workphone,
     )
     return res.json({ token })
   }
@@ -194,7 +194,7 @@ class UserController {
       req.user.telegram,
       req.user.datebirth,
       req.user.img,
-      req.WC?.workphone,
+      // req.WC?.workphone,
     )
     return res.json({ token })
   }
