@@ -41,6 +41,7 @@ interface formDataTest {
   positions?: string
   department?: string
   locations?: string
+  code?: string
 }
 
 const userTabs: Ref<UserTab[]> = ref([
@@ -72,6 +73,7 @@ const formDataTest = ref<formDataTest>({
   positions: '',
   department: '',
   locations: '',
+  code: '',
 })
 const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
@@ -120,6 +122,7 @@ const JobInformationMethod = (e: any) => {
   console.log(e, 'JobInformationMethod')
   formDataTest.value.positions = e.positions.name
   formDataTest.value.department = e.department.name
+  formDataTest.value.code = e.department.code
 }
 
 const handleSubmit = () => {

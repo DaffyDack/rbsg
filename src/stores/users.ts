@@ -15,7 +15,10 @@ export const useUsersStore = defineStore('user', () => {
     console.log('запрос на юзеров')
     user.value = event
   }
+  function getUsers(event: any) {
+    user.value = event
+  }
   // function getUsers()
 
-  return { reg, user, registrationCompleted }
+  return { reg, user, registrationCompleted, getUsers }
 })

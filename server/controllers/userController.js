@@ -25,6 +25,7 @@ const generatejwt = (
   datebirth,
   img,
   working_contact_workphone,
+  code,
 ) => {
   return jwt.sign(
     {
@@ -46,6 +47,7 @@ const generatejwt = (
       datebirth,
       img,
       working_contact_workphone,
+      code,
     },
     process.env.SECRET_KEY,
     {
@@ -74,6 +76,7 @@ class UserController {
         workphone,
         telegram,
         datebirth,
+        code,
       } = req.body
 
       const { img } = req.files // Дефолтное значение для img
@@ -110,6 +113,7 @@ class UserController {
         telegram,
         datebirth,
         img: fileName,
+        code,
       })
       await Admins.create({ userId: user.id })
       // const WC = await WorkingContacts.create({
@@ -134,6 +138,7 @@ class UserController {
         user.telegram,
         user.datebirth,
         user.img,
+        user.code,
         // WC?.workphone,
       )
 
@@ -171,6 +176,7 @@ class UserController {
       user.telegram,
       user.datebirth,
       user.img,
+      user.code,
       // WC?.workphone,
     )
     return res.json({ token })
@@ -194,6 +200,7 @@ class UserController {
       req.user.telegram,
       req.user.datebirth,
       req.user.img,
+      req.user.code,
       // req.WC?.workphone,
     )
     return res.json({ token })

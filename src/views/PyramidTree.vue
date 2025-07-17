@@ -1,6 +1,13 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
 import Tree from 'primevue/tree';
+import { useUsersStore } from '../stores/users'
+const store = useUsersStore()
+onMounted(() => {
+    // NodeService.value.getTreeNodes().then(data => nodes.value = data);
+    test.value = store.user
+    startBuild()
+})
 interface Department {
     name: string;
     code: string;
@@ -19,6 +26,8 @@ interface TreeNode {
 
 const nodes = ref(null);
 const test = ref()
+
+const test2 = ref()
 
 const department = ref([
     { name: 'Администрация', code: '0' },
@@ -125,28 +134,23 @@ const NodeService = ref({
 function buildTree(departments: any) {
     const map: Record<string, TreeNode> = {};
     const tree: TreeNode[] = [];
-
-    // Создаем карту для быстрого доступа к элементам по их коду
-    departments.forEach((department: { code: any; }) => {
+    departments.forEach((department: { code: any; email: any; }) => {
         map[department.code] = {
             key: department.code,
             children: [],
-            label: 'Учредители (Сухов Даниил Иванович)',
+            label: department.email,
             data: 'Сухов Даниил Иванович',
             icon: 'pi pi-fw pi-mars',
         };
     });
 
-    // Строим древовидную структуру
     departments.forEach((department: { code: any; }) => {
         const { code } = department;
-        const parentCode = code.split('-').slice(0, -1).join('-'); // Получаем код родителя
+        const parentCode = code.split('-').slice(0, -1).join('-');
 
         if (parentCode in map) {
-            // Если родитель существует, добавляем текущий элемент в его детей
             map[parentCode].children.push(map[code]);
         } else {
-            // Если родителя нет, это корневой элемент
             tree.push(map[code]);
         }
     });
@@ -154,13 +158,12 @@ function buildTree(departments: any) {
     return tree;
 }
 const startBuild = () => {
-    test.value = buildTree(department.value);
+    test.value = buildTree(store.user);
 };
+
 // NodeService.getTreeNodes().then(data => nodes.value = data)
-onMounted(() => {
-    // NodeService.value.getTreeNodes().then(data => nodes.value = data);
-    startBuild()
-})
+
+console.log(store.user, 'pyramid tree', test2.value)
 </script>
 <template>
     <div class="card flex flex-wrap justify-center gap-8">

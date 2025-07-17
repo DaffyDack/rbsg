@@ -4,11 +4,13 @@ import { RouterView } from 'vue-router'
 import Reg from './components/RegComponents.vue'
 import LeftMenu from './components/LeftMenu.vue'
 import { useCounterStore } from './stores/counter'
-import { check } from './http/userAPI'
+import { useUsersStore } from './stores/users'
+import { check, fetchUzers } from './http/userAPI'
 
 import ProgressSpinner from 'primevue/progressspinner'
 
 const store = useCounterStore()
+const store1 = useUsersStore()
 
 const componentKey = ref(0)
 const loading = ref(true)
@@ -20,6 +22,7 @@ onMounted(() => {
         store.registrationCompleted()
         store.userInfo(data)
         localStorage.setItem('role', JSON.stringify(data))
+        fetchUzers().then((data) => localStorage.setItem('users', JSON.stringify(data)))
       }
     })
     .finally(() => {
@@ -66,12 +69,10 @@ function incrCounter() {
 }
 
 .wrapper {
-  background: linear-gradient(
-    45deg,
-    rgba(86, 0, 60, 1) 0%,
-    rgba(7, 62, 137, 1) 35%,
-    rgba(41, 182, 253, 1) 100%
-  );
+  background: linear-gradient(45deg,
+      rgba(86, 0, 60, 1) 0%,
+      rgba(7, 62, 137, 1) 35%,
+      rgba(41, 182, 253, 1) 100%);
 }
 
 $sidebar-width: 4rem;
@@ -186,5 +187,4 @@ h4[transparent='true'] {
   transform: translateX(-100%);
 }
 
-//form
-</style>
+//form</style>
