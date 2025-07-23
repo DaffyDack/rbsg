@@ -21,6 +21,7 @@ function ExitStatus() {
   store.registrationCompleted()
   localStorage.removeItem('role')
   localStorage.removeItem('token')
+  localStorage.removeItem('users')
   router.push({ path: '/' })
 }
 </script>

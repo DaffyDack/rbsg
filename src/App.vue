@@ -5,7 +5,7 @@ import Reg from './components/RegComponents.vue'
 import LeftMenu from './components/LeftMenu.vue'
 import { useCounterStore } from './stores/counter'
 import { useUsersStore } from './stores/users'
-import { check, fetchUzers } from './http/userAPI'
+import { check } from './http/userAPI'
 
 import ProgressSpinner from 'primevue/progressspinner'
 
@@ -22,7 +22,6 @@ onMounted(() => {
         store.registrationCompleted()
         store.userInfo(data)
         localStorage.setItem('role', JSON.stringify(data))
-        fetchUzers().then((data) => localStorage.setItem('users', JSON.stringify(data)))
       }
     })
     .finally(() => {

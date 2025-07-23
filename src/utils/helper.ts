@@ -43,3 +43,31 @@ export function checkLength(err: ErrorType, input: string, min: number, max: num
     return messages[err].valid
   }
 }
+
+const department = [
+  { name: 'Администрация', code: '0' },
+
+  { name: 'Административный отдел', code: '0-0' },
+  { name: 'Финансовый отдел', code: '0-1' },
+  { name: 'Маркетинговый отдел', code: '0-2' },
+  { name: 'Коммерческий отдел', code: '0-3' },
+
+  { name: 'Отдел кадров', code: '0-0-0' },
+  { name: 'Юридический отдел', code: '0-0-1' },
+  { name: 'Отдел АХО', code: '0-0-2' },
+
+  { name: 'Бухгалтерия', code: '0-1-0' },
+
+  { name: 'IT отдел', code: '0-2-0' },
+  { name: 'Отдел маркетинго', code: '0-2-1' },
+
+  { name: 'Отдел развития', code: '0-3-0' },
+  { name: 'Отдел продаж KRAFTER', code: '0-3-1' },
+  { name: 'Отдел продаж листовой HPL', code: '0-3-2' },
+  { name: 'Отдел продаж KRAFTER Мебель', code: '0-3-3' },
+  { name: 'Отдел продаж Атэри', code: '0-3-4' },
+  { name: 'Отдел продаж фурнитура', code: '0-3-5' },
+  { name: 'Тендерный отдел', code: '0-3-6' },
+  { name: 'Сметно-договорной отдел', code: '0-3-7' },
+]
+export default department

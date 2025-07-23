@@ -19,6 +19,7 @@ export const check = async () => {
 }
 
 export const fetchUzers = async () => {
+  console.log('функция запустилась')
   const { data } = await $host.get('api/user/users')
   return data
 }

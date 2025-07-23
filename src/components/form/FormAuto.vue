@@ -3,7 +3,7 @@ import './style.scss'
 import { ref, watch, onMounted } from 'vue'
 import { useCounterStore } from '../../stores/counter'
 import { useUsersStore } from '../../stores/users'
-import { login } from '../../http/userAPI.js'
+import { login, fetchUzers } from '../../http/userAPI.js'
 
 const storeUsers = useUsersStore()
 const store = useCounterStore()
@@ -41,6 +41,7 @@ const LoginUser = async () => {
     store.registrationCompleted()
     store.userInfo(response)
     localStorage.setItem('role', JSON.stringify(response))
+    fetchUzers().then((data) => localStorage.setItem('users', JSON.stringify(data)))
   } catch (error: any) {
     messageError.value = error.response.data.message
     userError.value = true
@@ -108,25 +109,14 @@ const handleSubmit = () => {
 <template>
   <div>
     <form @submit.prevent="handleSubmit" class="form">
-      <div
-        class="form-control"
-        :class="{ error: errors.email, success: !errors.email && form.email != '' }"
-      >
+      <div class="form-control" :class="{ error: errors.email, success: !errors.email && form.email != '' }">
         <label for="emailAuto">Email</label>
         <input type="email" v-model="form.email" id="emailAuto" placeholder="Введите email" />
         <small v-if="errors.email">{{ errors.email }}</small>
       </div>
-      <div
-        class="form-control"
-        :class="{ error: errors.password, success: !errors.password && form.password != '' }"
-      >
+      <div class="form-control" :class="{ error: errors.password, success: !errors.password && form.password != '' }">
         <label for="passwordAuto">Пароль</label>
-        <input
-          type="password"
-          v-model="form.password"
-          id="passwordAuto"
-          placeholder="Введите пароль"
-        />
+        <input type="password" v-model="form.password" id="passwordAuto" placeholder="Введите пароль" />
         <small v-if="errors.password">{{ errors.password }}</small>
       </div>
       <div v-if="registeredUser" class="text-red-600">Не правельный email или пароль</div>

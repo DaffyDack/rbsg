@@ -2,145 +2,97 @@
 import { ref, onMounted, nextTick } from 'vue';
 import Tree from 'primevue/tree';
 import { useUsersStore } from '../stores/users'
+import treeUsers from '../utils/department.json'
+const imgW = ref({
+    imgUrl: import.meta.env.VITE_API_URL,
+})
+import Dialog from 'primevue/dialog';
+
 const store = useUsersStore()
+const visible = ref(false);
+const userInfo = ref<userInfo>({
+    firstname: '',
+    lastname: '',
+    patronymic: '',
+    email: '',
+    datebirth: '',
+    mobilephone: '',
+    gender: '',
+    password: '',
+    role: '',
+    img: '',
+    workphone: '',
+    positions: '',
+    department: '',
+    locations: '',
+    code: '',
+})
+const usersString = localStorage.getItem('users') ?? '[]';
+const expandedKeys = ref({
+    '0': true,
+    '0-0': true,
+    '0-1': true,
+    '0-2': true,
+    '0-3': true,
+    '0-4': true,
+    '0-5': true,
+    '0-6': true,
+    '0-7': true,
+    '0-8': true,
+    '0-9': true,
+    '0-10': true,
+    '0-11': true,
+    '0-12': true,
+    '0-13': true,
+    '0-14': true,
+});
+
 onMounted(() => {
-    // NodeService.value.getTreeNodes().then(data => nodes.value = data);
-    test.value = store.user
     startBuild()
 })
-interface Department {
-    name: string;
-    code: string;
-    label: string
-    data: string
-    icon: string
-}
 
 interface TreeNode {
     key: string;
     label: string
-    data: string
-    icon: string
+    data: object
+    // icon: string
     children: TreeNode[];
 }
+interface userInfo {
+    firstname?: string
+    lastname?: string
+    company?: string
+    patronymic?: string
+    email?: string
+    datebirth?: string
+    mobilephone?: string
+    gender?: string
+    password?: string
+    role?: string
+    img?: string
+    workphone?: string
+    positions?: string
+    department?: string
+    locations?: string
+    jobfunctions?: string
+    code?: string
+}
 
-const nodes = ref(null);
-const test = ref()
-
-const test2 = ref()
-
-const department = ref([
-    { name: 'Администрация', code: '0' },
-
-    { name: 'Административный отдел', code: '0-0' },
-    { name: 'Финансовый отдел', code: '0-1' },
-    { name: 'Маркетинговый отдел', code: '0-2' },
-    { name: 'Коммерческий отдел', code: '0-3' },
-
-    { name: 'Отдел кадров', code: '0-0-0' },
-    { name: 'Юридический отдел', code: '0-0-1' },
-    { name: 'Отдел АХО', code: '0-0-2' },
+const users = ref()
 
 
-    { name: 'Бухгалтерия', code: '0-1-0' },
 
-    { name: 'IT отдел', code: '0-2-0' },
-    { name: 'Отдел маркетинго', code: '0-2-1' },
-
-    { name: 'Отдел развития', code: '0-3-0' },
-    { name: 'Отдел продаж KRAFTER', code: '0-3-1' },
-    { name: 'Отдел продаж листовой HPL', code: '0-3-2' },
-    { name: 'Отдел продаж KRAFTER Мебель', code: '0-3-3' },
-    { name: 'Отдел продаж Атэри', code: '0-3-4' },
-    { name: 'Отдел продаж фурнитура', code: '0-3-5' },
-    { name: 'Тендерный отдел', code: '0-3-6' },
-    { name: 'Сметно-договорной отдел', code: '0-3-7' },
-])
-const NodeService = ref({
-    getTreeNodesData() {
-        return [
-            {
-                key: '0',
-                label: 'Учредители (Сухов Даниил Иванович)',
-                data: 'Сухов Даниил Иванович',
-                icon: 'pi pi-fw pi-mars',
-                children: [
-                    {
-                        key: '0-0',
-                        label: 'Технический директор (Кудин Сергей)',
-                        data: 'Кудин Сергей',
-                        icon: 'pi pi-fw pi-mars',
-                        children: [
-                            {
-                                key: '0-0-0',
-                                label: 'Отдел МТО (Попова Ольга)',
-                                icon: 'pi pi-fw pi-venus',
-                                data: 'Попова Ольга',
-                            },
-                            {
-                                key: '0-0-1',
-                                label: 'Отдел МТО (Камолов Хасан)',
-                                icon: 'pi pi-fw pi-mars',
-                                data: 'Камолов Хасан'
-                            }
-                        ]
-                    },
-                    {
-                        key: '0-1',
-                        label: 'Директор по строительству (Молчанский Кирилл)',
-                        data: 'Молчанский Кирилл',
-                        icon: 'pi pi-fw pi-home',
-                        children: [
-                            { key: '0-1-0', label: 'Invoices.txt', icon: 'pi pi-fw pi-file', data: 'Invoices for this month' },
-
-                        ]
-                    }
-                ]
-            },
-            {
-                key: '2',
-                label: 'Коммерческий директор (Зацепина Регина (ИО))',
-                data: 'Зацепина Регина (ИО)',
-                icon: 'pi pi-fw pi-mars',
-                children: [
-                    {
-                        key: '2-0',
-                        icon: 'pi pi-fw pi-mars',
-                        label: 'Отдел продаж Атэри',
-                        data: 'Чижиков Роман',
-                        children: [
-                            { key: '2-0-0', label: 'Scarface', icon: 'pi pi-fw pi-video', data: 'Scarface Movie' },
-                        ]
-                    },
-                    {
-                        key: '2-1',
-                        label: 'Отдел продаж KRAFTER Мебель',
-                        icon: 'pi pi-fw pi-mars',
-                        data: 'Лабода Игорь',
-                        children: [
-                            { key: '2-1-0', label: 'Goodfellas', icon: 'pi pi-fw pi-video', data: 'Goodfellas Movie' },
-                        ]
-                    }
-                ]
-            }
-        ];
-    },
-
-    getTreeNodes() {
-        return Promise.resolve(this.getTreeNodesData());
-    }
-});
 
 function buildTree(departments: any) {
     const map: Record<string, TreeNode> = {};
     const tree: TreeNode[] = [];
-    departments.forEach((department: { code: any; email: any; }) => {
+    departments.forEach((department: { code: any; email: any, firstname: string, lastname: string, gender: string }) => {
         map[department.code] = {
             key: department.code,
             children: [],
-            label: department.email,
-            data: 'Сухов Даниил Иванович',
-            icon: 'pi pi-fw pi-mars',
+            label: `${department.firstname}`,
+            data: department,
+            // icon: `pi pi-fw pi-${department.gender === "М" ? 'mars' : 'venus'}`,
         };
     });
 
@@ -158,15 +110,103 @@ function buildTree(departments: any) {
     return tree;
 }
 const startBuild = () => {
-    test.value = buildTree(store.user);
+    users.value = buildTree(treeUsers);
 };
+const selectUser = (e: any) => {
+    userInfo.value.firstname = e.data.firstname
+    userInfo.value.lastname = e.data.lastname
+    userInfo.value.patronymic = e.data.patronymic
+    userInfo.value.email = e.data.email
+    userInfo.value.mobilephone = e.data.mobilephone
+    userInfo.value.workphone = e.data.workphone
+    userInfo.value.gender = e.data.gender
+    userInfo.value.datebirth = e.data.datebirth
+    userInfo.value.role = e.data.role
+    userInfo.value.img = e.data.img
+    userInfo.value.locations = e.data.locations
+    userInfo.value.department = e.data.department
+    userInfo.value.company = e.data.company
+    userInfo.value.positions = e.data.positions
+    userInfo.value.jobfunctions = e.data.jobfunctions
+    visible.value = true
+}
 
-// NodeService.getTreeNodes().then(data => nodes.value = data)
-
-console.log(store.user, 'pyramid tree', test2.value)
+console.log(store.user, 'pyramid tree', JSON.parse(localStorage.getItem('users') ?? '[]'))
 </script>
 <template>
     <div class="card flex flex-wrap justify-center gap-8">
-        <Tree :value="test" :filter="true" filterMode="lenient" class="w-full md:w-[100%]"></Tree>
+        <Tree :value="users" :expandedKeys="expandedKeys" :filter="true" filterMode="lenient"
+            class="w-full md:w-[100%]">
+            <template #default="slotProps">
+                <b @click="selectUser(slotProps.node)">{{ slotProps.node.label }}</b>
+            </template>
+        </Tree>
+        <Dialog v-model:visible="visible" modal header="Профиль сотрудника" :style="{ width: '80%' }">
+            <div class="flex">
+                <div>
+                    <div class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + userInfo.img + ')' }">
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center mb-4">
+                        <label for="username" class="font-semibold" :style="{ minWidth: '11.5rem' }">Имя</label>
+                        <div id="username" class="flex-auto">{{ userInfo.firstname }}</div>
+                    </div>
+                    <div class="flex items-center mb-8">
+                        <label for="email" class="font-semibold" :style="{ minWidth: '11.5rem' }">Email</label>
+                        <div id="email" class="flex-auto">{{ userInfo.email }}</div>
+                    </div>
+                    <div class="flex items-center mb-8">
+                        <label for="department" class="font-semibold" :style="{ minWidth: '11.5rem' }">Отдел</label>
+                        <div id="department" class="flex-auto">{{ userInfo.department }}</div>
+                    </div>
+                    <div class="flex items-center mb-8">
+                        <label for="company" class="font-semibold" :style="{ minWidth: '11.5rem' }">Компания</label>
+                        <div id="company" class="flex-auto">{{ userInfo.company }}</div>
+                    </div>
+                    <div class="flex items-center mb-8">
+                        <label for="positions" class="font-semibold" :style="{ minWidth: '11.5rem' }">Должность</label>
+                        <div id="positions" class="flex-auto">{{ userInfo.positions }}</div>
+                    </div>
+                    <div class="flex items-center mb-8">
+                        <label for="mobile" class="font-semibold" :style="{ minWidth: '11.5rem' }">Мобильный</label>
+                        <div id="mobile" class="flex-auto">{{ userInfo.mobilephone }}</div>
+                    </div>
+                    <div class="flex items-center mb-8">
+                        <label for="mobileWork" class="font-semibold" :style="{ minWidth: '11.5rem' }">Мобильный
+                            (рабочий)</label>
+                        <div id="mobileWork" class="flex-auto">{{ userInfo.workphone }}</div>
+                    </div>
+                    <div class="flex items-center mb-8">
+                        <label for="datebirth" class="font-semibold" :style="{ minWidth: '11.5rem' }">Дата
+                            рождения</label>
+                        <div id="datebirth" class="flex-auto">{{ userInfo.datebirth }}</div>
+                    </div>
+                    <div class="flex items-center mb-8">
+                        <label for="locations" class="font-semibold" :style="{ minWidth: '11.5rem' }">Рабочее
+                            место</label>
+                        <div id="locations" class="flex-auto">{{ userInfo.locations }}</div>
+                    </div>
+                    <div class="flex items-center mb-8">
+                        <label for="jobfunctions" class="font-semibold" :style="{ minWidth: '11.5rem' }"> Долж.
+                            Обяз.</label>
+                        <div id="jobfunctions" class="flex-auto">{{ userInfo.jobfunctions }}</div>
+                    </div>
+                </div>
+            </div>
+        </Dialog>
     </div>
 </template>
+<style lang="scss" scoped>
+.img {
+    max-width: 200px;
+    max-height: 200px;
+    min-width: 200px;
+    min-height: 200px;
+    overflow: hidden;
+    margin-right: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+</style>
