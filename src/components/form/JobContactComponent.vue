@@ -1,23 +1,27 @@
+
+<script>
+
+</script>
 <template>
   <div>
     <div class="group_form-control-two">
       <div class="form-control">
         <label for="jobContactTel">Телефон</label>
-        <input type="text" id="jobContactTel" placeholder="Телефон" />
+        <input type="number" id="jobContactTel" placeholder="Телефон" />
       </div>
       <div class="form-control">
         <label for="jobContactTelMob">Телефон моб.</label>
-        <input type="text" id="jobContactTelMob" placeholder="Телефон моб." />
+        <input type="number" id="jobContactTelMob" placeholder="Телефон моб." />
       </div>
     </div>
     <div class="group_form-control-two">
       <div class="form-control">
         <label for="jobContactTelEmail">E-mail</label>
-        <input type="text" id="jobContactTelEmail" placeholder="E-mail" />
+        <input type="email" id="jobContactTelEmail" placeholder="E-mail" />
       </div>
       <div class="form-control">
         <label for="jobContactTelEmail2">E-mail 2</label>
-        <input type="text" id="jobContactTelEmail2" placeholder="E-mail 2" />
+        <input type="email" id="jobContactTelEmail2" placeholder="E-mail 2" />
       </div>
     </div>
   </div>

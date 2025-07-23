@@ -7,6 +7,7 @@ import { useCounterStore } from './stores/counter'
 import { useUsersStore } from './stores/users'
 import { check, fetchUzers } from './http/userAPI'
 
+
 import ProgressSpinner from 'primevue/progressspinner'
 
 const store = useCounterStore()
@@ -69,10 +70,12 @@ function incrCounter() {
 }
 
 .wrapper {
-  background: linear-gradient(45deg,
-      rgba(86, 0, 60, 1) 0%,
-      rgba(7, 62, 137, 1) 35%,
-      rgba(41, 182, 253, 1) 100%);
+  background-color: black;
+  // background: linear-gradient(45deg,
+  //     rgb(0, 0, 0)100%,
+  //     // rgba(7, 62, 137, 1) 35%,
+      
+  //     #008AFB 100% );
 }
 
 $sidebar-width: 4rem;

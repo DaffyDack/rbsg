@@ -22,27 +22,21 @@ const infoProfile = ref({
     <div class="container">
       <div class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + infoProfile.img + ')' }"></div>
       <div class="container_description">
-        <div class="mr-10">
-          <div class="id">ID {{ infoProfile.id }}</div>
-          <p class="family">
-            {{ infoProfile.lastname }} {{ infoProfile.firstname }} {{ infoProfile.patronymic }}
-          </p>
-          <p class="descriptions">{{ infoProfile.positions }}, {{ infoProfile.department }}</p>
+        
           <div class="status">
             <div class="rating">
-              <span>Senior </span>
+              <span class="el_rating">Senior </span>
               <span class="number">10</span>
             </div>
-            <div class="yearsInCompany">10 лет 7 месяцев в компании</div>
+          
           </div>
-        </div>
-        <div class="logo">
-          <img src="../assets/Ateri.png" alt="logo" width="85" />
-        </div>
+      
+       
       </div>
     </div>
   </div>
 </template>
+
 <style scoped lang="scss">
 .title {
   margin-top: 10px;
@@ -54,17 +48,18 @@ const infoProfile = ref({
   justify-content: space-between;
 
   .container {
-    display: flex;
+    position: relative;
 
     .img {
-      max-width: 200px;
-      max-height: 200px;
+      // max-width: 100%;
+      // max-height: 100%;
       min-width: 200px;
       min-height: 200px;
-      border-radius: 100%;
+      border-radius: 36px;
       overflow: hidden;
       margin-right: 10px;
       background-size: cover;
+      height: 100%;
     }
 
     .avatar {
@@ -75,9 +70,14 @@ const infoProfile = ref({
   }
 
   .container_description {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+    // opacity: 0.6;
+    position: absolute;
+    top:20px;
+    right: 20px;
+    
+    .el_rating {
+      padding: 10px;
+    }
 
     .descriptions {
       font-size: 14px;
@@ -100,14 +100,31 @@ const infoProfile = ref({
       display: flex;
 
       .rating {
-        font-size: 16px;
-        background: #202224;
-        border-radius: 24px;
+       
+        display: flex;
+        justify-content: space-between;
+        font-size: 22px;
+        background-color:rgba(130, 159, 255, 0.2);
+        border-radius: 50px;
         padding: 6px 14px;
         margin-right: 10px;
+        width: 205px;
+        height: 72px;
+        flex-direction: row;
+       align-items: center;
+        margin: 0 10px;
 
         .number {
-          color: #0a83c1;
+          color: white;
+          background-color: rgba(10, 131, 193, 1);
+          height: 46px;
+          width: 46px;
+          border-radius: 50%;
+          font-size: 22px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 15px;
         }
       }
 
