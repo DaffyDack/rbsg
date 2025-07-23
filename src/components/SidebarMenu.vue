@@ -2,12 +2,10 @@
 import { shallowRef } from 'vue'
 import { RouterLink } from 'vue-router'
 import IconAngle from './icons/IconAngle.vue'
-import IconEmail from './icons/IconEmail.vue'
-import IconEmployeeGroup from './icons/IconEmployeeGroup.vue'
 import IconExclamation from './icons/IconExclamation.vue'
 import IconHome from './icons/IconHome.vue'
 
-const isSidebarOpen = shallowRef<Boolean>(false)
+const isSidebarOpen = shallowRef(false)
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
@@ -40,7 +38,7 @@ function toggleSidebar() {
           </router-link>
         </li>
         <li>
-          <router-link to="/about">
+          <router-link to="/MyTasks">
             <IconExclamation />
             <Transition name="fade">
               <span v-show="isSidebarOpen">About</span>

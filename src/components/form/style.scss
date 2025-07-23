@@ -1,79 +1,118 @@
 .form {
-    padding: 30px 40px;
+  padding: 30px 40px;
 }
-
+.group_form-control-five {
+  display: grid;
+  grid-template-columns: 1.1fr 1.1fr 1.1fr 0.6fr 1.1fr;
+  grid-template-rows: 0.7fr;
+  gap: 10px 10px;
+  grid-template-areas: '. . . . .';
+}
+.group_form-control-five-evenly {
+  display: grid;
+  grid-template-columns: 1.1fr 1.1fr 1.1fr 1.1fr 1.1fr;
+  grid-template-rows: 0.7fr;
+  gap: 10px 10px;
+  grid-template-areas: '. . . . .';
+}
+.group_form-control-four {
+  display: grid;
+  grid-auto-flow: row dense;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1.5fr;
+  gap: 10px 10px;
+  grid-template-areas: '. . . .';
+}
+.group_form-control-tree {
+  display: grid;
+  grid-auto-flow: row dense;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1.5fr;
+  gap: 10px 10px;
+  grid-template-areas: '. . .';
+}
+.group_form-control-two {
+  display: grid;
+  grid-auto-flow: row dense;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1.5fr;
+  gap: 10px 10px;
+  grid-template-areas: '. . ';
+}
 .form-control {
-    margin-bottom: 10px;
-    padding-bottom: 20px;
-    position: relative;
+  padding-bottom: 20px;
+  position: relative;
 }
 
 .form-control label {
-    color: #777;
-    display: block;
-    margin-bottom: 5px;
+  color: #777;
+  display: block;
+  margin-bottom: 5px;
 }
 
-.form-control input {
-    border: 2px solid #f0f0f0;
-    border-radius: 4px;
-    display: block;
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
+.form-control input,
+.form-control select,
+.form-control textarea {
+  border: 2px solid #f0f0f0;
+  border-radius: 4px;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
 }
 
-.form-control input:focus {
-    outline: 0;
-    border-color: #777;
-
+.form-control input:focus,
+.form-control select:focus,
+.form-control textarea:focus {
+  outline: 0;
+  border-color: #777;
 }
 
 .form-control.success input {
-    border-color: #2ecc71;
+  border-color: #2ecc71;
 }
 
 .form-control.error input {
-    border-color: #e74c3c;
+  border-color: #e74c3c;
 }
 
 .form-control small {
-    color: #e74c3c;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    visibility: hidden;
+  color: #e74c3c;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  visibility: hidden;
 }
 
 .form-control.error small {
-    visibility: visible;
+  visibility: visible;
 }
 
 .form button {
-    cursor: pointer;
-    background-color: #3498db;
-    border: 2px solid #3498db;
-    border-radius: 4px;
-    color: #fff;
-    display: block;
-    padding: 10px;
-    font-size: 16px;
-    margin-top: 20px;
-    width: 100%;
+  cursor: pointer;
+  background-color: #3498db;
+  border: 2px solid #3498db;
+  border-radius: 4px;
+  color: #fff;
+  display: block;
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 20px;
+  width: 100%;
 }
 
 .made-with {
-    background: #fd264f;
-    color: #fff;
-    display: block;
-    font-size: 12px;
-    line-height: 1em;
-    margin: 0;
-    padding: 5px 110px;
-    position: fixed;
-    top: 20px;
-    right: -100px;
-    text-align: center;
-    text-decoration: none;
-    transform: rotate(45deg);
+  background: #fd264f;
+  color: #fff;
+  display: block;
+  font-size: 12px;
+  line-height: 1em;
+  margin: 0;
+  padding: 5px 110px;
+  position: fixed;
+  top: 20px;
+  right: -100px;
+  text-align: center;
+  text-decoration: none;
+  transform: rotate(45deg);
 }
