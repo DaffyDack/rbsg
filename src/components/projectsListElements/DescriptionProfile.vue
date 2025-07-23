@@ -61,7 +61,7 @@ let age = countFullYaer(store.info.datebirth)
         <div class="descriptions_tema">
             <p class="descriptions">{{ infoProfile.positions }}, {{ infoProfile.department }}</p>
             <div class="logo">
-                <img src="../assets/Ateri.png" alt="logo" width="85" />
+                <img src="../../assets/krafter.svg" alt="logo" width="128px" />
             </div>
         </div>
 
@@ -107,6 +107,7 @@ let age = countFullYaer(store.info.datebirth)
       // background: aliceblue;
       display: flex;
       justify-content: baseline;
+      margin-top: 20px;
   
 
     }

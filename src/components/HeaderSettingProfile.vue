@@ -19,21 +19,15 @@ const infoProfile = ref({
 </script>
 <template>
   <div class="title">
-    <div class="container">
+    
       <div class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + infoProfile.img + ')' }"></div>
-      <div class="container_description">
-        
           <div class="status">
             <div class="rating">
               <span class="el_rating">Senior </span>
               <span class="number">10</span>
             </div>
-          
           </div>
-      
-       
-      </div>
-    </div>
+
   </div>
 </template>
 
@@ -47,14 +41,15 @@ const infoProfile = ref({
   width: 100%;
   justify-content: space-between;
 
-  .container {
-    position: relative;
+  
+   position: relative;
 
     .img {
-      // max-width: 100%;
-      // max-height: 100%;
-      min-width: 200px;
-      min-height: 200px;
+      
+      width: 100%;
+      height: 100vh;
+     
+     
       border-radius: 36px;
       overflow: hidden;
       margin-right: 10px;
@@ -67,13 +62,8 @@ const infoProfile = ref({
       border-radius: 100%;
       overflow: hidden;
     }
-  }
+  
 
-  .container_description {
-    // opacity: 0.6;
-    position: absolute;
-    top:20px;
-    right: 20px;
     
     .el_rating {
       padding: 10px;
@@ -98,7 +88,9 @@ const infoProfile = ref({
 
     .status {
       display: flex;
-
+        position: absolute;
+        top:40px;
+        right: 40px;
       .rating {
        
         display: flex;
@@ -136,5 +128,5 @@ const infoProfile = ref({
       }
     }
   }
-}
+
 </style>
