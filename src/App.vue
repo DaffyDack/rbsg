@@ -29,6 +29,7 @@ onMounted(() => {
     })
 })
 
+
 function incrCounter() {
   componentKey.value++
 }
