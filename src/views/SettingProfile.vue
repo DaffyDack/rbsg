@@ -68,22 +68,32 @@ const userTabs: Ref<UserTab[]> = ref([
 
                     <DescriptionProfile/>
                     <div class="social_tab">
-                      <div class="social_button">
-                        <a href="{{ infoProfile.telegram }}"></a>
-                        <img src="../assets/telegram.svg" alt="telegram" width="46px" />
+
+                      <a href="tg://msg?to={{ infoProfile.telegram }}">
+                        <div class="social_button">
+                            <img src="../assets/telegram.svg" alt="telegram" width="46px" />
+                        </div>
+                      </a>
+                    
+
+                    <a href="" >
+                         <div class="social_button">
+                            <img src="../assets/email.svg" alt="email" width="46px" />
+                         </div>
+                    </a>
+                     
+                    <a href="" >
+                        <div class="social_button">
+                          <img src="../assets/SMS.svg" alt="SMS" width="46px" />
+                       </div>
+                    </a>
+                      
+                    <a href="">
+                       <div class="social_button">
+                          <img src="../assets/whatsapp.svg" alt="whatsapp" width="46px" />
                       </div>
-                      <div class="social_button">
-                        <a href="" ></a>
-                        <img src="../assets/email.svg" alt="email" width="46px" />
-                      </div>
-                      <div class="social_button">
-                        <a href="" ></a>
-                        <img src="../assets/SMS.svg" alt="SMS" width="46px" />
-                      </div>
-                      <div class="social_button">
-                        <a href=""></a>
-                        <img src="../assets/whatsapp.svg" alt="whatsapp" width="46px" />
-                      </div>
+                    </a>
+                     
                     </div> 
                   <HeaderSettingProfile class="HeaderSettingProfile" />
                   </div>
