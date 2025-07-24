@@ -118,13 +118,18 @@ function ExitStatus() {
 }
 
 $sidebar-width: 4rem;
+$sidebar-hidden-width: 0;
 $toggle-duration: 300ms;
 $sidebar-padding-inline-start: 1rem;
 
 aside {
-  color: #e3e1e1;
-  background: rgba(255, 255, 255, 0.2); // Make sure this color has an opacity of less than 1
-  backdrop-filter: blur(1px);
+  color: #ffffff;
+   background: linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
+               linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+               linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+               linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+               linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
+  backdrop-filter: blur(2px);
   display: flex;
   flex-direction: column;
   min-height: 100vh;

@@ -66,8 +66,7 @@ let age = countFullYaer(store.info.datebirth)
         </div>
 
         <div class="labelContact">
-            <div>Должностные обязаности:</div>
-            <div>{{ infoProfile.jobfunctions }}</div>
+           
             <div>Прямой руководитель</div>
             <div>{{ infoProfile.patronymic }}</div>
             <div>День рождения</div>
@@ -95,6 +94,10 @@ let age = countFullYaer(store.info.datebirth)
                 <span class="text_card">{{infoProfile.department}}</span>
             </div>
         </div>
+        <div class="jobfunctions">
+           <div>Должностные обязаности:</div>
+            <div class="text-description">{{ infoProfile.jobfunctions }}</div>
+        </div>
     </div> 
 </template>
 
@@ -107,7 +110,7 @@ let age = countFullYaer(store.info.datebirth)
       // background: aliceblue;
       display: flex;
       justify-content: baseline;
-      margin-top: 20px;
+      margin-top: 36px;
   
 
     }
@@ -141,6 +144,7 @@ let age = countFullYaer(store.info.datebirth)
         height: 72px;
         display: flex;
         justify-content: space-around;
+        margin-top: 36px;
         align-items: center;
         border-radius: 36px;
         background: linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
@@ -153,8 +157,8 @@ let age = countFullYaer(store.info.datebirth)
         grid-template-columns: 1fr 1fr; 
         gap: 10px; 
         margin-top: 36px;
-        width: 703px;
-        height: 180px;
+        // width: 703px;
+        // height: 180px;
         font-family: Manrope;
         font-size: 16px;
        
@@ -172,7 +176,7 @@ let age = countFullYaer(store.info.datebirth)
         }
       }
         .family {
-      font-size: 68px;
+      font-size: 56px;
       word-wrap: normal
         
     }
@@ -185,7 +189,17 @@ let age = countFullYaer(store.info.datebirth)
       font-weight: 600;
       line-height: 74px
     }
-    .imd_card {
+    .jobfunctions {
+       background:
+            linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
+            linear-gradient(270deg, rgba(6, 75, 131, 0.15) 14.42%, rgba(0, 138, 251, 0.15) 100%);
+      margin-top: 36px; 
+      align-items: center;
+      padding: 32px;
+      border-radius: 36px;
+    }
+    .text-description {
+      margin-top: 15px;
 
     }
     }
