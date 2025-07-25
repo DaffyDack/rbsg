@@ -152,6 +152,7 @@ const data = ref({
     },
   ],
 })
+
 </script>
 
 <template>
@@ -161,14 +162,11 @@ const data = ref({
         <OrganizationChart :value="data" collapsible>
           <template #country="slotProps">
             <div class="flex flex-col items-center">
-              <img
-                :alt="slotProps.node.label"
-                :src="slotProps.node.data.image"
-                :class="`w-2rem flag flag-${slotProps.node.data}`"
-              />
+              <img :alt="slotProps.node.label" :src="slotProps.node.data.image"
+                :class="`w-2rem flag flag-${slotProps.node.data}`" />
               <span class="font-bold mb-2" style="min-width: 200px">{{
                 slotProps.node.data.name
-              }}</span>
+                }}</span>
               <span>{{ slotProps.node.data.title }}</span>
             </div>
           </template>

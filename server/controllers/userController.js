@@ -114,6 +114,7 @@ class UserController {
         datebirth,
         img: fileName,
         code,
+        jobfunctions,
       })
       await Admins.create({ userId: user.id })
       // const WC = await WorkingContacts.create({

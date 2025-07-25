@@ -39,6 +39,7 @@ interface Form {
   choosing_role: ChoosingRole
   rating: Rating
   gender: Gender
+  jobfunctions: string
 }
 
 interface Errors {
@@ -64,6 +65,7 @@ const form = ref<Form>({
   choosing_role: { name: 'USER', code: 'USER' },
   rating: { name: '1', value: '1' },
   gender: { name: 'М', value: 'М' },
+  jobfunctions: ''
 })
 
 const errors = ref<Errors>({
@@ -284,10 +286,16 @@ watch(
           class="w-full" />
       </div>
     </div>
+    <div class="form-control">
+      <label for="jobfunctions">Должностные обязанности</label>
+      <textarea type="text" v-model="form.jobfunctions" id="jobfunctions"
+        placeholder="Должностные обязанности"></textarea>
+    </div>
     <div class="form-control" :class="{ error: errors.file, success: !errors.file && form.file != '' }">
       <label for="selctFile">Грузим фото</label>
-      <input type="file" ref="upload" id="selctFile" @change="previewFiles" multiple />
+      <input type="file" ref="upload" id="selctFile" @change="previewFiles" />
       <small v-if="errors.file">{{ errors.file }}</small>
     </div>
+
   </div>
 </template>

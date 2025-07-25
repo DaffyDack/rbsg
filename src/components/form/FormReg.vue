@@ -42,6 +42,7 @@ interface formDataTest {
   department?: string
   locations?: string
   code?: string
+  jobfunctions?: string
 }
 
 const userTabs: Ref<UserTab[]> = ref([
@@ -74,6 +75,7 @@ const formDataTest = ref<formDataTest>({
   department: '',
   locations: '',
   code: '',
+  jobfunctions: ''
 })
 const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
@@ -116,6 +118,7 @@ const handleParentMethod = (e: any, tr: boolean) => {
   formDataTest.value.locations = e.locations
   // formDataTest.value.workphone = working_contact.value.working_contact_workphone
   formDataTest.value.workphone = e.workphone
+  formDataTest.value.jobfunctions = e.jobfunctions
 }
 const JobInformationMethod = (e: any) => {
   errorProfile('JobInformationContent', true)
