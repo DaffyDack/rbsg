@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { RouterView } from 'vue-router'
 import Reg from './components/RegComponents.vue'
-import LeftMenu from './components/LeftMenu.vue'
+import LeftMenuNew from './components/LeftMemuNew.vue'
 import { useCounterStore } from './stores/counter'
 import { useUsersStore } from './stores/users'
 import { check, fetchUzers } from './http/userAPI'
@@ -47,7 +47,7 @@ function incrCounter() {
       </div>
       <div v-else class="wrapper flex items-stretch">
         <div>
-          <LeftMenu :key="componentKey" @counter-event="incrCounter" />
+          <LeftMenuNew :key="componentKey" @counter-event="incrCounter" />
         </div>
         <div class="p-10 w-[100%] wrapperRouter">
           <RouterView />
@@ -62,7 +62,7 @@ function incrCounter() {
 
 .wrapperRouter {
   
-
+padding: 80px;
 width: 1766px;
 height: 1624px;
 
