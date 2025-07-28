@@ -63,8 +63,8 @@ function incrCounter() {
 .wrapperRouter {
   
 
-width: 1766px;
-height: 1624px;
+width: 100vw;
+height: 100vh;
 
 }
 
@@ -73,7 +73,7 @@ height: 1624px;
 }
 
 .wrapper {
-  background-color: black;
+  background-color: #000;
   // background: linear-gradient(45deg,
   //     rgb(0, 0, 0)100%,
   //     // rgba(7, 62, 137, 1) 35%,
@@ -85,26 +85,7 @@ $sidebar-width: 4rem;
 $toggle-duration: 300ms;
 $sidebar-padding-inline-start: 1rem;
 
-// aside {
-//   color: #e3e1e1;
-//      background: linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
-//                linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-//                linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-//                linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-//                linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
-//   backdrop-filter: blur(1px);
-//   display: flex;
-//   flex-direction: column;
-//   min-height: 100vh;
-//   padding-block: 1rem;
-//   transition: all $toggle-duration;
-//   width: $sidebar-width;
-//   overflow: hidden;
-// }
 
-// aside[vue\:is-open='true'] {
-//   width: 3 * $sidebar-width;
-// }
 
 ul {
   display: flex;

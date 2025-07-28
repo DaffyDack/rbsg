@@ -152,7 +152,7 @@ linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
       gap: 24px
 
     }
-
+   
     .social_button {
       padding: 18px;
       height: 64 px;
@@ -170,6 +170,7 @@ linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
       transition-delay:0s
 
     }
+     
 
     .p-tabpanels {
       background: none;
@@ -190,6 +191,7 @@ linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
 </style>
 
 <style scoped lang="scss">
+
 
 .sidebar {
   width: -webkit-fill-available;
@@ -213,7 +215,7 @@ linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
   .wrapper_setting_profile {
     max-height: 100%;
     min-height: auto;
-   
+       height: 90%;
     
   
 

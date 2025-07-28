@@ -26,6 +26,13 @@ function ExitStatus() {
   localStorage.removeItem('users')
   router.push({ path: '/' })
 }
+
+const isActive = ref(false);
+
+
+const toggleBurger = () => {
+ 
+};
 </script>
 
 <template>
@@ -35,9 +42,14 @@ function ExitStatus() {
         <img src = "../assets/logo.png" alt="logo" width="32" height="32" />
       </li>
       <li>
-        <button class="sidebar-toggle button" :class="isSidebarOpen ? 'toggle-button' : ''">
+          
+           <div class="burgerContener" @click="toggleSidebar">
+               <button class="burger" :class="{ active: isSidebarOpen }"></button>
+           </div>
+        
+        <!-- <button class="sidebar-toggle button" :class="isSidebarOpen ? 'toggle-button' : ''">
           <IconAngle @click="toggleSidebar" />
-        </button>
+        </button> -->
       </li>
     </ul>
     <h4 :transparent="!isSidebarOpen">{{ name.role }}-{{ name.email }}</h4>
@@ -100,13 +112,70 @@ function ExitStatus() {
       </li>
     </ul>
     <div class="mt-auto flex justify-center">
-      <Button @click="ExitStatus()"><i class="pi pi-sign-in"></i></Button>
+      <button @click="ExitStatus()"><i class="pi pi-sign-in"></i></button>
     </div>
   </aside>
 </template>
 
 <style scoped lang="scss">
 @use '../assets/scss/colors' as clr;
+
+// .burgerContener{
+//   position: absolute;
+//   right: 1px;
+//   height: 48px;
+//   width: 48px;
+//   border: solid 1px;
+//   border-radius: 0 15px 15px 0;
+//   display: flex; 
+//   align-items: center
+  
+// }
+.burger {
+  cursor: pointer;
+  display: block;
+  position: absolute;
+  right: 15px;
+  border: none;
+  background: transparent;
+  width: 18px;
+  height: 14px;
+  margin: 30px auto;
+}
+
+.burger::before,
+.burger::after {
+  content: '';
+  left: 0;
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 2px;
+  border-radius: 10px;
+  background: white;
+}
+
+.burger::before {
+  top: 0;
+  box-shadow: 0 6px 0 white;
+  transition: box-shadow .3s .15s, top .3s .15s, transform .3s;
+}
+
+.burger::after {
+  bottom: 0;
+  transition: bottom .3s .10s, transform .2s;
+}
+
+.burger.active::before {
+  top: 11px;
+  transform: rotate(45deg);
+  box-shadow: 0 6px 0 rgba(0,0,0,0);
+}
+
+.burger.active::after {
+  bottom: 1px;
+  transform: rotate(-45deg);
+}
 
 .namePage {
   min-width: 100px;
@@ -126,13 +195,15 @@ $toggle-duration: 300ms;
 $sidebar-padding-inline-start: 1rem;
 
 aside {
+  position: absolute;
+  z-index: 9999;
   color: #ffffff;
    background: linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
                linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
                linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
                linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
                linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
