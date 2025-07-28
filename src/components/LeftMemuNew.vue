@@ -1,3 +1,95 @@
+<!-- <script setup lang="ts">
+import { shallowRef, ref } from 'vue'
+import { RouterLink } from 'vue-router'
+import IconAngle from '../components/icons/IconAngle.vue'
+import Button from 'primevue/button'
+import { useCounterStore } from '../stores/counter'
+import { useRouter } from 'vue-router'
+
+const emit = defineEmits(['counterEvent'])
+const router = useRouter()
+const store = useCounterStore()
+const isSidebarOpen = ref(false)
+const name = ref(JSON.parse(localStorage.getItem('role') || '{}'))
+
+function toggleSidebar() {
+  isSidebarOpen.value = !isSidebarOpen.value
+}
+
+function ExitStatus() {
+  emit('counterEvent')
+  store.registrationCompleted()
+  localStorage.removeItem('role')
+  localStorage.removeItem('token')
+  router.push({ path: '/' })
+}
+
+const menuItems = [
+  { to: '/', icon: 'pi-list-check', label: 'Мои проекты' },
+  { to: '/MyTasks', icon: 'pi-clipboard', label: 'Мои задачи' },
+  { to: '/SettingProfile', icon: 'pi-user', label: 'Профиль' },
+  { to: '/PyramidManagement', icon: 'pi-share-alt', label: 'Пирамида управления' },
+  { to: '/PyramidTree', icon: 'pi-share-alt', label: 'Пирамида древом' },
+  { to: '/UsersList', icon: 'pi-users', label: 'Пользователи', role: 'ADMIN' },
+  { to: '/PageTest', icon: 'pi-cog', label: 'Для тестов', role: 'ADMIN' },
+]
+</script>
+
+<template>
+  <aside :vue:is-open="isSidebarOpen">
+    <ul class="sidebar-head">
+     <li>
+        <Button class="sidebar-toggle button" @click="toggleSidebar()"
+          icon="pi pi-bars" v-if="!isSidebarOpen"/>
+        <Button class="sidebar-toggle button"
+          
+          @click="toggleSidebar"
+          icon="pi pi-times" v-else
+        />
+      </li>
+
+    </ul>
+    <!-- <h4 v-if="name.role">{{ name.role }} - {{ name.email }}</h4> -->
+    <!-- <ul>
+      <li v-for="item in menuItems" v-if="!item.role || item.role === name.role" :key="item.to">
+        <RouterLink :to="item.to">
+          <div class="flex items-center justify-center">
+            <i :class="['pi', item.icon]"></i>
+          </div>
+          <span v-show="isSidebarOpen" class="namePage">{{ item.label }}</span>
+        </RouterLink>
+      </li>
+    </ul>
+    <div class="mt-auto flex justify-center">
+      <Button @click="ExitStatus()"><i class="pi pi-sign-in"></i></Button>
+    </div>
+  </aside>
+</template>
+
+<style scoped lang="scss">
+@use '../assets/scss/colors' as clr;
+
+.namePage {
+  min-width: 100px;
+}
+
+
+
+$sidebar-width: 4rem;
+$toggle-duration: 300ms;
+$sidebar-padding-inline-start: 1rem;
+
+// aside {
+//   color: #ffffff;
+//    background: linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
+//                linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+//                linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+//                linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
+// }
+</style> --> -->
+
+
+
 <script setup lang="ts">
 import { shallowRef, ref } from 'vue'
 import { RouterLink } from 'vue-router'
@@ -12,7 +104,7 @@ const store = useCounterStore()
 const isSidebarOpen = shallowRef(false)
 const name = ref(JSON.parse(localStorage.getItem('role') || ''))
 const avatar = ref({img:store.info.img})
-console.log(avatar._rawValue.img) 
+console.log(`../assets/${avatar._rawValue.img}`) 
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
@@ -23,24 +115,25 @@ function ExitStatus() {
   store.registrationCompleted()
   localStorage.removeItem('role')
   localStorage.removeItem('token')
-  localStorage.removeItem('users')
   router.push({ path: '/' })
 }
 </script>
 
 <template>
   <aside :vue:is-open="isSidebarOpen">
+
+
     <ul class="sidebar-head">
       <li>
-        <img src = "../assets/logo.png" alt="logo" width="32" height="32" />
+        <img src = "" alt="logo" width="32" height="32" />
       </li>
       <li>
-        <button class="sidebar-toggle button" :class="isSidebarOpen ? 'toggle-button' : ''">
+        <Button class="sidebar-toggle button" :class="isSidebarOpen ? 'toggle-button' : ''">
           <IconAngle @click="toggleSidebar" />
-        </button>
+        </Button>
       </li>
     </ul>
-    <h4 :transparent="!isSidebarOpen">{{ name.role }}-{{ name.email }}</h4>
+   
     <ul>
       <li>
         <RouterLink to="/">
@@ -110,6 +203,10 @@ function ExitStatus() {
 
 .namePage {
   min-width: 100px;
+}
+
+.sidebar-toggle button {
+    background: #ffffff;
 }
 
 .wrapper {

@@ -7,6 +7,7 @@ import { useCounterStore } from './stores/counter'
 import { useUsersStore } from './stores/users'
 import { check } from './http/userAPI'
 
+
 import ProgressSpinner from 'primevue/progressspinner'
 
 const store = useCounterStore()
@@ -60,8 +61,11 @@ function incrCounter() {
 @use './assets/scss/colors' as clr;
 
 .wrapperRouter {
-  height: 100vh;
-  overflow: scroll;
+  
+
+width: 1766px;
+height: 1624px;
+
 }
 
 .namePage {
@@ -69,32 +73,38 @@ function incrCounter() {
 }
 
 .wrapper {
-  background: linear-gradient(45deg,
-      rgba(86, 0, 60, 1) 0%,
-      rgba(7, 62, 137, 1) 35%,
-      rgba(41, 182, 253, 1) 100%);
+  background-color: black;
+  // background: linear-gradient(45deg,
+  //     rgb(0, 0, 0)100%,
+  //     // rgba(7, 62, 137, 1) 35%,
+      
+  //     #008AFB 100% );
 }
 
 $sidebar-width: 4rem;
 $toggle-duration: 300ms;
 $sidebar-padding-inline-start: 1rem;
 
-aside {
-  color: #e3e1e1;
-  background: rgba(255, 255, 255, 0.2); // Make sure this color has an opacity of less than 1
-  backdrop-filter: blur(1px);
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  padding-block: 1rem;
-  transition: all $toggle-duration;
-  width: $sidebar-width;
-  overflow: hidden;
-}
+// aside {
+//   color: #e3e1e1;
+//      background: linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
+//                linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+//                linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+//                linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+//                linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
+//   backdrop-filter: blur(1px);
+//   display: flex;
+//   flex-direction: column;
+//   min-height: 100vh;
+//   padding-block: 1rem;
+//   transition: all $toggle-duration;
+//   width: $sidebar-width;
+//   overflow: hidden;
+// }
 
-aside[vue\:is-open='true'] {
-  width: 3 * $sidebar-width;
-}
+// aside[vue\:is-open='true'] {
+//   width: 3 * $sidebar-width;
+// }
 
 ul {
   display: flex;
