@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, shallowRef } from 'vue'
 import { RouterView } from 'vue-router'
 import Reg from './components/RegComponents.vue'
 import LeftMenu from './components/LeftMenu.vue'
@@ -12,7 +12,7 @@ import ProgressSpinner from 'primevue/progressspinner'
 
 const store = useCounterStore()
 const store1 = useUsersStore()
-
+const isSidebarOpen = shallowRef(false)
 const componentKey = ref(0)
 const loading = ref(true)
 
@@ -34,6 +34,9 @@ onMounted(() => {
 function incrCounter() {
   componentKey.value++
 }
+function toggleSidebar() {
+  isSidebarOpen.value = !isSidebarOpen.value
+}
 </script>
 
 <template>
@@ -46,7 +49,7 @@ function incrCounter() {
         <Reg />
       </div>
       <div v-else class="wrapper flex items-stretch">
-        <div>
+             <div  >
           <LeftMenu :key="componentKey" @counter-event="incrCounter" />
         </div>
         <div class="p-10 w-[100%] wrapperRouter">
@@ -60,13 +63,65 @@ function incrCounter() {
 <style scoped lang="scss">
 @use './assets/scss/colors' as clr;
 
-.wrapperRouter {
-  
+// .burgerContainer {
+//   position: relative;
+//   z-index: 999;
+//   height: 48px;
+//   width: 48px;
+//   border: solid 1px;
+//   border-radius: 0 15px 15px 0;
+//   display: flex; 
+//   align-items: center;
+// }
 
-width: 100vw;
-height: 100vh;
 
-}
+
+// .burger {
+//    cursor: pointer;
+//   display: block;
+//   position: absolute;
+//   right: 15px;
+//   border: none;
+//   background: transparent;
+//   width: 18px;
+//   height: 14px;
+//   margin: 30px auto;
+// }
+
+// .burger::before,
+// .burger::after {
+//   content: '';
+//   left: 0;
+//   position: absolute;
+//   display: block;
+//   width: 100%;
+//   height: 2px;
+//   border-radius: 10px;
+//   background: white;
+// }
+
+// .burger::before {
+//   top: 0;
+//   box-shadow: 0 6px 0 white;
+//   transition: box-shadow .3s .15s, top .3s .15s, transform .3s;
+// }
+
+// .burger::after {
+//   bottom: 0;
+//   transition: bottom .3s .10s, transform .2s;
+// }
+
+// .burger.active::before {
+ 
+//   top: 11px;
+//   transform: rotate(45deg);
+//   box-shadow: 0 6px 0 rgba(0,0,0,0);
+// }
+
+// .burger.active::after {
+//    bottom: 1px;
+//   transform: rotate(-45deg);
+// }
 
 .namePage {
   min-width: 100px;

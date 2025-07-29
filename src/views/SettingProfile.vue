@@ -194,6 +194,7 @@ linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
 
 
 .sidebar {
+  height: auto;
   width: -webkit-fill-available;
   transition: all 0.3s ease-in-out;
   z-index: 100;
@@ -215,7 +216,7 @@ linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
   .wrapper_setting_profile {
     max-height: 100%;
     min-height: auto;
-       height: 90%;
+       height: 90vh;
     
   
 
@@ -227,7 +228,7 @@ linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
       margin-bottom: 10px;
       color: #fff;
       width: 100%;
-
+ 
       >div {
       
         border-radius: 15px;
