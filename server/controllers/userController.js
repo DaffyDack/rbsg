@@ -1,10 +1,71 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const ApiError = require('../error/ApiError')
 const bcrypt = require('bcrypt')
+const { Op } = require('sequelize')
 const jwt = require('jsonwebtoken')
 const uuid = require('uuid')
 const path = require('path')
 const { User, Admins, WorkingContacts } = require('../models/models')
+
+async function generateNewCode(parentCode) {
+  // Проверяем, существует ли код
+  const existingUser = await User.findOne({
+    where: {
+      code: {
+        [Op.like]: `${parentCode}-%`,
+      },
+    },
+    order: [['code', 'DESC']],
+  })
+
+  let newCode
+
+  if (existingUser) {
+    const lastCode = existingUser.code
+    const parts = lastCode.split('-')
+    const lastNumber = parseInt(parts.pop(), 10) + 1
+    parts.push(lastNumber)
+    newCode = parts.join('-')
+  } else {
+    newCode = `${parentCode}-0`
+  }
+
+  return newCode
+}
+// (async () => {
+//   const newCode = await generateNewCode(parentCode);
+//   console.log('Сгенерированный новый код:', newCode);
+// })();
+
+async function checkCodeAndGetLast() {
+  try {
+    // Проверяем наличие записи с кодом '0-0'
+    const user = await User.findOne({
+      where: {
+        code: '0-0',
+      },
+    })
+
+    if (user) {
+      console.log('Запись найдена:', user)
+      // Если запись найдена, Вы можете получить последнюю запись
+      const lastUser = await User.findOne({
+        where: {
+          code: {
+            [Op.like]: '0-%', // Получаем все записи, начинающиеся с '0-'
+          },
+        },
+        order: [['id', 'DESC']],
+      })
+
+      console.log('Последняя запись с кодом, начинающимся на "0-":', lastUser)
+    } else {
+      console.log('Запись с кодом "0-0" не найдена.')
+    }
+  } catch (error) {
+    console.error('Ошибка при выполнении запроса:', error)
+  }
+}
 
 const generatejwt = (
   id,
@@ -95,6 +156,9 @@ class UserController {
         return next(ApiError.badRequest('Такой пользователь уже существует!'))
       }
       const hashPassword = await bcrypt.hash(password, 5)
+      const parentCode = '0-0-3'
+      const newCode = await generateNewCode(code)
+
       const user = await User.create({
         email,
         role,
@@ -113,7 +177,7 @@ class UserController {
         telegram,
         datebirth,
         img: fileName,
-        code,
+        code: newCode,
         jobfunctions,
       })
       await Admins.create({ userId: user.id })

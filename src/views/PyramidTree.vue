@@ -90,7 +90,7 @@ function buildTree(departments: any) {
         map[department.code] = {
             key: department.code,
             children: [],
-            label: `${department.firstname}`,
+            label: `${department.firstname} (${department.department})`,
             data: department,
             // icon: `pi pi-fw pi-${department.gender === "М" ? 'mars' : 'venus'}`,
         };
