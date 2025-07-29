@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { shallowRef, ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import IconAngle from '../components/icons/IconAngle.vue'
-import Button from 'primevue/button'
 import { useCounterStore } from '../stores/counter'
 import { useRouter } from 'vue-router'
 
@@ -29,7 +27,7 @@ function ExitStatus() {
   localStorage.removeItem('users')
   router.push({ path: '/' })
 }
-
+console.log(avatar)
 
 
 </script>
@@ -48,9 +46,9 @@ function ExitStatus() {
     <h4 v-show="isSidebarOpen" class="namePage" :transparent="!isSidebarOpen">{{ name.role }}-{{ name.email }}</h4>
     
     <ul v-show="isSidebarOpen" class="namePage">
-       <li v-show="isSidebarOpen" class="namePage" style="width: 30px; height: 30px; border-radius: 50%;">
-      
-      </li>
+       <div v-show="isSidebarOpen" class="namePage" style="width: 96px; height: 96px; border-radius: 100%;  margin: 0 auto;">
+         <div  class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + avatar.img + ')' }"></div>
+      </div>
       <li>
         <RouterLink to="/">
           <div class="flex items-center justify-center">
@@ -126,7 +124,11 @@ function ExitStatus() {
   align-items: center;
 }
 
-
+.img {
+  border-radius: 50%;
+  height: 96px;
+  background-size: cover;
+}
 
 .closePage {
   height: 100px;
@@ -201,10 +203,10 @@ $toggle-duration: 300ms;
 $sidebar-padding-inline-start: 1rem;
 
 aside {
-  border: solid 1px;
+  border: solid 1px #396F74;
 
   position: absolute;
-  top: 20px;
+  top: 110px;
   border-radius: 0 15px 15px 0;
   z-index: 10;
   color: #ffffff;

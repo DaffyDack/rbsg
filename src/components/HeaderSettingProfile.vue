@@ -16,6 +16,8 @@ const infoProfile = ref({
   department: store.info.department,
   positions: store.info.positions,
 })
+
+// console.log('url(' + imgW.imgUrl + '/' + infoProfile.img + ')')
 </script>
 <template>
   <div class="title">
