@@ -217,14 +217,18 @@ console.log(store.user, 'pyramid tree', JSON.parse(localStorage.getItem('users')
     
    }
    .p-tree-filter-input {
+    color: white;
     border: none;
     border-radius: 36px;
     background: rgba(130, 159, 255, 0.20);
+    padding-left: 50px;
    }
    .p-iconfield .p-inputicon:last-child {
     position: absolute;
     left: 20px;
     color:#FFF;
+    height: 20px;
+    width: 20px;
    }
    .p-iconfield .p-tree-filter {
    position: relative;

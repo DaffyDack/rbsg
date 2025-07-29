@@ -12,6 +12,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@fontsource/manrope": "^5.2.6",
     "@primeuix/themes": "^1.0.3",
     "@primevue/auto-import-resolver": "4.3.3",
     "@primevue/forms": "^4.3.3",
