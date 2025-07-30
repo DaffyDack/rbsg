@@ -63,65 +63,7 @@ function toggleSidebar() {
 <style scoped lang="scss">
 @use './assets/scss/colors' as clr;
 
-// .burgerContainer {
-//   position: relative;
-//   z-index: 999;
-//   height: 48px;
-//   width: 48px;
-//   border: solid 1px;
-//   border-radius: 0 15px 15px 0;
-//   display: flex; 
-//   align-items: center;
-// }
 
-
-
-// .burger {
-//    cursor: pointer;
-//   display: block;
-//   position: absolute;
-//   right: 15px;
-//   border: none;
-//   background: transparent;
-//   width: 18px;
-//   height: 14px;
-//   margin: 30px auto;
-// }
-
-// .burger::before,
-// .burger::after {
-//   content: '';
-//   left: 0;
-//   position: absolute;
-//   display: block;
-//   width: 100%;
-//   height: 2px;
-//   border-radius: 10px;
-//   background: white;
-// }
-
-// .burger::before {
-//   top: 0;
-//   box-shadow: 0 6px 0 white;
-//   transition: box-shadow .3s .15s, top .3s .15s, transform .3s;
-// }
-
-// .burger::after {
-//   bottom: 0;
-//   transition: bottom .3s .10s, transform .2s;
-// }
-
-// .burger.active::before {
- 
-//   top: 11px;
-//   transform: rotate(45deg);
-//   box-shadow: 0 6px 0 rgba(0,0,0,0);
-// }
-
-// .burger.active::after {
-//    bottom: 1px;
-//   transform: rotate(-45deg);
-// }
 
 .namePage {
   min-width: 100px;
@@ -140,7 +82,10 @@ $sidebar-width: 4rem;
 $toggle-duration: 300ms;
 $sidebar-padding-inline-start: 1rem;
 
-
+.p-10 {
+  padding: 50px 50px 50px 70px;
+  
+}
 
 ul {
   display: flex;

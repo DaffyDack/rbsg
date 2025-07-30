@@ -17,12 +17,13 @@ const infoProfile = ref({
   positions: store.info.positions,
 })
 
-// console.log('url(' + imgW.imgUrl + '/' + infoProfile.img + ')')
+console.log('url(' + imgW.imgUrl + '/' + infoProfile.img + ')')
 </script>
 <template>
   <div class="title">
     
       <div class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + infoProfile.img + ')' }"></div>
+        <!-- <img src=`url + ${imgW.imgUrl} + '/' + ${infoProfile.img}`/> -->
           <div class="status">
             <div class="rating">
               <span class="el_rating">Senior </span>
@@ -42,21 +43,17 @@ const infoProfile = ref({
   display: flex;
   width: 100%;
   justify-content: space-between;
-
-  
-   position: relative;
+  position: relative;
 
     .img {
-      
       width: 100%;
-      height: 100vh;
-     
-     
       border-radius: 36px;
       overflow: hidden;
       margin-right: 10px;
       background-size: cover;
-      height: 100%;
+      background-position: center;
+      aspect-ratio: 9 / 15;
+      
     }
 
     .avatar {
@@ -89,12 +86,13 @@ const infoProfile = ref({
     }
 
     .status {
-      display: flex;
+        display: flex;
         position: absolute;
         top:40px;
         right: 40px;
+
+
       .rating {
-       
         display: flex;
         justify-content: space-between;
         font-size: 22px;
@@ -105,7 +103,7 @@ const infoProfile = ref({
         width: 205px;
         height: 72px;
         flex-direction: row;
-       align-items: center;
+        align-items: center;
         margin: 0 10px;
 
         .number {

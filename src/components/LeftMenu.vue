@@ -49,15 +49,15 @@ console.log(avatar)
        <div v-show="isSidebarOpen" class="namePage" style="width: 96px; height: 96px; border-radius: 100%;  margin: 0 auto;">
          <div  class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + avatar.img + ')' }"></div>
       </div>
-      <li>
+      <li @click="toggleSidebar">
         <RouterLink to="/">
-          <div class="flex items-center justify-center">
+          <div  class="flex items-center justify-center">
             <i class="pi pi-list-check"></i>
           </div>
           <span>Мои проекты</span>
         </RouterLink>
       </li>
-      <li>
+      <li @click="toggleSidebar">
         <RouterLink to="/MyTasks">
           <div class="flex items-center justify-center">
             <i class="pi pi-clipboard"></i>
@@ -65,7 +65,7 @@ console.log(avatar)
           <span>Мои задачи</span>
         </RouterLink>
       </li>
-      <li>
+      <li @click="toggleSidebar">
         <RouterLink to="/SettingProfile">
           <div class="flex items-center justify-center">
             <i class="pi pi-user"></i>
@@ -73,7 +73,7 @@ console.log(avatar)
           <span>Профиль</span>
         </RouterLink>
       </li>
-      <li>
+      <li @click="toggleSidebar">
         <RouterLink to="/PyramidManagement">
           <div class="flex items-center justify-center">
             <i class="pi pi-share-alt"></i>
@@ -81,7 +81,7 @@ console.log(avatar)
           <span>Пирамида управления</span>
         </RouterLink>
       </li>
-      <li>
+      <li @click="toggleSidebar">
         <RouterLink to="/PyramidTree">
           <div class="flex items-center justify-center">
             <i class="pi pi-share-alt"></i>
@@ -89,7 +89,7 @@ console.log(avatar)
           <span>Пирамида древом</span>
         </RouterLink>
       </li>
-      <li v-if="name.role === 'ADMIN'">
+      <li v-if="name.role === 'ADMIN'" @click="toggleSidebar">
         <RouterLink to="/UsersList">
           <div class="flex items-center justify-center">
             <i class="pi pi-users"></i>
@@ -97,7 +97,7 @@ console.log(avatar)
           <span>Пользователи</span>
         </RouterLink>
       </li>
-      <li v-if="name.role === 'ADMIN'">
+      <li v-if="name.role === 'ADMIN'" @click="toggleSidebar">
         <RouterLink to="/PageTest">
           <div class="flex items-center justify-center">
             <i class="pi pi-cog"></i>
@@ -215,7 +215,7 @@ aside {
                linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
                linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
                linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(20px);
   display: flex;
   flex-direction: column;
   // min-height: 100vh;
