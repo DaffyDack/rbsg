@@ -36,15 +36,11 @@ console.log(avatar)
 
   <aside  :vue:is-open="isSidebarOpen" >
     <ul class="sidebar-head" style="padding: 0;">
-   
-             
            <div class="burgerContainer" @click="toggleSidebar">
                <button class="burger" :class="{ active: isSidebarOpen }"></button>
            </div>
-      
     </ul>
     <h4 v-show="isSidebarOpen" class="namePage" :transparent="!isSidebarOpen">{{ name.role }}-{{ name.email }}</h4>
-    
     <ul v-show="isSidebarOpen" class="namePage">
        <div v-show="isSidebarOpen" class="namePage" style="width: 96px; height: 96px; border-radius: 100%;  margin: 0 auto;">
          <div  class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + avatar.img + ')' }"></div>
@@ -204,6 +200,7 @@ $sidebar-padding-inline-start: 1rem;
 
 aside {
   border: solid 1px #396F74;
+  border-left: none;
 
   position: absolute;
   top: 110px;

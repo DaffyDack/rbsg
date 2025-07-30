@@ -23,7 +23,6 @@ console.log('url(' + imgW.imgUrl + '/' + infoProfile.img + ')')
   <div class="title">
     
       <div class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + infoProfile.img + ')' }"></div>
-        <!-- <img src=`url + ${imgW.imgUrl} + '/' + ${infoProfile.img}`/> -->
           <div class="status">
             <div class="rating">
               <span class="el_rating">Senior </span>
