@@ -76,7 +76,7 @@ const userTabs: Ref<UserTab[]> = ref([
                             <img src="../assets/telegram.svg" alt="telegram" width="46px" />
                         </div>
                       </a>
-                    <a href="" >
+                    <a href="https://outlook.live.com/mail/0/deeplink/compose?to={{infoProfile.email}}" >
                          <div class="social_button">
                             <img src="../assets/email.svg" alt="email" width="46px" />
                          </div>

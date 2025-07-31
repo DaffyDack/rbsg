@@ -60,10 +60,8 @@ console.log('url(' + imgW.imgUrl + '/' + infoProfile.img + ')')
       border-radius: 100%;
       overflow: hidden;
     }
-  
-
-    
-    .el_rating {
+ 
+        .el_rating {
       padding: 10px;
     }
 
