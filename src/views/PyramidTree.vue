@@ -81,18 +81,67 @@ interface userInfo {
 const users = ref()
 
 
+const department = ref([
+    { name: 'Администрация', code: '0', user: 'Сухов Д.И.' },
+    { name: 'Административный отдел', code: '0-0', user: 'Name' },
+    { name: 'Финансовый отдел', code: '0-1', user: 'Name' },
+    { name: 'Маркетинговый отдел', code: '0-2', user: 'Name' },
+    { name: 'Коммерческий отдел', code: '0-3', user: 'Name' },
+    { name: 'Отдел кадров', code: '0-0-0', user: 'Name' },
+    { name: 'Юридический отдел', code: '0-0-1', user: 'Name' },
+    { name: 'Отдел АХО', code: '0-0-2', user: 'Name' },
+    { name: 'Бухгалтерия', code: '0-1-0', user: 'Люся' },
+    { name: 'Бухгалтерия', code: '0-1-1', user: 'Петя' },
+    { name: 'Бухгалтерия', code: '0-1-2', user: 'Лена' },
+    { name: 'Бухгалтерия', code: '0-1-3', user: 'Даня' },
+    { name: 'Бухгалтерия', code: '0-1-4', user: 'Вася' },
+    { name: 'IT отдел', code: '0-2-0', user: 'Name' },
+    { name: 'Отдел маркетинго', code: '0-2-1', user: 'Name' },
+    { name: 'Отдел развития', code: '0-3-0', user: 'Name' },
+    { name: 'Отдел продаж KRAFTER', code: '0-3-1', user: 'Name' },
+    { name: 'Отдел продаж листовой HPL', code: '0-3-2', user: 'Name' },
+    { name: 'Отдел продаж KRAFTER Мебель', code: '0-3-3', user: 'Name' },
+    { name: 'Отдел продаж Атэри', code: '0-3-4', user: 'Name' },
+    { name: 'Отдел продаж фурнитура', code: '0-3-5', user: 'Name' },
+    { name: 'Тендерный отдел', code: '0-3-6', user: 'Name' },
+    { name: 'Сметно-договорной отдел', code: '0-3-7', user: 'Name' },
+])
 
+// function buildTree(departments: any) {
+//     const map: Record<string, TreeNode> = {};
+//     const tree: TreeNode[] = [];
+//     departments.forEach((department: { code: any; email: any, firstname: string, lastname: string, gender: string }) => {
+//         map[department.code] = {
+//             key: department.code,
+//             children: [],
+//             label: `${department.firstname}`,
+//             data: department
+//         };
+//     });
+
+//     departments.forEach((department: { code: any; }) => {
+//         const { code } = department;
+//         const parentCode = code.split('-').slice(0, -1).join('-');
+
+//         if (parentCode in map) {
+//             map[parentCode].children.push(map[code]);
+//         } else {
+//             tree.push(map[code]);
+//         }
+//     });
+
+//     return tree;
+// }
 
 function buildTree(departments: any) {
     const map: Record<string, TreeNode> = {};
     const tree: TreeNode[] = [];
-    departments.forEach((department: { code: any; email: any, firstname: string, lastname: string, gender: string }) => {
+    departments.forEach((department: { code: any; name: string, user: string }) => {
         map[department.code] = {
             key: department.code,
             children: [],
-            label: `${department.firstname} (${department.department})`,
-            data: department,
-            // icon: `pi pi-fw pi-${department.gender === "М" ? 'mars' : 'venus'}`,
+            label: `${department.name} (${department.user})`,
+            data: department
         };
     });
 
@@ -110,7 +159,7 @@ function buildTree(departments: any) {
     return tree;
 }
 const startBuild = () => {
-    users.value = buildTree(treeUsers);
+    users.value = buildTree(department.value);
 };
 const selectUser = (e: any) => {
     userInfo.value.firstname = e.data.firstname
@@ -141,7 +190,7 @@ console.log(store.user, 'pyramid tree', JSON.parse(localStorage.getItem('users')
                 <b @click="selectUser(slotProps.node)">{{ slotProps.node.label }}</b>
             </template>
         </Tree>
-        <Dialog v-model:visible="visible" modal header="Профиль сотрудника" :style="{ width: '80%' }">
+        <Dialog v-model:visible="visible" modal header="Функционал" :style="{ width: '80%' }">
             <div class="flex">
                 <div>
                     <div class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + userInfo.img + ')' }">
