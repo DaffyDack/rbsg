@@ -430,6 +430,15 @@ const SalariesAndPayments = sequelize.define('salaries_and_payments', {
   },
 })
 
+const Department = sequelize.define('department', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  fullname: { type: DataTypes.STRING, defaultValue: 'fullname' },
+  department: { type: DataTypes.STRING, defaultValue: 'department' },
+  post: { type: DataTypes.STRING, defaultValue: 'post' },
+  department_description: { type: DataTypes.STRING, defaultValue: 'department_description' },
+  department_affiliation: { type: DataTypes.STRING, defaultValue: 'department_affiliation' },
+})
+
 User.hasOne(Admins)
 Admins.belongsTo(User)
 WorkingContacts.belongsTo(User)
@@ -449,4 +458,5 @@ module.exports = {
   HRProfile,
   FinancialResponsibility,
   SalariesAndPayments,
+  Department,
 }

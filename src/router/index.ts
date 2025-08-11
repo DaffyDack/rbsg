@@ -5,6 +5,8 @@ import UsersList from '@/views/UsersList.vue'
 import PageTest from '@/views/PageTest.vue'
 import SettingProfile from '@/views/SettingProfile.vue'
 import PyramidManagement from '@/views/PyramidManagement.vue'
+import CreatingDepartment from '@/views/CreatingDepartment.vue'
+
 import PyramidTree from '@/views/PyramidTree.vue'
 
 const router = createRouter({
@@ -47,6 +49,11 @@ const router = createRouter({
       path: '/PyramidTree',
       name: 'PyramidTree',
       component: PyramidTree,
+    },
+    {
+      path: '/CreatingDepartment',
+      name: 'CreatingDepartment',
+      component: CreatingDepartment,
     },
     {
       path: '/projects/:id',

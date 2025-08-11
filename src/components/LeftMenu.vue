@@ -47,6 +47,12 @@ function ExitStatus() {
           </div>
           <span v-show="isSidebarOpen" class="namePage">Мои проекты</span>
         </RouterLink>
+        <RouterLink to="/CreatingDepartment">
+          <div class="flex items-center justify-center">
+            <i class="pi pi-list-check"></i>
+          </div>
+          <span v-show="isSidebarOpen" class="namePage">Создание отдела</span>
+        </RouterLink>
       </li>
       <li>
         <RouterLink to="/MyTasks">
