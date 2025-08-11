@@ -10,6 +10,10 @@ export const creadetDepartment = async (department: any) => {
   const { data } = await $host.post('api/user/creadetdepartment', department)
   return data
 }
+export const fetchDepartment = async () => {
+  const { data } = await $host.get('api/user/departments')
+  return data
+}
 
 export const login = async (email: string, password: string) => {
   const { data } = await $host.post('api/user/login', { email, password })
@@ -24,7 +28,6 @@ export const check = async () => {
 }
 
 export const fetchUzers = async () => {
-  console.log('функция запустилась')
   const { data } = await $host.get('api/user/users')
   return data
 }

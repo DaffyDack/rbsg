@@ -6,6 +6,7 @@ const departmentController = require('../controllers/departmentController')
 const authMiddleware = require('../middleware/authMiddleware')
 
 router.post('/creadetdepartment', departmentController.creadetDepartment)
+router.get('/departments', departmentController.fetchDepartment)
 router.post('/registration', userController.registration)
 router.get('/users', userController.fetchUzers)
 router.post('/login', userController.login)

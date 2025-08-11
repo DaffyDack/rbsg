@@ -18,6 +18,10 @@ class DepartmentController {
       console.log('что то с департаментом не то')
     }
   }
+  async fetchDepartment(req, res) {
+    const department = await Department.findAll()
+    return res.json(department)
+  }
 }
 
 module.exports = new DepartmentController()
