@@ -1,23 +1,54 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import Select from 'primevue/select'
+import Tree from 'primevue/tree';
 import { creadetDepartment, fetchDepartment } from '../http/userAPI.js'
 
 const usersString = ref()
 const departments = ref()
+const departmentTree = ref()
+const expandedKeys = ref({
+    '0': true,
+    '0-0': true,
+    '0-1': true,
+    '0-2': true,
+    '0-3': true,
+    '0-4': true,
+    '0-5': true,
+    '0-6': true,
+    '0-7': true,
+    '0-8': true,
+    '0-9': true,
+    '0-10': true,
+    '0-11': true,
+    '0-12': true,
+    '0-13': true,
+    '0-14': true,
+});
+
+interface TreeNode {
+    key: string;
+    label: string
+    data: object
+    // icon: string
+    children: TreeNode[];
+}
+
 interface Form {
     fullname: any,
     department: string,
     post: string
     department_description: string,
-    department_affiliation: any
+    department_affiliation: any,
+    code: string
 }
 const form = ref<Form>({
     fullname: '',
     department: '',
     post: '',
     department_description: '',
-    department_affiliation: ''
+    department_affiliation: '',
+    code: '',
 })
 const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
@@ -25,30 +56,39 @@ const addeduser = ref<boolean>(false)
 
 const existingDepartments = ref([
     { name: 'Администрация', code: '0' },
-    { name: 'Тендерный отдел', code: '0-0' }
+    { name: 'Тендерный отдел', code: '0-0' },
+    { name: 'Юр отдел', code: '0-0-0' }
 ])
 
 onMounted(() => {
     usersString.value = JSON.parse(localStorage.getItem('users') ?? '[]')
-    fetchDepartment().then((data) => departments.value = data)
+    fetchDepartment().then((data) => {
+        departments.value = data
+        startBuild()
+    })
 })
 function set() {
     setTimeout(() => {
         addeduser.value = false
     }, 2000)
 }
-const RegistrationDepartment = async (formDepartment: any) => {
+const RegistrationDepartment = async () => {
     try {
         const formData = new FormData()
         formData.append('fullname', form.value.fullname.firstname)
-        formData.append('department', form.value.department)
+        formData.append('department', (form.value.department).toLowerCase())
         formData.append('post', form.value.post)
         formData.append('department_description', form.value.department_description)
-        formData.append('department_affiliation', form.value.department_affiliation.name)
+        formData.append('department_affiliation', (form.value.department_affiliation.name).toLowerCase())
+        formData.append('code', form.value.department_affiliation.code)
         const response = await creadetDepartment(formData)
         condition.value = false
         addeduser.value = true
         set()
+        fetchDepartment().then((data) => {
+            departments.value = data
+            startBuild()
+        })
     } catch (e: any) {
         messageCondition.value = e.response.data.message
         condition.value = true
@@ -56,9 +96,39 @@ const RegistrationDepartment = async (formDepartment: any) => {
 }
 
 const creadetDepartmentForm = () => {
-    RegistrationDepartment(form.value)
-
+    departments.value = null
+    RegistrationDepartment()
 }
+
+
+function buildTree(departments: any) {
+    const map: Record<string, TreeNode> = {};
+    const tree: TreeNode[] = [];
+    departments.forEach((department: { code: any; fullname: string, department: string }) => {
+        map[department.code] = {
+            key: department.code,
+            children: [],
+            label: `${department.fullname} (${department.department})`,
+            data: department
+        };
+    });
+
+    departments.forEach((department: { code: any; }) => {
+        const { code } = department;
+        const parentCode = code.split('-').slice(0, -1).join('-');
+
+        if (parentCode in map) {
+            map[parentCode].children.push(map[code]);
+        } else {
+            tree.push(map[code]);
+        }
+    });
+
+    return tree;
+}
+const startBuild = () => {
+    departmentTree.value = buildTree(departments.value);
+};
 
 </script>
 <template>
@@ -100,6 +170,11 @@ const creadetDepartmentForm = () => {
             </div>
         </div>
         <div>
+
+            <Tree :value="departmentTree" :expandedKeys="expandedKeys" filterMode="lenient" class="w-full md:w-[100%]">
+            </Tree>
+
+            <!-- 
             <h1 style="color: #fff;">
                 Тут рисуем древо отделов
                 <ul>
@@ -112,7 +187,7 @@ const creadetDepartmentForm = () => {
                         <div>{{ item.department_description }}</div>
                     </li>
                 </ul>
-            </h1>
+            </h1> -->
         </div>
     </div>
 </template>

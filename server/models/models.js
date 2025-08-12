@@ -20,7 +20,7 @@ const User = sequelize.define('user', {
   workphone: { type: DataTypes.STRING, defaultValue: 'workPhone' },
   telegram: { type: DataTypes.STRING, defaultValue: 'telegram' },
   datebirth: { type: DataTypes.STRING, defaultValue: 'dateBirth' },
-  code: { type: DataTypes.STRING, defaultValue: 'dateBirth' },
+  code: { type: DataTypes.STRING, defaultValue: '0' },
   img: { type: DataTypes.STRING, allowNull: false },
 })
 

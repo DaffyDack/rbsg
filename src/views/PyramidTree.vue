@@ -140,7 +140,7 @@ function buildTree(departments: any) {
         map[department.code] = {
             key: department.code,
             children: [],
-            label: `${department.name} (${department.user})`,
+            label: `${department.firstname} (${department.user})`,
             data: department
         };
     });
@@ -159,7 +159,7 @@ function buildTree(departments: any) {
     return tree;
 }
 const startBuild = () => {
-    users.value = buildTree(department.value);
+    users.value = buildTree(treeUsers);
 };
 const selectUser = (e: any) => {
     userInfo.value.firstname = e.data.firstname

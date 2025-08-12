@@ -101,6 +101,7 @@ const positions = ref([
 ])
 const department = ref([
     { name: 'Администрация', code: '0' },
+
     { name: 'Административный отдел', code: '0-0' },
     { name: 'Финансовый отдел', code: '0-1' },
     { name: 'Маркетинговый отдел', code: '0-2' },
