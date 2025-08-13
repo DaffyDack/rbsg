@@ -347,7 +347,7 @@ console.log(addedProducts)
                           <th>
                          
                             <div class="buttonAdd" v-if="selectedItem">
-                                <button @click="addProductList">Добавить</button>
+                                <button class="button-price" @click="addProductList">Добавить</button>
                              </div>
                     </th>
                      </tr>
@@ -452,18 +452,22 @@ img {
     height: 100vh;
 }
 
-button {
+.button-price {
     background:  linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
 linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
 linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
 linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
 linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
 
+    justify-content: center;
+    
+    min-width: 70px;
+    height: calc(70px * 1.2);
+    width: auto;
     border-radius: 50%;
 }
 
-button:hover {
-      background-color: rgb(255, 77, 45); 
+.button-price:hover {
       box-shadow: 0 0 10px rgba(0, 138, 251, 0.8);
       transition-delay:0s
 }

@@ -51,7 +51,7 @@ const {items} = defineProps(['items']);
                 <th>{{item.calculateDealerPrice}}</th>
                 <tr>
                     <div class="buttonAdd">
-                        <button @click="$emit('remove', index)">X</button>
+                        <button class="button-price" @click="$emit('remove', index)">X</button>
                     </div>
                 </tr>
          </tr>
@@ -77,21 +77,28 @@ const {items} = defineProps(['items']);
 </template>
 
 <style coped lang="scss">
-button {
-    width: 80px;
-    border-radius: 50%;
-       background:  linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
-                    linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-                    linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-                    linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-                    linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
+.button-price {
+    background:  linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
+linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
 
+    border-radius: 50%;
+    
+    justify-content: center;
+    
+    min-width: 70px;
+    height: calc(70px * 1.2);
+    width: auto;
+    border-radius: 50%;
 }
-button:hover {
-      background-color: rgb(255, 77, 45); 
+.button-price:hover {
+      
       box-shadow: 0 0 10px rgba(0, 138, 251, 0.8);
       transition-delay:0s
 }
+
 .buttonAdd {
     display: flex;
     justify-content: center;
