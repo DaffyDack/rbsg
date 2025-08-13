@@ -97,6 +97,7 @@ const RegistrationUser = async (formData: any) => {
     addeduser.value = true
     set()
     fetchUzers().then((data) => store.registrationCompleted(data))
+    fetchUzers().then((data) => localStorage.setItem('users', JSON.stringify(data)))
     AllowCleaning.value = false
   } catch (e: any) {
     messageCondition.value = e.response.data.message

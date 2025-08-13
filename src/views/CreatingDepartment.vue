@@ -1,12 +1,15 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import Select from 'primevue/select'
+import MultiSelect from 'primevue/multiselect';
 import Tree from 'primevue/tree';
+import Dialog from 'primevue/dialog';
 import { creadetDepartment, fetchDepartment } from '../http/userAPI.js'
 
 const usersString = ref()
 const departments = ref()
 const departmentTree = ref()
+const visible = ref(false);
 const expandedKeys = ref({
     '0': true,
     '0-0': true,
@@ -40,7 +43,12 @@ interface Form {
     post: string
     department_description: string,
     department_affiliation: any,
+    participants: any
     code: string
+}
+interface Item {
+    department: string;
+    code: string;
 }
 const form = ref<Form>({
     fullname: '',
@@ -48,23 +56,39 @@ const form = ref<Form>({
     post: '',
     department_description: '',
     department_affiliation: '',
+    participants: '',
     code: '',
 })
 const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
 const addeduser = ref<boolean>(false)
+const departmentInfo = ref<boolean>(false)
+const existingDepartments = ref<Item[]>([]);
 
-const existingDepartments = ref([
-    { name: 'Администрация', code: '0' },
-    { name: 'Тендерный отдел', code: '0-0' },
-    { name: 'Юр отдел', code: '0-0-0' }
-])
+const selectUser = (e: any) => {
+    departmentInfo.value = e.data.department_description
+    visible.value = true
+}
+
+function getUniqueItems(arr: Item[]): Item[] {
+    const uniqueItemsMap = new Map<string, Item>();
+    arr.forEach(item => {
+        if (!uniqueItemsMap.has(item.department)) {
+            uniqueItemsMap.set(item.department, item);
+        }
+    });
+
+    return Array.from(uniqueItemsMap.values());
+}
+
+
 
 onMounted(() => {
     usersString.value = JSON.parse(localStorage.getItem('users') ?? '[]')
     fetchDepartment().then((data) => {
         departments.value = data
         startBuild()
+        existingDepartments.value = getUniqueItems(departments.value);
     })
 })
 function set() {
@@ -72,6 +96,9 @@ function set() {
         addeduser.value = false
     }, 2000)
 }
+const part = ref({
+
+})
 const RegistrationDepartment = async () => {
     try {
         const formData = new FormData()
@@ -79,8 +106,9 @@ const RegistrationDepartment = async () => {
         formData.append('department', (form.value.department).toLowerCase())
         formData.append('post', form.value.post)
         formData.append('department_description', form.value.department_description)
-        formData.append('department_affiliation', (form.value.department_affiliation.name).toLowerCase())
+        formData.append('department_affiliation', (form.value.department_affiliation.department).toLowerCase())
         formData.append('code', form.value.department_affiliation.code)
+        // formData.append('participants', form.value.participants.toString())
         const response = await creadetDepartment(formData)
         condition.value = false
         addeduser.value = true
@@ -88,6 +116,7 @@ const RegistrationDepartment = async () => {
         fetchDepartment().then((data) => {
             departments.value = data
             startBuild()
+            existingDepartments.value = getUniqueItems(departments.value);
         })
     } catch (e: any) {
         messageCondition.value = e.response.data.message
@@ -108,7 +137,7 @@ function buildTree(departments: any) {
         map[department.code] = {
             key: department.code,
             children: [],
-            label: `${department.fullname} (${department.department})`,
+            label: `${department.department} (${department.fullname}) `,
             data: department
         };
     });
@@ -134,24 +163,30 @@ const startBuild = () => {
 <template>
     <div>
         <div>
-            <div class="group_form-control-four">
+            <div class="group_form-control-five">
                 <div class="form-control">
                     <label for="jobContactTel" style="color: #fff;">Название отдела</label>
                     <input v-model="form.department" type="text" id="jobContactTel" placeholder="Название отдела" />
                 </div>
                 <div class="form-control">
-                    <label for="participant" style="color: #fff;">Участник</label>
+                    <label for="participant1" style="color: #fff;">Руководитель</label>
                     <Select v-model="form.fullname" id="Participant" :options="usersString" optionLabel="firstname"
-                        placeholder="Участник" class="w-full" />
+                        placeholder="Руководитель" class="w-full" />
                 </div>
                 <div class="form-control">
                     <label for="post" style="color: #fff;">Должность</label>
                     <input v-model="form.post" type="text" id="post" placeholder="Должность" />
                 </div>
                 <div class="form-control">
+                    <label for="participants" style="color: #fff;">Участники</label>
+                    <MultiSelect v-model="form.participants" id="participants" :options="usersString"
+                        optionLabel="firstname" filter placeholder="Участник" :maxSelectedLabels="3"
+                        class="w-full md:w-80" />
+                </div>
+                <div class="form-control">
                     <label for="participant" style="color: #fff;">Пренадлежность к отделу</label>
                     <Select v-model="form.department_affiliation" id="Participant" :options="existingDepartments"
-                        optionLabel="name" placeholder="Пренадлежность к отделу" class="w-full" />
+                        optionLabel="department" placeholder="Пренадлежность к отделу" class="w-full" />
                 </div>
             </div>
             <div class="group_form-control">
@@ -161,7 +196,7 @@ const startBuild = () => {
                         placeholder="Описание обязаностей"></textarea>
                 </div>
             </div>
-            <div class="group_form-control">
+            <div class="group_form-control mb-5">
                 <div>
                     <div v-if="addeduser" class="text-green-600 mb-5">Отдел добавлен!</div>
                     <div v-if="condition" class="text-red-600 mb-5">{{ messageCondition }}</div>
@@ -170,24 +205,14 @@ const startBuild = () => {
             </div>
         </div>
         <div>
-
             <Tree :value="departmentTree" :expandedKeys="expandedKeys" filterMode="lenient" class="w-full md:w-[100%]">
+                <template #default="slotProps">
+                    <b @click="selectUser(slotProps.node)">{{ slotProps.node.label }}</b>
+                </template>
             </Tree>
-
-            <!-- 
-            <h1 style="color: #fff;">
-                Тут рисуем древо отделов
-                <ul>
-                    <li class="department" v-for="item in departments">
-                        Имя:
-                        <div>{{ item.fullname }}</div>
-                        Отдел:
-                        <div>{{ item.department }}</div>
-                        Описание:
-                        <div>{{ item.department_description }}</div>
-                    </li>
-                </ul>
-            </h1> -->
+            <Dialog v-model:visible="visible" modal header="Описание обязаностей" :style="{ width: '80%' }">
+                {{ departmentInfo }}
+            </Dialog>
         </div>
     </div>
 </template>

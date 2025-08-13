@@ -70,14 +70,14 @@ function ExitStatus() {
           <span v-show="isSidebarOpen" class="namePage">Профиль</span>
         </RouterLink>
       </li>
-      <li>
+      <!-- <li>
         <RouterLink to="/PyramidManagement">
           <div class="flex items-center justify-center">
             <i class="pi pi-share-alt"></i>
           </div>
           <span v-show="isSidebarOpen" class="namePage">Пирамида управления</span>
         </RouterLink>
-      </li>
+      </li> -->
       <li>
         <RouterLink to="/PyramidTree">
           <div class="flex items-center justify-center">

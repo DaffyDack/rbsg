@@ -136,7 +136,7 @@ const department = ref([
 function buildTree(departments: any) {
     const map: Record<string, TreeNode> = {};
     const tree: TreeNode[] = [];
-    departments.forEach((department: { code: any; name: string, user: string }) => {
+    departments.forEach((department: { code: any; firstname: string, user: string }) => {
         map[department.code] = {
             key: department.code,
             children: [],
