@@ -2,26 +2,17 @@
   import { ref,computed } from 'vue'
 const {items} = defineProps(['items']);
 
-
-
-
-  
     const totalCostList = computed(() => {
-        
-          return items.reduce((acc, product) => {
+                  return items.reduce((acc, product) => {
                 return acc + parseFloat(product.totalCost); 
             }, 0).toFixed(2); 
-          
-     
+      
     });
 
       const calculateSmallWholesaleList = computed(() => {
-     
         return items.reduce((acc, product) => {
                 return acc + parseFloat(product.calculateSmallWholesalePrice); 
             }, 0).toFixed(2); 
-          
-      
     });
 
   const calculateWholesaleList = computed(() => {
@@ -36,9 +27,7 @@ const {items} = defineProps(['items']);
        return items.reduce((acc, product) => {
                 return acc + parseFloat(product.calculateDealerPrice); 
             }, 0).toFixed(2); 
-          
-       
-    });
+       });
     console.log(totalCostList,calculateDealerList)
 
 </script>
