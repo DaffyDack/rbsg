@@ -49,7 +49,7 @@ let age = countFullYaer(store.info.datebirth)
 
 
 
-   <template>
+<template>
     <div class="descriptions_profile">
         <div class="descriptions_name">
             <p class="family">
@@ -117,16 +117,16 @@ let age = countFullYaer(store.info.datebirth)
         .card_form {
          height: 164px;
          width: 164px;
-         background: green;
          margin-right: 10px;
          border-radius: 15px;
+         padding: 20px 5px;
          background:
             linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
             linear-gradient(270deg, rgba(6, 75, 131, 0.15) 14.42%, rgba(0, 138, 251, 0.15) 100%);
          display: flex;
          flex-direction:column;
          align-items: center;
-         justify-content: center;
+         justify-content: space-evenly;
          
         }
 

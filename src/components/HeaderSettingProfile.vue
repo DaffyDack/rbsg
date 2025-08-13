@@ -17,7 +17,7 @@ const infoProfile = ref({
   positions: store.info.positions,
 })
 
-console.log('url(' + imgW.imgUrl + '/' + infoProfile.img + ')')
+
 </script>
 <template>
   <div class="title">

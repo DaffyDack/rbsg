@@ -6,6 +6,7 @@ import PageTest from '@/views/PageTest.vue'
 import SettingProfile from '@/views/SettingProfile.vue'
 import PyramidManagement from '@/views/PyramidManagement.vue'
 import PyramidTree from '@/views/PyramidTree.vue'
+import Price from '@/views/Price.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -53,6 +54,12 @@ const router = createRouter({
       name: 'projects',
       component: Projects,
     },
+     {
+      path: '/Price',
+      name: 'Price',
+      component: Price,
+    },
+    
   ],
 })
 
