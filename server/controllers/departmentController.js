@@ -27,11 +27,48 @@ async function generateNewCode(parentCode) {
   return newCode
 }
 
+async function checkCodeAndGetLast() {
+  try {
+    // Проверяем наличие записи с кодом '0-0'
+    const user = await User.findOne({
+      where: {
+        code: '0-0',
+      },
+    })
+
+    if (user) {
+      console.log('Запись найдена:', user)
+      // Если запись найдена, Вы можете получить последнюю запись
+      const lastUser = await User.findOne({
+        where: {
+          code: {
+            [Op.like]: '0-%', // Получаем все записи, начинающиеся с '0-'
+          },
+        },
+        order: [['id', 'DESC']],
+      })
+
+      console.log('Последняя запись с кодом, начинающимся на "0-":', lastUser)
+    } else {
+      console.log('Запись с кодом "0-0" не найдена.')
+    }
+  } catch (error) {
+    console.error('Ошибка при выполнении запроса:', error)
+  }
+}
+
 class DepartmentController {
   async creadetDepartment(req, res) {
     try {
-      const { fullname, department, post, department_description, department_affiliation, code } =
-        req.body
+      const {
+        fullname,
+        department,
+        post,
+        department_description,
+        department_affiliation,
+        code,
+        participants,
+      } = req.body
       const newCode = await generateNewCode(code)
       const type = await Department.create({
         fullname,
@@ -40,6 +77,7 @@ class DepartmentController {
         department_description,
         department_affiliation,
         code: newCode,
+        participants,
       })
       return res.json(type)
     } catch (error) {

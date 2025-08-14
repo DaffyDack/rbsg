@@ -50,6 +50,10 @@ interface Item {
     department: string;
     code: string;
 }
+interface name {
+    firstname: string;
+}
+const selectedName = ref<name[]>([]);
 const form = ref<Form>({
     fullname: '',
     department: '',
@@ -63,10 +67,12 @@ const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
 const addeduser = ref<boolean>(false)
 const departmentInfo = ref<boolean>(false)
+const relatedToDepartment = ref<boolean>(false)
 const existingDepartments = ref<Item[]>([]);
 
-const selectUser = (e: any) => {
+const selectedDepartment = (e: any) => {
     departmentInfo.value = e.data.department_description
+    relatedToDepartment.value = e.data.participants
     visible.value = true
 }
 
@@ -108,7 +114,7 @@ const RegistrationDepartment = async () => {
         formData.append('department_description', form.value.department_description)
         formData.append('department_affiliation', (form.value.department_affiliation.department).toLowerCase())
         formData.append('code', form.value.department_affiliation.code)
-        // formData.append('participants', form.value.participants.toString())
+        formData.append('participants', form.value.participants)
         const response = await creadetDepartment(formData)
         condition.value = false
         addeduser.value = true
@@ -158,7 +164,9 @@ function buildTree(departments: any) {
 const startBuild = () => {
     departmentTree.value = buildTree(departments.value);
 };
-
+function getNamesAsString(): void {
+    form.value.participants = selectedName.value.map(item => item.firstname).join(', ');
+}
 </script>
 <template>
     <div>
@@ -179,9 +187,9 @@ const startBuild = () => {
                 </div>
                 <div class="form-control">
                     <label for="participants" style="color: #fff;">Участники</label>
-                    <MultiSelect v-model="form.participants" id="participants" :options="usersString"
-                        optionLabel="firstname" filter placeholder="Участник" :maxSelectedLabels="3"
-                        class="w-full md:w-80" />
+                    <MultiSelect v-model="selectedName" @change="getNamesAsString()" id="participants"
+                        :options="usersString" optionLabel="firstname" filter placeholder="Участник"
+                        :maxSelectedLabels="3" class="w-full md:w-80" />
                 </div>
                 <div class="form-control">
                     <label for="participant" style="color: #fff;">Пренадлежность к отделу</label>
@@ -207,11 +215,12 @@ const startBuild = () => {
         <div>
             <Tree :value="departmentTree" :expandedKeys="expandedKeys" filterMode="lenient" class="w-full md:w-[100%]">
                 <template #default="slotProps">
-                    <b @click="selectUser(slotProps.node)">{{ slotProps.node.label }}</b>
+                    <b @click="selectedDepartment(slotProps.node)">{{ slotProps.node.label }}</b>
                 </template>
             </Tree>
             <Dialog v-model:visible="visible" modal header="Описание обязаностей" :style="{ width: '80%' }">
-                {{ departmentInfo }}
+                <div>Кто в отделе: {{ relatedToDepartment }}</div>
+                <div>{{ departmentInfo }}</div>
             </Dialog>
         </div>
     </div>

@@ -435,6 +435,7 @@ const Department = sequelize.define('department', {
   fullname: { type: DataTypes.STRING, defaultValue: 'fullname' },
   department: { type: DataTypes.STRING, defaultValue: 'department' },
   post: { type: DataTypes.STRING, defaultValue: 'post' },
+  participants: { type: DataTypes.STRING, defaultValue: 'participants' },
   department_description: { type: DataTypes.STRING, defaultValue: 'department_description' },
   department_affiliation: { type: DataTypes.STRING, defaultValue: 'department_affiliation' },
   code: { type: DataTypes.STRING, defaultValue: '0' },
