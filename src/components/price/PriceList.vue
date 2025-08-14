@@ -1,6 +1,9 @@
   <script setup>
   import { ref,computed } from 'vue'
-const {items} = defineProps(['items']);
+  import Button from 'primevue/button';
+
+
+    const {items} = defineProps(['items']);
 
     const totalCostList = computed(() => {
                   return items.reduce((acc, product) => {
@@ -15,7 +18,7 @@ const {items} = defineProps(['items']);
             }, 0).toFixed(2); 
     });
 
-  const calculateWholesaleList = computed(() => {
+    const calculateWholesaleList = computed(() => {
     
          return items.reduce((acc, product) => {
                 return acc + parseFloat(product.calculateWholesalePrice); 
@@ -28,12 +31,12 @@ const {items} = defineProps(['items']);
                 return acc + parseFloat(product.calculateDealerPrice); 
             }, 0).toFixed(2); 
        });
-    console.log(totalCostList,calculateDealerList)
+   
 
 </script>
 
 <template>
-
+    
         <tr v-for="(item, index) in items":key="index">
                 <th>{{index + 1}}</th>
                 <th>фото</th>
@@ -51,7 +54,7 @@ const {items} = defineProps(['items']);
                 <th>{{item.calculateDealerPrice}}</th>
                 <tr>
                     <div class="buttonAdd">
-                        <button class="button-price" @click="$emit('remove', index)">X</button>
+                        <Button @click="$emit('remove', index)">X</Button>
                     </div>
                 </tr>
          </tr>
@@ -77,33 +80,12 @@ const {items} = defineProps(['items']);
 </template>
 
 <style coped lang="scss">
-.button-price {
-    background:  linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
-linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
-
-    border-radius: 50%;
-    
-    justify-content: center;
-    
-    min-width: 70px;
-    height: calc(70px * 1.2);
-    width: auto;
-    border-radius: 50%;
-}
-.button-price:hover {
-      
-      box-shadow: 0 0 10px rgba(0, 138, 251, 0.8);
-      transition-delay:0s
-}
 
 .buttonAdd {
     display: flex;
     justify-content: center;
-    min-width: 70px;
-    height: calc(70px * 1.2);
+    // min-width: 70px;
+    height: 50px;
     width: auto;
    
     // background: white;
@@ -122,6 +104,9 @@ linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
     height: 50px; 
     font-weight: initial;
   
+    }
+    tr {
+        width: 100%;
     }
     .trTotal {
         background: wheat;

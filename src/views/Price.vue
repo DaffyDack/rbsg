@@ -1,9 +1,10 @@
 <script setup>
 import InputNumber from 'primevue/inputnumber';
-import Dropdown from 'primevue/dropdown';
+import Dropdown  from 'primevue/dropdown';
 import { ref, computed } from "vue";
 import PriceList from '../components/price/PriceList.vue';
-
+import FloatLabel from 'primevue/floatlabel';
+import Button from 'primevue/button';
 
 const selectedName = ref(null)
 const selectedSize = ref(null);
@@ -295,187 +296,141 @@ console.log(addedProducts)
 
 <template>
     <div class="container_selected">
-
-             <table> 
-                  <thead>
-                    <tr>
-                        <th>№</th>
-                        <th>Фото</th>
-                        <th>Артикул</th>
-                        <th>Наименование декора</th>
-                        <th>Формат листа</th>
-                        <th>Толщина</th>
-                        <th>Крафт (срез)</th>
-                        <th>Финишная текстура</th>
-                        <th>Назначение</th>
-                        <th>Дополнительно</th>
-                        <th>Розница (до 5 листов)</th>
-                        <th>Мелкий опт (6 листов) скидка 10%</th>
-                        <th>Опт (от 30 листов) Скидка 20%</th>
-                        <th>Дилер Скидка 30%</th>
-                        <th></th>
-                    </tr>
-                 </thead>
-                 <tbody style="background: darkorange;">
-                     <tr>
-                        <td></td>
-                         <td>Фото</td>
-                         <td>{{getItem.article}}</td>
-                         <td >
-                             <Dropdown v-model="selectedName" :options="filteredNames" showClear optionLabel="name" placeholder="Наименование " invalid class="w-full md:w-14rem"/>
-                         </td>
-                         <td>
-                             <Dropdown v-model="selectedSize" :options="filteredSizes" showClear optionLabel="name" placeholder="Размер" invalid class="w-full md:w-14rem" />
-                         </td>
-                         <td>
-                             <Dropdown v-model="selectedThickness" :options="filteredThicknesses" showClear optionLabel="name" placeholder="Толщина" invalid class="w-full md:w-14rem" />
-                         </td>
-                         <td>{{getItem.kraft}}</td>
-                         <td>
-                             <Dropdown v-model="selectedTexture" :options="filteredTexture" showClear optionLabel="name" placeholder="Финишная текстура" invalid class="w-full md:w-14rem" />
-                         </td>
-                         <td>
-                             <Dropdown v-model="selectedPurpose" :options="filteredPurposes" showClear optionLabel="name" placeholder="Назначение" invalid class="w-full md:w-14rem" />
-                         </td>
-                         <td>
-                             <Dropdown v-model="selectedAdditional" :options="filteredAdditionals" showClear optionLabel="name" placeholder="Дополнительно"  invalid class="w-full md:w-14rem"/>
-                         </td>
-                         <td>{{totalCost}}</td>
-                         <td>{{calculateSmallWholesalePrice}}</td>
-                         <td>{{calculateWholesalePrice}}</td>
-                         <td>{{calculateDealerPrice}}</td>
-                          <th>
-                         
-                            <div class="buttonAdd" v-if="selectedItem">
-                                <button class="button-price" @click="addProductList">Добавить</button>
-                             </div>
-                    </th>
-                     </tr>
-                    
-                    </tbody>
-            </table>
-              <div class="logo">
-                <img src="../assets/krafter.svg" alt="logo" width="128px" />
-            </div>
-            <div class="table_string">
-                <table>
-                   <tbody>
-                     <PriceList :items="addedProducts" @remove="deleteProduct"/>
-                   </tbody> 
-                </table>
-                
-            </div>
+        <div class="grid-container">
           
+            
+           
+            <FloatLabel class="grid-header">
+                <Dropdown v-model="selectedName" :options="filteredNames" showClear optionLabel="name" invalid class="w-full md:w-14rem"/>
+                <label for="ac">Наименование </label>
+            </FloatLabel>
+            <FloatLabel class="grid-header">
+                <Dropdown v-model="selectedSize" :options="filteredSizes" showClear optionLabel="name"  invalid class="w-full md:w-14rem" />
+                <label for="ac">Формат листа </label>
+            </FloatLabel>
+            <FloatLabel class="grid-header">
+                <Dropdown v-model="selectedThickness" :options="filteredThicknesses" showClear optionLabel="name"  invalid class="w-full md:w-14rem" />
+                <label for="ac">Толщина</label>
+            </FloatLabel>
+            <!-- <FloatLabel class="grid-header">Крафт (срез)</FloatLabel> -->
+            <FloatLabel class="grid-header">
+                <Dropdown v-model="selectedTexture" :options="filteredTexture" showClear optionLabel="name"  invalid class="w-full md:w-14rem" />
+                <label for="ac">Финишная текстура</label>
+            </FloatLabel>
+            <FloatLabel class="grid-header">
+                <Dropdown v-model="selectedPurpose" :options="filteredPurposes" showClear optionLabel="name"  invalid class="w-full md:w-14rem" />
+                <label for="ac">Назначение</label>
+                </FloatLabel>
+            <FloatLabel class="grid-header">
+                 <Dropdown v-model="selectedAdditional" :options="filteredAdditionals" showClear optionLabel="name"  invalid class="w-full md:w-14rem"/>
+                <label for="ac">Дополнительно</label>
+            </FloatLabel>    
+        </div> 
+        <div class="grid-container">   
+                    <Button @click="addProductList">Добавить</Button>
+          
+        </div>
+
+        <div class="logo">
+            <img src="../assets/krafter.svg" alt="logo" width="128px" />
+        </div>
+
+        <div class="table_string">
+            <PriceList :items="addedProducts" @remove="deleteProduct"/>
+        </div>
     </div>
 </template>
+<style scoped>
+.p-floatlabel:has(.p-invalid) label {
+    color: white;
+    padding: 0 10px;
+}
 
-<style lang="scss">
-.p-select-label.p-placeholder {
-    font-size: small;
-    color: var(--p-select-placeholder-color);
+.p-select {
+    
+    display: inline-flex;   
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    background:  black;
+    border: 1px solid var(--p-select-border-color);
+    transition: background var(--p-select-transition-duration), color var(--p-select-transition-duration), border-color var(--p-select-transition-duration), outline-color var(--p-select-transition-duration), box-shadow var(--p-select-transition-duration);
+    border-radius: var(--p-select-border-radius);
+    outline-color: transparent;
+    box-shadow: var(--p-select-shadow);
 }
-.p-select-option-label {
-  font-size: small;  
-}
-.p-select:has(.p-select-clear-icon) .p-select-label{
-    font-size: small;  
-}
+
 </style>
 
-<style scoped lang="scss">
 
+<style lang="scss">
 
+ th, td {
+    background: white;
+    // border: 1px solid #ddd;
+    padding: 8px;
+    font-size: smaller;
+    height: 50px; 
+    font-weight: initial;
+ }
+.container_selected {
+    padding: 20px;
+}
 
-.p-10[data-v-7a7a37b1] {
-    height: 100%;
-    width: 100vw;
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); 
+    gap: 10px; 
+    background-color: none;
+
+    padding: 10px;
+}
+
+.grid-header {
+    border-radius: 10px;
+    font-weight: bold;
+    background-color: #f0f0f0; 
+    padding: 10px;
+    text-align: center;
+
+    
+    .p-select-label {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    flex: 1 1 auto;
+    width: 1%;
+    padding: var(--p-select-padding-y) var(--p-select-padding-x);
+    text-overflow: ellipsis;
+    cursor: pointer;
+    color: white ;
+    background: transparent;
+    border: 0 none;
+    outline: 0 none;
+    font-size: 1rem;
+}
+}
+.grid-item {
+    padding: 10px;
+
+    text-align: center; 
+}
+.buttonAdd {
+    display: flex;
+    justify-content: center; 
+    background-color: #f0f0f0 ;
 }
 
 .logo {
-    margin: 20px 0;
-    text-align: center;
-    color: rgb(0, 0, 0);
-    background:rgb(0, 0, 0)
-}
-
-.vue-inspector-container {
-    background: #ddd;
-}
-
-thead {
-    background: gray
-   
-}
-
-.buttonAdd {
-    display: flex;
-    justify-content: center;
-    
-    min-width: 70px;
-    height: calc(70px * 1.2);
-    width: auto;
-} 
-
-table {
-    padding: 50px;
-    width: 100%;
-    border-collapse: collapse;
+    margin-top: 20px;
+    text-align: center; /* Центрирование логотипа */
 }
 
 .table_string {
-    display: flex;
-
+    margin-top: 20px;
     width: 100%;
-    height: auto; 
-    margin-top:20px;
-    background: #f5f2f282;
-   
 }
 
 
-th, td {
-     font-weight: initial;
-    background: none;
-    border: 1px solid #ddd;
-    padding: 8px;
-    height: 50px; 
-    font-size: small;
-    // width: 100%;
-}
-
-img {
-    max-width: 100px;
-}
-
-.container_selected {
-    width: 100%;
-    height: 100vh;
-}
-
-.button-price {
-    background:  linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
-linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
-
-    justify-content: center;
-    
-    min-width: 70px;
-    height: calc(70px * 1.2);
-    width: auto;
-    border-radius: 50%;
-}
-
-.button-price:hover {
-      box-shadow: 0 0 10px rgba(0, 138, 251, 0.8);
-      transition-delay:0s
-}
-
-// @media (max-width: 600px) {
-//   .responsive-dropdown {
-//     max-width: 100%;
-//   }
-// }
 </style>
 
