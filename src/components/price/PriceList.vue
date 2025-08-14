@@ -1,9 +1,11 @@
   <script setup>
   import { ref,computed } from 'vue'
   import Button from 'primevue/button';
-
+ 
 
     const {items} = defineProps(['items']);
+
+    
 
     const totalCostList = computed(() => {
                   return items.reduce((acc, product) => {
@@ -36,8 +38,29 @@
 </script>
 
 <template>
-    
-        <tr v-for="(item, index) in items":key="index">
+        <table v-if="items.length >0">
+          <thead>
+            <tr>
+              <th>№</th>
+              <th>Фото</th>
+              <th>Артикул</th>
+              <th>Название</th>
+              <th>Размер</th>
+              <th>Толщина</th>
+              <th>Крафт</th>
+              <th>Текстура</th>
+              <th>Назначение</th>
+              <th>Дополнительно</th>
+              <th>Итого</th>
+              <th>Малый опт</th>
+              <th>Опт</th>
+              <th>Дилер</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+     
+            <tr v-for="(item, index) in items":key="index">
                 <th>{{index + 1}}</th>
                 <th>фото</th>
                 <th>{{item.article}}</th>
@@ -75,8 +98,10 @@
             <th>{{calculateDealerList}}</th> 
             <th></th>
          </tr>
-         
+        </tbody>
     
+    <Button >Скачать PDF</Button>
+    </table>
 </template>
 
 <style coped lang="scss">

@@ -297,9 +297,6 @@ console.log(addedProducts)
 <template>
     <div class="container_selected">
         <div class="grid-container">
-          
-            
-           
             <FloatLabel class="grid-header">
                 <Dropdown v-model="selectedName" :options="filteredNames" showClear optionLabel="name" invalid class="w-full md:w-14rem"/>
                 <label for="ac">Наименование </label>
@@ -393,7 +390,7 @@ console.log(addedProducts)
     padding: 10px;
     text-align: center;
 
-    
+
     .p-select-label {
     display: block;
     white-space: nowrap;
