@@ -69,6 +69,7 @@ const form = ref<Form>({
 })
 
 const errors = ref<Errors>({
+  lastname: '',
   firstname: '',
   email: '',
   password: '',
@@ -129,6 +130,7 @@ function clearForm() {
 
 const validateForm = () => {
   const validations: Array<{ field: keyof Form; message: string }> = [
+    { field: 'lastname', message: 'Фамилия обязательно' },
     { field: 'firstname', message: 'Имя обязательно' },
     { field: 'email', message: 'Email обязательно' },
     { field: 'password', message: 'Пароль обязателен' },
@@ -168,6 +170,7 @@ const CheckingProfileComponent = () => {
 defineExpose({ CheckingProfileComponent })
 watch(
   () => [
+    form.value.lastname,
     form.value.firstname,
     form.value.email,
     form.value.password,
@@ -177,6 +180,10 @@ watch(
   () => {
     if (form.value.file != '') {
       errors.value.file = ''
+    }
+    if (form.value.lastname != '') {
+      errors.value.lastname = ''
+      errors.value['lastname'] = checkLength('username', form.value.lastname, 3, 15)
     }
     if (form.value.firstname != '') {
       errors.value.firstname = ''
@@ -201,9 +208,11 @@ watch(
   <div>
     <div>
       <div class="group_form-control-five">
-        <div class="form-control">
+        <div class="form-control"
+         :class="{ error: errors.lastname, success: !errors.lastname && form.lastname != '' }">
           <label for="last_name">Фамилия</label>
           <input type="text" v-model="form.lastname" id="last_name" placeholder="Фамилия" />
+          <small v-if="errors.lastname">{{ errors.lastname }}</small>
         </div>
         <div class="form-control"
           :class="{ error: errors.firstname, success: !errors.firstname && form.firstname != '' }">

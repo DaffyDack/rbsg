@@ -1,10 +1,11 @@
 <script setup>
 import InputNumber from 'primevue/inputnumber';
 import Dropdown  from 'primevue/dropdown';
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import PriceList from '../components/price/PriceList.vue';
 import FloatLabel from 'primevue/floatlabel';
 import Button from 'primevue/button';
+import InputText from 'primevue/inputtext';
 
 const selectedName = ref(null)
 const selectedSize = ref(null);
@@ -13,7 +14,27 @@ const selectedTexture = ref(null);
 const selectedThickness = ref(null);
 const selectedAdditional = ref(null);
 const addedProducts = ref([])
+const answerApi = ref('')
 
+
+const token = "0f54e5e6b25475a140f44143c70830db"
+const urlAPpi = "https://currate.ru/api/?get=rates&pairs=USDRUB,&key=0f54e5e6b25475a140f44143c70830db";
+ const query = ref("");
+
+
+watch(query, async () => { 
+    try {
+        const res = await fetch("https://currate.ru/api/?get=rates&pairs=USDRUB,&key=0f54e5e6b25475a140f44143c70830db");
+        const data = await res.json();
+        console.log(data)
+        answerApi.value = data.answer;
+        console.log(answerApi.value);
+    } catch (error) {
+        answerApi.value = 'Ошибка! Нет доступа к API. ' + error.message;  
+        console.error(error);
+    }
+});
+    console.log(answerApi.value)
 
 const products = [
     {name: 'Белый Холодный (Cold White)', size:'1840х3670мм', thickness:'12мм', article: 'RC851XL', kraft:'Черный', texture:'SF (шагрень)', purposes:'Интерьерный стандартный', additional:'Защитная пленка'},
@@ -291,11 +312,16 @@ const clearSelections = () => {
 const deleteProduct = (index) => {
  addedProducts.value.splice(index, 1)
 }
-console.log(addedProducts)
+
 </script>
 
 <template>
     <div class="container_selected">
+        <!-- <div class="api">
+            Выбрать курс
+            <InputText v-model="query"></InputText>
+            <span class="api">{{answerApi}} тут ответ</span>
+        </div> -->
         <div class="grid-container">
             <FloatLabel class="grid-header">
                 <Dropdown v-model="selectedName" :options="filteredNames" showClear optionLabel="name" invalid class="w-full md:w-14rem"/>
@@ -428,6 +454,10 @@ console.log(addedProducts)
     width: 100%;
 }
 
-
+.api {
+    margin: 20px 0
+    ;
+    color: white;
+}
 </style>
 
