@@ -1,60 +1,81 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-const { Op } = require('sequelize')
+const { fn, col, where, Op } = require('sequelize')
 const { Department } = require('../models/models')
 
-async function generateNewCode(parentCode) {
-  // Проверяем, существует ли код
-  const existingUser = await Department.findOne({
-    where: {
-      code: {
-        [Op.like]: `${parentCode}-%`,
+let codeLength = 0
+let minLength = 0
+let maxLength = 0
+
+async function fetchAllCodesWithLength() {
+  try {
+    const codesWithLength = await Department.findAll({
+      attributes: [
+        'code', // Получаем поле code
+        [fn('LENGTH', col('code')), 'length'], // Вычисляем длину и присваиваем ей алиас 'length'
+      ],
+    })
+
+    return codesWithLength
+  } catch (error) {
+    console.error('Ошибка при получении кодов:', error)
+    throw error // Можно выбросить ошибку дальше для обработки
+  }
+}
+
+async function checkIfDepartmentExists(nameDepartment) {
+  try {
+    const existingAdmin = await Department.findOne({
+      where: {
+        department_affiliation: {
+          [Op.eq]: nameDepartment, // Проверка на равенство
+        },
       },
+    })
+    return existingAdmin !== null // Возвращаем true, если запись найдена, иначе false
+  } catch (error) {
+    console.error('Ошибка при проверке существования "nameDepartment":', error)
+    throw error // Обработка ошибки
+  }
+}
+
+async function generateNewCode(parentCode) {
+  const existingDepartment = await Department.findOne({
+    where: {
+      [Op.and]: [
+        {
+          code: {
+            [Op.like]: `${parentCode}-%`,
+          },
+        },
+        where(fn('LENGTH', col('code')), {
+          [Op.eq]: codeLength,
+          //   [Op.gte]: 6,
+          //   [Op.lte]: 7,
+        }),
+      ],
     },
     order: [['code', 'DESC']],
   })
   let newCode
 
-  if (existingUser) {
-    const lastCode = existingUser.code
+  if (existingDepartment) {
+    // const lastCode = existingDepartment.code
+    // const parts = lastCode.split('-')
+    // const lastNumber = parseInt(parts.pop(), 10) + 1
+    // parts.push(lastNumber)
+    // newCode = parts.join('-')
+    // console.log(newCode, 'то что получилось')
+    const lastCode = existingDepartment.code
     const parts = lastCode.split('-')
-    const lastNumber = parseInt(parts.pop(), 10) + 1
-    parts.push(lastNumber)
+    const lastNumber = parseInt(parts[parts.length - 1], 10) + 1 // Получаем последнее число без удаления из массива
+    parts.pop() // Убираем последнее число из массива
+    parts.push(lastNumber) // Добавляем увеличенное число обратно в массив
     newCode = parts.join('-')
+    console.log(lastNumber, 'Смотрим последнее число', lastCode, parts, newCode)
   } else {
     newCode = `${parentCode}-0`
   }
-
   return newCode
-}
-
-async function checkCodeAndGetLast() {
-  try {
-    // Проверяем наличие записи с кодом '0-0'
-    const user = await User.findOne({
-      where: {
-        code: '0-0',
-      },
-    })
-
-    if (user) {
-      console.log('Запись найдена:', user)
-      // Если запись найдена, Вы можете получить последнюю запись
-      const lastUser = await User.findOne({
-        where: {
-          code: {
-            [Op.like]: '0-%', // Получаем все записи, начинающиеся с '0-'
-          },
-        },
-        order: [['id', 'DESC']],
-      })
-
-      console.log('Последняя запись с кодом, начинающимся на "0-":', lastUser)
-    } else {
-      console.log('Запись с кодом "0-0" не найдена.')
-    }
-  } catch (error) {
-    console.error('Ошибка при выполнении запроса:', error)
-  }
 }
 
 class DepartmentController {
@@ -69,6 +90,12 @@ class DepartmentController {
         code,
         participants,
       } = req.body
+      codeLength = code.length + 3
+      minLength = code.length
+      maxLength = code.length
+      const nameDepartment = await checkIfDepartmentExists(department_affiliation)
+      //   if (nameDepartment)
+      console.log(nameDepartment)
       const newCode = await generateNewCode(code)
       const type = await Department.create({
         fullname,
@@ -81,7 +108,7 @@ class DepartmentController {
       })
       return res.json(type)
     } catch (error) {
-      console.log('что то с департаментом не то')
+      console.log('что то с департаментом не то', error)
     }
   }
   async fetchDepartment(req, res) {
