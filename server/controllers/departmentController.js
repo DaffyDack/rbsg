@@ -90,9 +90,9 @@ class DepartmentController {
         code,
         participants,
       } = req.body
-      codeLength = code.length + 3
+      codeLength = code.length + 2
       minLength = code.length
-      maxLength = code.length
+      maxLength = code.length + 3
       const nameDepartment = await checkIfDepartmentExists(department_affiliation)
       //   if (nameDepartment)
       console.log(nameDepartment)
