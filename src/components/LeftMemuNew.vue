@@ -105,7 +105,6 @@ const isSidebarOpen = shallowRef(false)
 const name = ref(JSON.parse(localStorage.getItem('role') || ''))
 const avatar = ref({ img: store.info.img })
 
-
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
 }
