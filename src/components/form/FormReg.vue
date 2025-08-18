@@ -230,7 +230,6 @@ const errorProfile = (e: any, tr: boolean) => {
   </div>
 </template>
 <style lang="scss">
-
 .wrapper_setting_profile {
   .p-tablist-tab-list {
     background: none !important;

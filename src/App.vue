@@ -49,7 +49,7 @@ function toggleSidebar() {
         <Reg />
       </div>
       <div v-else class="wrapper flex items-stretch">
-             <div  >
+        <div>
           <LeftMenu :key="componentKey" @counter-event="incrCounter" />
         </div>
         <div class="p-10 w-[100%] wrapperRouter">
@@ -70,11 +70,11 @@ function toggleSidebar() {
 }
 
 .wrapper {
-  background-color: #000;
+  background-color: #000E1A;
   // background: linear-gradient(45deg,
   //     rgb(0, 0, 0)100%,
   //     // rgba(7, 62, 137, 1) 35%,
-      
+
   //     #008AFB 100% );
 }
 
@@ -84,7 +84,7 @@ $sidebar-padding-inline-start: 1rem;
 
 .p-10 {
   padding: 50px 50px 50px 70px;
-  
+
 }
 
 ul {
