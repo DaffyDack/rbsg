@@ -209,7 +209,7 @@ aside {
   border: solid 1px #396F74;
   border-left: none;
 
-  position: absolute;
+  position: fixed;
   top: 110px;
   border-radius: 0 15px 15px 0;
   z-index: 10;
