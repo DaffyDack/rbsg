@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, shallowRef } from 'vue'
 import { RouterView } from 'vue-router'
 import Reg from './components/RegComponents.vue'
 import LeftMenu from './components/LeftMenu.vue'
@@ -7,11 +7,12 @@ import { useCounterStore } from './stores/counter'
 import { useUsersStore } from './stores/users'
 import { check } from './http/userAPI'
 
+
 import ProgressSpinner from 'primevue/progressspinner'
 
 const store = useCounterStore()
 const store1 = useUsersStore()
-
+const isSidebarOpen = shallowRef(false)
 const componentKey = ref(0)
 const loading = ref(true)
 
@@ -33,6 +34,9 @@ onMounted(() => {
 function incrCounter() {
   componentKey.value++
 }
+function toggleSidebar() {
+  isSidebarOpen.value = !isSidebarOpen.value
+}
 </script>
 
 <template>
@@ -45,7 +49,7 @@ function incrCounter() {
         <Reg />
       </div>
       <div v-else class="wrapper flex items-stretch">
-        <div>
+             <div  >
           <LeftMenu :key="componentKey" @counter-event="incrCounter" />
         </div>
         <div class="p-10 w-[100%] wrapperRouter">
@@ -59,41 +63,28 @@ function incrCounter() {
 <style scoped lang="scss">
 @use './assets/scss/colors' as clr;
 
-.wrapperRouter {
-  height: 100vh;
-  overflow: scroll;
-}
+
 
 .namePage {
   min-width: 100px;
 }
 
 .wrapper {
-  background: linear-gradient(45deg,
-      rgba(86, 0, 60, 1) 0%,
-      rgba(7, 62, 137, 1) 35%,
-      rgba(41, 182, 253, 1) 100%);
+  background-color: #000;
+  // background: linear-gradient(45deg,
+  //     rgb(0, 0, 0)100%,
+  //     // rgba(7, 62, 137, 1) 35%,
+      
+  //     #008AFB 100% );
 }
 
 $sidebar-width: 4rem;
 $toggle-duration: 300ms;
 $sidebar-padding-inline-start: 1rem;
 
-aside {
-  color: #e3e1e1;
-  background: rgba(255, 255, 255, 0.2); // Make sure this color has an opacity of less than 1
-  backdrop-filter: blur(1px);
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  padding-block: 1rem;
-  transition: all $toggle-duration;
-  width: $sidebar-width;
-  overflow: hidden;
-}
-
-aside[vue\:is-open='true'] {
-  width: 3 * $sidebar-width;
+.p-10 {
+  padding: 50px 50px 50px 70px;
+  
 }
 
 ul {

@@ -32,12 +32,15 @@
   grid-template-areas: '. . .';
 }
 .group_form-control-two {
-  display: grid;
-  grid-auto-flow: row dense;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1.5fr;
+  display: flex;
+  width:100%;
+  height: 100%;
+
+  // grid-auto-flow: row dense;
+  // grid-template-columns: 1fr 1fr;
+  // grid-template-rows: 1.5fr;
   gap: 10px 10px;
-  grid-template-areas: '. . ';
+  // grid-template-areas: '. . ';
 }
 .form-control {
   padding-bottom: 20px;

@@ -438,7 +438,7 @@ const Department = sequelize.define('department', {
   participants: { type: DataTypes.STRING, defaultValue: 'participants' },
   department_description: { type: DataTypes.STRING, defaultValue: 'department_description' },
   department_affiliation: { type: DataTypes.STRING, defaultValue: 'department_affiliation' },
-  code: { type: DataTypes.STRING, defaultValue: '0' },
+  code: { type: DataTypes.STRING, defaultValue: '0-0' },
 })
 
 User.hasOne(Admins)

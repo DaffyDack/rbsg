@@ -112,7 +112,7 @@ const RegistrationDepartment = async () => {
         formData.append('department', (form.value.department).toLowerCase())
         formData.append('post', form.value.post)
         formData.append('department_description', form.value.department_description)
-        formData.append('department_affiliation', form.value.department_affiliation == '' ? 'Администрация' : (form.value.department_affiliation.department).toLowerCase())
+        formData.append('department_affiliation', form.value.department_affiliation == '' ? 'администрация' : (form.value.department_affiliation.department).toLowerCase())
         formData.append('code', form.value.department_affiliation == '' ? '0-0' : form.value.department_affiliation.code)
         formData.append('participants', form.value.participants)
         const response = await creadetDepartment(formData)

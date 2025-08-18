@@ -5,22 +5,7 @@ const { Department } = require('../models/models')
 let codeLength = 0
 let minLength = 0
 let maxLength = 0
-
-async function fetchAllCodesWithLength() {
-  try {
-    const codesWithLength = await Department.findAll({
-      attributes: [
-        'code', // Получаем поле code
-        [fn('LENGTH', col('code')), 'length'], // Вычисляем длину и присваиваем ей алиас 'length'
-      ],
-    })
-
-    return codesWithLength
-  } catch (error) {
-    console.error('Ошибка при получении кодов:', error)
-    throw error // Можно выбросить ошибку дальше для обработки
-  }
-}
+let numberOfDashes = 0
 
 async function checkIfDepartmentExists(nameDepartment) {
   try {
@@ -47,31 +32,41 @@ async function generateNewCode(parentCode) {
             [Op.like]: `${parentCode}-%`,
           },
         },
-        where(fn('LENGTH', col('code')), {
-          [Op.eq]: codeLength,
-          //   [Op.gte]: 6,
-          //   [Op.lte]: 7,
-        }),
+        {
+          [Op.and]: [
+            {
+              code: {
+                [Op.regexp]: `^[^-]*(-[^-]*){${numberOfDashes}}[^-]*$`,
+              },
+            },
+            where(fn('LENGTH', col('code')), {
+              [Op.gte]: codeLength,
+              [Op.lte]: codeLength,
+            }),
+          ],
+        },
       ],
     },
     order: [['code', 'DESC']],
   })
   let newCode
-
+  console.log(numberOfDashes, 'смотрим длинну -')
   if (existingDepartment) {
-    // const lastCode = existingDepartment.code
-    // const parts = lastCode.split('-')
-    // const lastNumber = parseInt(parts.pop(), 10) + 1
-    // parts.push(lastNumber)
-    // newCode = parts.join('-')
-    // console.log(newCode, 'то что получилось')
     const lastCode = existingDepartment.code
     const parts = lastCode.split('-')
-    const lastNumber = parseInt(parts[parts.length - 1], 10) + 1 // Получаем последнее число без удаления из массива
-    parts.pop() // Убираем последнее число из массива
-    parts.push(lastNumber) // Добавляем увеличенное число обратно в массив
+    const lastNumber = parseInt(parts.pop(), 10)
+    const incrementedNumber = lastNumber + 1
+    parts.push(incrementedNumber)
     newCode = parts.join('-')
-    console.log(lastNumber, 'Смотрим последнее число', lastCode, parts, newCode)
+    console.log(
+      lastNumber,
+      'Смотрим последнее число',
+      lastCode,
+      parts,
+      newCode,
+      'длинна',
+      numberOfDashes,
+    )
   } else {
     newCode = `${parentCode}-0`
   }
@@ -93,9 +88,10 @@ class DepartmentController {
       codeLength = code.length + 2
       minLength = code.length
       maxLength = code.length + 3
-      const nameDepartment = await checkIfDepartmentExists(department_affiliation)
+      numberOfDashes = code.split('-').length
+      //   const nameDepartment = await checkIfDepartmentExists(department_affiliation)
       //   if (nameDepartment)
-      console.log(nameDepartment)
+      //   console.log(nameDepartment)
       const newCode = await generateNewCode(code)
       const type = await Department.create({
         fullname,

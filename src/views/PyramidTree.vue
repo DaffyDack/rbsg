@@ -7,6 +7,8 @@ const imgW = ref({
     imgUrl: import.meta.env.VITE_API_URL,
 })
 import Dialog from 'primevue/dialog';
+import Tabs from 'primevue/tabs'
+import TabList from 'primevue/tablist'
 
 const store = useUsersStore()
 const visible = ref(false);
@@ -183,7 +185,8 @@ const selectUser = (e: any) => {
 console.log(store.user, 'pyramid tree', JSON.parse(localStorage.getItem('users') ?? '[]'))
 </script>
 <template>
-    <div class="card flex flex-wrap justify-center gap-8">
+ 
+    <div class="card flex flex-wrap justify-center gap-8 newTree">
         <Tree :value="users" :expandedKeys="expandedKeys" :filter="true" filterMode="lenient"
             class="w-full md:w-[100%]">
             <template #default="slotProps">
@@ -246,6 +249,60 @@ console.log(store.user, 'pyramid tree', JSON.parse(localStorage.getItem('users')
         </Dialog>
     </div>
 </template>
+
+<style lang="scss">
+.card {
+    .p-tree {
+        padding: 28px;
+        border-radius: 36px;
+        background:linear-gradient(0deg, rgba(0, 0, 0, 0.00) 70%, rgba(0, 138, 251, 0.10) 100%), linear-gradient(180deg, rgba(0, 0, 0, 0.00) 70%, rgba(0, 138, 251, 0.10) 100%), linear-gradient(90deg, rgba(0, 0, 0, 0.00) 70%, rgba(0, 138, 251, 0.10) 100%), linear-gradient(270deg, rgba(0, 0, 0, 0.00) 70%, rgba(0, 138, 251, 0.10) 100%), rgba(0, 0, 0, 0.01);
+        backdrop-filter: blur(22.049999237060547px);
+      
+     
+    }
+
+   .p-iconfield .p-tree-filter {
+    border-radius: 50%;
+    
+   }
+   .p-tree-filter-input {
+    color: white;
+    border: none;
+    border-radius: 36px;
+    background: rgba(130, 159, 255, 0.20);
+    padding-left: 50px;
+   }
+   .p-iconfield .p-inputicon:last-child {
+    position: absolute;
+    left: 20px;
+    color:#FFF;
+    height: 20px;
+    width: 20px;
+   }
+   .p-iconfield .p-tree-filter {
+   position: relative;
+
+   }
+   .p-tree-node-content{
+     color: rgba(255, 255, 255, 1);
+    font-family: Manrope;
+    font-size: 16px;;
+   }
+   .p-tree-node-toggle-button {
+    width: 30px;
+    height: 30px;
+    border: solid 1px;
+    color:rgba(255, 255, 255, 1)
+   }
+   .p-tree-node-icon {
+    padding-left: 36px;
+   }
+}
+    
+
+</style>
+
+
 <style lang="scss" scoped>
 .img {
     max-width: 200px;

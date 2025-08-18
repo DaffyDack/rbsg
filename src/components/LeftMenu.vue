@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { shallowRef, ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import IconAngle from '../components/icons/IconAngle.vue'
-import Button from 'primevue/button'
 import { useCounterStore } from '../stores/counter'
 import { useRouter } from 'vue-router'
 
@@ -11,6 +9,11 @@ const router = useRouter()
 const store = useCounterStore()
 const isSidebarOpen = shallowRef(false)
 const name = ref(JSON.parse(localStorage.getItem('role') || ''))
+const avatar = ref({ img: store.info.img })
+
+const imgW = ref({
+  imgUrl: import.meta.env.VITE_API_URL,
+})
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
@@ -24,28 +27,31 @@ function ExitStatus() {
   localStorage.removeItem('users')
   router.push({ path: '/' })
 }
+console.log(avatar)
+
+
 </script>
 
 <template>
+
   <aside :vue:is-open="isSidebarOpen">
-    <ul class="sidebar-head">
-      <li>
-        <img src="../assets/logo.png" alt="logo" width="32" height="32" />
-      </li>
-      <li>
-        <button class="sidebar-toggle button" :class="isSidebarOpen ? 'toggle-button' : ''">
-          <IconAngle @click="toggleSidebar" />
-        </button>
-      </li>
+    <ul class="sidebar-head" style="padding: 0;">
+      <div class="burgerContainer" @click="toggleSidebar">
+        <button class="burger" :class="{ active: isSidebarOpen }"></button>
+      </div>
     </ul>
-    <h4 :transparent="!isSidebarOpen">{{ name.role }}-{{ name.email }}</h4>
-    <ul>
-      <li>
+    <h4 v-show="isSidebarOpen" class="namePage" :transparent="!isSidebarOpen">{{ name.role }}-{{ name.email }}</h4>
+    <ul v-show="isSidebarOpen" class="namePage">
+      <div v-show="isSidebarOpen" class="namePage"
+        style="width: 96px; height: 96px; border-radius: 100%;  margin: 0 auto;">
+        <div class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + avatar.img + ')' }"></div>
+      </div>
+      <li @click="toggleSidebar">
         <RouterLink to="/">
           <div class="flex items-center justify-center">
             <i class="pi pi-list-check"></i>
           </div>
-          <span v-show="isSidebarOpen" class="namePage">Мои проекты</span>
+          <span>Мои проекты</span>
         </RouterLink>
         <RouterLink to="/CreatingDepartment">
           <div class="flex items-center justify-center">
@@ -54,20 +60,20 @@ function ExitStatus() {
           <span v-show="isSidebarOpen" class="namePage">Создание отдела</span>
         </RouterLink>
       </li>
-      <li>
+      <li @click="toggleSidebar">
         <RouterLink to="/MyTasks">
           <div class="flex items-center justify-center">
             <i class="pi pi-clipboard"></i>
           </div>
-          <span v-show="isSidebarOpen" class="namePage">Мои задачи</span>
+          <span>Мои задачи</span>
         </RouterLink>
       </li>
-      <li>
+      <li @click="toggleSidebar">
         <RouterLink to="/SettingProfile">
           <div class="flex items-center justify-center">
             <i class="pi pi-user"></i>
           </div>
-          <span v-show="isSidebarOpen" class="namePage">Профиль</span>
+          <span>Профиль</span>
         </RouterLink>
       </li>
       <!-- <li>
@@ -75,36 +81,36 @@ function ExitStatus() {
           <div class="flex items-center justify-center">
             <i class="pi pi-share-alt"></i>
           </div>
-          <span v-show="isSidebarOpen" class="namePage">Пирамида управления</span>
+          <span>Пирамида управления</span>
         </RouterLink>
       </li> -->
-      <li>
+      <li @click="toggleSidebar">
         <RouterLink to="/PyramidTree">
           <div class="flex items-center justify-center">
             <i class="pi pi-share-alt"></i>
           </div>
-          <span v-show="isSidebarOpen" class="namePage">Пирамида древом</span>
+          <span>Пирамида древом</span>
         </RouterLink>
       </li>
-      <li v-if="name.role === 'ADMIN'">
+      <li v-if="name.role === 'ADMIN'" @click="toggleSidebar">
         <RouterLink to="/UsersList">
           <div class="flex items-center justify-center">
             <i class="pi pi-users"></i>
           </div>
-          <span v-show="isSidebarOpen" class="namePage">Пользователи</span>
+          <span>Пользователи</span>
         </RouterLink>
       </li>
-      <li v-if="name.role === 'ADMIN'">
+      <li v-if="name.role === 'ADMIN'" @click="toggleSidebar">
         <RouterLink to="/PageTest">
           <div class="flex items-center justify-center">
             <i class="pi pi-cog"></i>
           </div>
-          <span v-show="isSidebarOpen" class="namePage">Для тестов</span>
+          <span>Для тестов</span>
         </RouterLink>
       </li>
     </ul>
-    <div class="mt-auto flex justify-center">
-      <Button @click="ExitStatus()"><i class="pi pi-sign-in"></i></Button>
+    <div v-show="isSidebarOpen" class="mt-auto flex justify-center">
+      <button @click="ExitStatus()"><i class="pi pi-sign-in"></i></button>
     </div>
   </aside>
 </template>
@@ -112,8 +118,78 @@ function ExitStatus() {
 <style scoped lang="scss">
 @use '../assets/scss/colors' as clr;
 
+.burgerContainer {
+  z-index: 10;
+  height: 48px;
+  width: 48px;
+  border-radius: 0 15px 15px 0;
+  display: flex;
+  align-items: center;
+}
+
+.img {
+  border-radius: 50%;
+  height: 96px;
+  background-size: cover;
+}
+
+.closePage {
+  height: 100px;
+}
+
+.burger {
+  cursor: pointer;
+  display: block;
+  position: absolute;
+  right: 25px;
+  border: none;
+  background: transparent;
+  width: 18px;
+  height: 14px;
+  margin: 30px auto;
+}
+
+
+.burger::before,
+.burger::after {
+  content: '';
+  left: 0;
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 2px;
+  border-radius: 10px;
+  background: white;
+
+}
+
+.burger::before {
+  top: 0;
+  box-shadow: 0 6px 0 white;
+  transition: box-shadow .3s .15s, top .3s .15s, transform .3s;
+}
+
+.burger::after {
+  bottom: 0;
+  transition: bottom .3s .10s, transform .2s;
+}
+
+.burger.active::before {
+
+  top: 11px;
+  transform: rotate(45deg);
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0);
+}
+
+.burger.active::after {
+  bottom: 1px;
+  transform: rotate(-45deg);
+}
+
+
 .namePage {
   min-width: 100px;
+
 }
 
 .wrapper {
@@ -125,16 +201,28 @@ function ExitStatus() {
 }
 
 $sidebar-width: 4rem;
+$sidebar-hidden-width: 0;
 $toggle-duration: 300ms;
 $sidebar-padding-inline-start: 1rem;
 
 aside {
-  color: #e3e1e1;
-  background: rgba(255, 255, 255, 0.2); // Make sure this color has an opacity of less than 1
-  backdrop-filter: blur(1px);
+  border: solid 1px #396F74;
+  border-left: none;
+
+  position: absolute;
+  top: 110px;
+  border-radius: 0 15px 15px 0;
+  z-index: 10;
+  color: #ffffff;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
+    linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
+  backdrop-filter: blur(20px);
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  // min-height: 100vh;
   padding-block: 1rem;
   transition: all $toggle-duration;
   width: $sidebar-width;

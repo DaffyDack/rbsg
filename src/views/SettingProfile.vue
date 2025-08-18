@@ -10,6 +10,8 @@ import TabPanels from 'primevue/tabpanels'
 import TabPanel from 'primevue/tabpanel'
 
 import HeaderSettingProfile from '@/components/HeaderSettingProfile.vue'
+import DescriptionProfile from '@/components/projectsListElements/DescriptionProfile.vue'
+
 const store = useCounterStore()
 
 const imgW = ref({
@@ -33,7 +35,13 @@ const infoProfile = ref({
   workphone: store.info.workphone,
   telegram: store.info.telegram,
   datebirth: store.info.datebirth,
+  firstname: store.info.firstname,
+  lastname: store.info.lastname,
+  patronymic: store.info.patronymic,
+  department: store.info.department,
+  positions: store.info.positions
 })
+
 
 const userTabs: Ref<UserTab[]> = ref([
   { component: 'ProfileContent', title: 'Профиль', errors: false },
@@ -41,57 +49,51 @@ const userTabs: Ref<UserTab[]> = ref([
   { component: 'JobInformationContent', title: 'Данные о работе', errors: false },
 ])
 </script>
-<template>
+<template>  
+    <div class="upTab">
+      <Tabs value="0" scrollable>
+            <TabList>   
+              <div class="companyLabel">MULTIVERSE CONNECT</div>
+              <Tab v-for="(tab, i) in userTabs" :key="i" :value="String(i)" class="tag_error">
+                <span class="tag" :class="{ error: tab.errors }"></span>
+                {{ tab.title }}
+              </Tab>
+            </TabList>
+        </Tabs>
+    </div>
   <div class="sidebar profile">
     <div class="nano">
       <Tabs value="0" scrollable>
-        <TabList>
-          <Tab v-for="(tab, i) in userTabs" :key="i" :value="String(i)" class="tag_error">
-            <span class="tag" :class="{ error: tab.errors }"></span>
-            {{ tab.title }}
-          </Tab>
-        </TabList>
-        <HeaderSettingProfile class="HeaderSettingProfile" />
         <TabPanels>
           <TabPanel value="0">
-            <h1 class="nameTab">Профиль</h1>
             <div class="wrapper_setting_profile">
               <div class="group_form-control-two">
-                <div>
-                  <div>Контакты</div>
-                  <div class="labelContact">
-                    <div>Мобильный телефон:</div>
-                    <div>{{ infoProfile.mobilephone }}</div>
-                    <div>Рабочий телефон:</div>
-                    <div>{{ infoProfile.workphone }}</div>
-                    <div>добавочный номер:</div>
-                    <div>123</div>
-                    <div>Почта:</div>
-                    <div>{{ infoProfile.email }}</div>
-                    <div>Локация:</div>
-                    <div>{{ infoProfile.locations }}</div>
+                <div class="profile_section">
+                    <DescriptionProfile/>
+                    <div class="social_tab">
+                      <a href="tg://msg?to={{ infoProfile.telegram }}">
+                        <div class="social_button">
+                            <img src="../assets/telegram.svg" alt="telegram" width="46px" />
+                        </div>
+                      </a>
+                    <a href="https://outlook.live.com/mail/0/deeplink/compose?to={{infoProfile.email}}" >
+                         <div class="social_button">
+                            <img src="../assets/email.svg" alt="email" width="46px" />
+                         </div>
+                    </a>
+                   <a href="" >
+                        <div class="social_button">
+                          <img src="../assets/SMS.svg" alt="SMS" width="46px" />
+                       </div>
+                    </a>  
+                    <a href="">
+                       <div class="social_button">
+                          <img src="../assets/whatsapp.svg" alt="whatsapp" width="46px" />
+                      </div>
+                    </a>
+                    </div> 
+                  <HeaderSettingProfile class="HeaderSettingProfile" />
                   </div>
-                </div>
-                <div>
-                  <div>Личные данные</div>
-                </div>
-              </div>
-              <div class="group_form-control-tree">
-                <div>
-                  <div>Совмещение №1</div>
-                  <div class="labelContact">
-                    <div>Должность:</div>
-                    <div>Курьер</div>
-                    <div>Руководитель:</div>
-                    <div>Сухов Даниил Иванович</div>
-                    <div>Локация:</div>
-                    <div>Центральный офис. ш. Энтузиастов 56с44 - 11</div>
-                    <div>Должностные функции:</div>
-                    <div>Делать хорошо, а плохо не надо делать</div>
-                  </div>
-                </div>
-                <div>Совмещение №2</div>
-                <div>Совмещение №3</div>
               </div>
             </div>
           </TabPanel>
@@ -106,44 +108,125 @@ const userTabs: Ref<UserTab[]> = ref([
     </div>
   </div>
 </template>
+
 <style lang="scss">
+.upTab {
+  .p-tab {
+        border-width: inherit;
+  }
+  .p-tablist-tab-list {
+        position: relative;
+      display: flex;
+      background: none;
+      border-width:inherit;
+  padding: 20px 0;
+      justify-content: center;
+      align-items: center;
+    }
+    .p-tab-active {
+    background: var(--p-tabs-tab-active-background);
+    border-color: wheat;
+    color: white;
+    }
+     .companyLabel {
+      position: absolute;
+      left:0;
+      display: flex;
+      align-items:center;
+      text-align: center;
+      font-size: 22px;
+      font-style: normal;
+      font-weight: 800;
+      line-height: normal;
+      background: linear-gradient(90deg, #FF33E4 0%, #178FFF 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+}
+
 .sidebar.profile {
+  border-radius: 36px;
+  border: rgba(57, 111, 116, 1);
+  height: 100%;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
+linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
+
+ 
   .nano {
+  
+   .profile_section {
+    display: grid;
+    grid-template-columns: 1fr 100px 1fr;
+    height: auto;
+}
+
     .p-tablist-tab-list {
-      background: none !important;
-      border: none !important;
+      background: none ;
+      border: none;
+      display: flex;
+      justify-content: center;
+      
+    }
+    .social_tab {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      height: 328 px;
+      
+      gap: 24px
+
+    }
+   
+    .social_button {
+      padding: 18px;
+      height: 64 px;
+      width: 64px;
+      gap: 10px; border-radius: 36px;
+      background:
+            linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
+            linear-gradient(270deg, rgba(6, 75, 131, 0.15) 14.42%, rgba(0, 138, 251, 0.15) 100%);
     }
 
+    .social_button:hover {
+      background-color: rgba(6, 75, 131, 0.4); 
+      box-shadow: 0 0 10px rgba(0, 138, 251, 0.8);
+      transition-delay:0s
+
+    }
+     
     .p-tabpanels {
       background: none;
       padding: 0;
+      
     }
 
     .p-tab-active {
       color: #fff;
     }
 
-    // .p-tab {
-    //   color: #fff;
-    // }
     .p-tab:not(.p-tab-active):not(.p-disabled):hover {
       color: #ccc !important;
     }
   }
 }
 </style>
+
 <style scoped lang="scss">
 .sidebar {
+  
   width: -webkit-fill-available;
   transition: all 0.3s ease-in-out;
   z-index: 100;
-  margin-right: 40px;
-
+  
   .HeaderSettingProfile {
+    width: 100%;
     display: flex;
-    background: #fff;
     padding: 12px;
-    border-radius: 12px;
+    border-radius: 36px;
     margin: 0;
   }
 
@@ -154,54 +237,36 @@ const userTabs: Ref<UserTab[]> = ref([
   }
 
   .wrapper_setting_profile {
-    max-height: 66vh;
-    overflow: scroll;
+    max-height: 100%;
+    min-height: auto;
+      
 
     .group_form-control-two,
     .group_form-control-tree {
+      display:flex;
+      justify-content: space-around;
+      height: 100%;
       margin-bottom: 10px;
-
+      color: #fff;
+      width: 100%;
+ 
       >div {
-        background: #fff;
-        border-radius: 15px;
-        padding: 24px;
-      }
-
-      .labelContact {
-        div:nth-child(odd) {
-          color: #939393;
-          font-size: 10px;
-        }
-
-        div:nth-child(even) {
-          color: #202224;
-          font-size: 14px;
-        }
+        border-radius: 15px; 
       }
     }
-
     .group_form-control-tree {
       >div {
-        background: #fff;
         border-radius: 15px;
-        padding: 24px;
       }
     }
 
     & .container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 0.7fr 0.8fr 0.6fr 0.7fr;
-      gap: 10px 10px;
-      grid-auto-flow: row;
-      grid-template-areas:
-        'е1 е3'
-        'е2 е3'
-        'е4 е4'
-        'е6 е6';
+      display: flex;
+      height: 100%;
+    
 
       >div {
-        background: #fff;
+       
         border-radius: 15px;
         padding: 24px;
       }
@@ -219,28 +284,9 @@ const userTabs: Ref<UserTab[]> = ref([
     }
 
     & .е1 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr 1fr;
-      gap: 10px 10px;
-      grid-auto-flow: row;
-      grid-template-areas:
-        'img des'
-        'img des'
-        'title des';
-      grid-area: е1;
+      display: flex;
+      
     }
-
-    & .img {
-      grid-area: img;
-      border-radius: 15px;
-      overflow: hidden;
-    }
-
-    & .title {
-      grid-area: title;
-    }
-
     & .des {
       grid-area: des;
     }
@@ -264,9 +310,23 @@ const userTabs: Ref<UserTab[]> = ref([
 
   & .nano {
     padding: 24px;
-    background: #44444482;
-    border-radius: 10px;
+    border-radius: 36px;
     min-height: 90vh;
   }
 }
+@media (max-width: 768px) {
+  .sidebar {
+    width: calc(100% - 20px); 
+    margin: auto; 
+    max-width: none;
+    padding: 10px;
+    height: auto; 
+  }
+
+  .wrapper_setting_profile {
+    height: auto; 
+    padding-bottom: 20px; 
+  }
+}
+
 </style>
