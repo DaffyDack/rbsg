@@ -175,36 +175,52 @@ let age = countFullYaer(store.info.datebirth)
       font-size: 14px;
 
     }
-  }
 
-  .family {
-    font-size: 56px;
-    word-wrap: normal
-  }
+    .card_form {
+      height: 164px;
+      width: 164px;
+      margin-right: 10px;
+      border-radius: 15px;
+      padding: 20px 5px;
+      background:
+        linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
+        linear-gradient(270deg, rgba(6, 75, 131, 0.15) 14.42%, rgba(0, 138, 251, 0.15) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
 
-  .text_age {
-    color: #FFF;
-    text-align: center;
-    font-family: Manrope;
-    font-size: 64px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 74px
-  }
+    }
 
-  .jobfunctions {
-    background:
-      linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
-      linear-gradient(270deg, rgba(6, 75, 131, 0.15) 14.42%, rgba(0, 138, 251, 0.15) 100%);
-    margin-top: 36px;
-    align-items: center;
-    padding: 32px;
-    border-radius: 36px;
-  }
+    .family {
+      font-size: 56px;
+      word-wrap: normal
+    }
 
-  .text-description {
-    margin-top: 15px;
+    .text_age {
+      color: #FFF;
+      text-align: center;
+      font-family: Manrope;
+      font-size: 64px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 74px
+    }
 
+    .jobfunctions {
+      background:
+        linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
+        linear-gradient(270deg, rgba(6, 75, 131, 0.15) 14.42%, rgba(0, 138, 251, 0.15) 100%);
+      margin-top: 36px;
+      align-items: center;
+      padding: 32px;
+      border-radius: 36px;
+    }
+
+    .text-description {
+      margin-top: 15px;
+
+    }
   }
 }
 </style>

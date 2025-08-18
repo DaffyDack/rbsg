@@ -27,7 +27,6 @@ function ExitStatus() {
   localStorage.removeItem('users')
   router.push({ path: '/' })
 }
-console.log(avatar)
 
 
 </script>
@@ -106,6 +105,14 @@ console.log(avatar)
             <i class="pi pi-cog"></i>
           </div>
           <span>Для тестов</span>
+        </RouterLink>
+      </li>
+        <li v-if="name.role === 'ADMIN'" @click="toggleSidebar">
+        <RouterLink to="/Price">
+          <div class="flex items-center justify-center">
+            <i class="pi pi-user"></i>
+          </div>
+          <span>Прайс</span>
         </RouterLink>
       </li>
     </ul>
