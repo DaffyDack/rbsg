@@ -43,6 +43,7 @@ interface Form {
 }
 
 interface Errors {
+  lastname: string,
   firstname: string
   email: string
   password: string
@@ -208,8 +209,7 @@ watch(
   <div>
     <div>
       <div class="group_form-control-five">
-        <div class="form-control"
-         :class="{ error: errors.lastname, success: !errors.lastname && form.lastname != '' }">
+        <div class="form-control" :class="{ error: errors.lastname, success: !errors.lastname && form.lastname != '' }">
           <label for="last_name">Фамилия</label>
           <input type="text" v-model="form.lastname" id="last_name" placeholder="Фамилия" />
           <small v-if="errors.lastname">{{ errors.lastname }}</small>

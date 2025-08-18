@@ -53,6 +53,7 @@ interface Item {
 interface name {
     firstname: string;
 }
+const ThereIsAlreadyDepartmentVisible = ref<boolean>(false)
 const selectedName = ref<name[]>([]);
 const form = ref<Form>({
     fullname: '',
@@ -108,7 +109,7 @@ const part = ref({
 const RegistrationDepartment = async () => {
     try {
         const formData = new FormData()
-        formData.append('fullname', form.value.fullname.firstname)
+        formData.append('fullname', `${form.value.fullname.firstname} ${form.value.fullname.lastname} ${form.value.fullname.patronymic}`)
         formData.append('department', (form.value.department).toLowerCase())
         formData.append('post', form.value.post)
         formData.append('department_description', form.value.department_description)
@@ -116,15 +117,23 @@ const RegistrationDepartment = async () => {
         formData.append('code', form.value.department_affiliation == '' ? '0-0' : form.value.department_affiliation.code)
         formData.append('participants', form.value.participants)
         const response = await creadetDepartment(formData)
-        console.log(response, 'че в ответе')
-        condition.value = false
-        addeduser.value = true
-        set()
-        fetchDepartment().then((data) => {
-            departments.value = data
-            startBuild()
-            existingDepartments.value = getUniqueItems(departments.value);
-        })
+        if (response['name'] !== undefined) {
+            ThereIsAlreadyDepartmentVisible.value = true
+        } else {
+            console.log(response, 'че в ответе')
+            condition.value = false
+            addeduser.value = true
+            set()
+            fetchDepartment().then((data) => {
+                departments.value = data
+                startBuild()
+                existingDepartments.value = getUniqueItems(departments.value);
+                Object.keys(form.value).forEach(key => {
+                    form.value[key] = '';
+                });
+                selectedName.value = []
+            })
+        }
     } catch (e: any) {
         messageCondition.value = e.response.data.message
         condition.value = true
@@ -224,6 +233,10 @@ function getNamesAsString(): void {
                 <div>{{ departmentInfo }}</div>
             </Dialog>
         </div>
+        <Dialog v-model:visible="ThereIsAlreadyDepartmentVisible" modal header="Повторение отдела"
+            :style="{ width: '80%' }">
+            <div>Такой отдел уже есть!!!</div>
+        </Dialog>
     </div>
 </template>
 <style lang="scss">
