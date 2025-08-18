@@ -50,7 +50,7 @@ const menuItems = [
 
     </ul>
     <!-- <h4 v-if="name.role">{{ name.role }} - {{ name.email }}</h4> -->
-    <!-- <ul>
+<!-- <ul>
       <li v-for="item in menuItems" v-if="!item.role || item.role === name.role" :key="item.to">
         <RouterLink :to="item.to">
           <div class="flex items-center justify-center">
@@ -86,7 +86,7 @@ $sidebar-padding-inline-start: 1rem;
 //                linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
 //                linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
 // }
-</style> --> -->
+</style> -->
 
 
 
@@ -103,8 +103,8 @@ const router = useRouter()
 const store = useCounterStore()
 const isSidebarOpen = shallowRef(false)
 const name = ref(JSON.parse(localStorage.getItem('role') || ''))
-const avatar = ref({img:store.info.img})
-console.log(`../assets/${avatar._rawValue.img}`) 
+const avatar = ref({ img: store.info.img })
+
 
 function toggleSidebar() {
   isSidebarOpen.value = !isSidebarOpen.value
@@ -125,7 +125,7 @@ function ExitStatus() {
 
     <ul class="sidebar-head">
       <li>
-        <img src = "" alt="logo" width="32" height="32" />
+        <img src="" alt="logo" width="32" height="32" />
       </li>
       <li>
         <Button class="sidebar-toggle button" :class="isSidebarOpen ? 'toggle-button' : ''">
@@ -133,7 +133,7 @@ function ExitStatus() {
         </Button>
       </li>
     </ul>
-   
+
     <ul>
       <li>
         <RouterLink to="/">
@@ -206,7 +206,7 @@ function ExitStatus() {
 }
 
 .sidebar-toggle button {
-    background: #ffffff;
+  background: #ffffff;
 }
 
 .wrapper {
@@ -224,11 +224,11 @@ $sidebar-padding-inline-start: 1rem;
 
 aside {
   color: #ffffff;
-   background: linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
-               linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-               linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-               linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-               linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
+    linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
   backdrop-filter: blur(2px);
   display: flex;
   flex-direction: column;
