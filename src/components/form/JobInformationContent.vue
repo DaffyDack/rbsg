@@ -199,12 +199,12 @@ defineExpose({ CheckingJobInformationComponent })
                     <input type="text" id="jobInformationDateOfficialEmployment"
                         placeholder="Дата официального трудоустройства" />
                 </div>
-                <div class="form-control"
-                    :class="{ error: errors.startDate, success: !errors.startDate && form.startDate != '' }">
+                <div class="form-control">
+                    <!-- :class="{ error: errors.startDate, success: !errors.startDate && form.startDate != '' }"> -->
                     <label for="jobInformationStartDate">Дата начала работы</label>
                     <input type="text" v-model="form.startDate" id="jobInformationStartDate"
                         placeholder="Дата начала работы" />
-                    <small v-if="errors.startDate">{{ errors.startDate }}</small>
+                    <!-- <small v-if="errors.startDate">{{ errors.startDate }}</small> -->
                 </div>
                 <div class="form-control">
                     <label for="jobInformationProbationPeriodUntil">Испытательный срок до</label>
