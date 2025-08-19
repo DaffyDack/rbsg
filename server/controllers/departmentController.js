@@ -3,61 +3,21 @@ const { fn, col, where, Op } = require('sequelize')
 const { Department } = require('../models/models')
 
 let codeLength = 0
-let minLength = 0
-let maxLength = 0
 let numberOfDashes = 0
-
-// async function generateLenghtCode(parentCode) {
-//   const existingDepartment = await Department.findAll({
-//     where: {
-//       [Op.and]: [
-//         {
-//           code: {
-//             [Op.like]: `${parentCode}-%`,
-//           },
-//         },
-//         {
-//           [Op.and]: [
-//             {
-//               code: {
-//                 [Op.regexp]: `^[^-]*(-[^-]*){${numberOfDashes}}[^-]*$`,
-//               },
-//             },
-//           ],
-//         },
-//       ],
-//     },
-//     order: [['code', 'DESC']],
-//   })
-//   if (existingDepartment.length === 0) return '0-0'
-//   const maxCode = existingDepartment
-//     .map((record) => record.code) // Получаем массив кодов
-//     .map((code) => {
-//       const parts = code.split('-')
-//       const lastPart = parts[parts.length - 1] // Извлекаем последнюю часть
-
-//       // Проверяем, является ли последняя часть числом
-//       return isNaN(lastPart) ? 0 : parseInt(lastPart, 10) // Если не число, возвращаем 0
-//     })
-//     .reduce((max, current) => Math.max(max, current), -Infinity) // Находим максимальное значение
-//   let newCode
-//   let newTest = (parentCode += `-${maxCode}`)
-//   return newCode
-// }
 
 async function checkIfDepartmentExists(nameDepartment) {
   try {
     const existingDepartment = await Department.findOne({
       where: {
         department: {
-          [Op.eq]: nameDepartment, // Проверка на равенство
+          [Op.eq]: nameDepartment,
         },
       },
     })
-    return existingDepartment !== null // Возвращаем true, если запись найдена, иначе false
+    return existingDepartment !== null
   } catch (error) {
     console.error('Ошибка при проверке существования "nameDepartment":', error)
-    throw error // Обработка ошибки
+    throw error
   }
 }
 
@@ -83,45 +43,17 @@ async function generateNewCode(parentCode) {
     },
     order: [['code', 'DESC']],
   })
-
-  const existingDepartment = await Department.findOne({
-    where: {
-      [Op.and]: [
-        {
-          code: {
-            [Op.like]: `${parentCode}-%`,
-          },
-        },
-        {
-          [Op.and]: [
-            {
-              code: {
-                [Op.regexp]: `^[^-]*(-[^-]*){${numberOfDashes}}[^-]*$`,
-              },
-            },
-            where(fn('LENGTH', col('code')), {
-              [Op.gte]: codeLength,
-              [Op.lte]: codeLength,
-            }),
-          ],
-        },
-      ],
-    },
-    order: [['code', 'DESC']],
-  })
   let test = generateLenghtCode.map((record) => record.code)
   let maxCode = generateLenghtCode
-    .map((record) => record.code) // Получаем массив кодов
+    .map((record) => record.code)
     .map((code) => {
       const parts = code.split('-')
-      const lastPart = parts[parts.length - 1] // Извлекаем последнюю часть
-
-      // Проверяем, является ли последняя часть числом
-      return isNaN(lastPart) ? 0 : parseInt(lastPart, 10) // Если не число, возвращаем 0
+      const lastPart = parts[parts.length - 1]
+      return isNaN(lastPart) ? 0 : parseInt(lastPart, 10)
     })
     .reduce((max, current) => Math.max(max, current), -Infinity)
   if (maxCode === -Infinity) {
-    maxCode = 0 // Или любое значение по умолчанию, которое Вы хотите использовать
+    maxCode = 0
   }
   let par = parentCode
   let newTest = (par += `-${maxCode}`)
@@ -144,25 +76,6 @@ async function generateNewCode(parentCode) {
     'длинна',
     numberOfDashes,
   )
-  // if (existingDepartment) {
-  //   const lastCode = existingDepartment.code
-  //   const parts = lastCode.split('-')
-  //   const lastNumber = parseInt(parts.pop(), 10)
-  //   const incrementedNumber = lastNumber + 1
-  //   parts.push(incrementedNumber)
-  //   newCode = parts.join('-')
-  //   console.log(
-  //     lastNumber,
-  //     'Смотрим последнее число',
-  //     lastCode,
-  //     parts,
-  //     newCode,
-  //     'длинна',
-  //     numberOfDashes,
-  //   )
-  // } else {
-  //   newCode = `${parentCode}-0`
-  // }
   return newCode
 }
 
@@ -179,8 +92,6 @@ class DepartmentController {
         participants,
       } = req.body
       codeLength = code.length + 2
-      minLength = code.length
-      maxLength = code.length + 3
       numberOfDashes = code.split('-').length
       const nameDepartment = await checkIfDepartmentExists(department)
       let type = null
@@ -207,6 +118,23 @@ class DepartmentController {
   async fetchDepartment(req, res) {
     const department = await Department.findAll()
     return res.json(department)
+  }
+  async deleteDepartmentsByCode(req, res) {
+    try {
+      const { codeDelete } = req.body
+
+      console.log(codeDelete, '??????ЧТО МЫ ХОТИМ УДАЛИТЬ!!!!!')
+      const deletedCount = await Department.destroy({
+        where: {
+          code: {
+            [Op.like]: `${codeDelete}%`, // Условие для удаления
+          },
+        },
+      })
+      return res.json(deletedCount)
+    } catch (error) {
+      console.log('что то с удалением департаментом не то', error)
+    }
   }
 }
 

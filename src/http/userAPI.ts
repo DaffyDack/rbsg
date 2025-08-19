@@ -10,6 +10,10 @@ export const creadetDepartment = async (department: any) => {
   const { data } = await $host.post('api/user/creadetdepartment', department)
   return data
 }
+export const deleteDepartmentsByCode = async (department: any) => {
+  const { data } = await $host.post('api/user/deletedepartment', department)
+  return data
+}
 export const fetchDepartment = async () => {
   const { data } = await $host.get('api/user/departments')
   return data

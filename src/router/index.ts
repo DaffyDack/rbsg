@@ -8,6 +8,7 @@ import PyramidManagement from '@/views/PyramidManagement.vue'
 import CreatingDepartment from '@/views/CreatingDepartment.vue'
 
 import PyramidTree from '@/views/PyramidTree.vue'
+// @ts-ignore
 import Price from '@/views/Price.vue'
 
 const router = createRouter({
@@ -61,12 +62,11 @@ const router = createRouter({
       name: 'projects',
       component: Projects,
     },
-     {
+    {
       path: '/Price',
       name: 'Price',
       component: Price,
     },
-    
   ],
 })
 

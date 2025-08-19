@@ -4,7 +4,10 @@ import Select from 'primevue/select'
 import MultiSelect from 'primevue/multiselect';
 import Tree from 'primevue/tree';
 import Dialog from 'primevue/dialog';
-import { creadetDepartment, fetchDepartment } from '../http/userAPI.js'
+import Button from 'primevue/button';
+
+
+import { creadetDepartment, deleteDepartmentsByCode, fetchDepartment } from '../http/userAPI.js'
 
 const usersString = ref()
 const departments = ref()
@@ -67,14 +70,32 @@ const form = ref<Form>({
 const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
 const addeduser = ref<boolean>(false)
+const visibleDeleteDepartment = ref<boolean>(false);
+const editDepartmentVisible = ref<boolean>(false);
 const departmentInfo = ref<boolean>(false)
+const editedDepartment = ref<string>('')
 const relatedToDepartment = ref<boolean>(false)
 const existingDepartments = ref<Item[]>([]);
+
+const codeFromDelete = ref<string>('')
+const departmentFromDelete = ref<string>('')
+
 
 const selectedDepartment = (e: any) => {
     departmentInfo.value = e.data.department_description
     relatedToDepartment.value = e.data.participants
     visible.value = true
+}
+const selectedDeleteDepartment = (e: any) => {
+    console.log(e.data.code, e.data.id, 'Нам анужно найти ID')
+    codeFromDelete.value = e.data.code
+    departmentFromDelete.value = e.data.department
+    visibleDeleteDepartment.value = true
+}
+
+const selectedEditDepartment = async (e: any) => {
+    editedDepartment.value = e.data.department
+    editDepartmentVisible.value = true
 }
 
 function getUniqueItems(arr: Item[]): Item[] {
@@ -103,9 +124,6 @@ function set() {
         addeduser.value = false
     }, 2000)
 }
-const part = ref({
-
-})
 const RegistrationDepartment = async () => {
     try {
         const formData = new FormData()
@@ -129,6 +147,7 @@ const RegistrationDepartment = async () => {
                 startBuild()
                 existingDepartments.value = getUniqueItems(departments.value);
                 Object.keys(form.value).forEach(key => {
+                    // @ts-ignore
                     form.value[key] = '';
                 });
                 selectedName.value = []
@@ -143,6 +162,22 @@ const RegistrationDepartment = async () => {
 const creadetDepartmentForm = () => {
     departments.value = null
     RegistrationDepartment()
+}
+const deleteDepartmentForm = async () => {
+    try {
+        const formData = new FormData()
+        formData.append('codeDelete', codeFromDelete.value)
+        const response = await deleteDepartmentsByCode(formData)
+        console.log(response, 'после удаления')
+        visibleDeleteDepartment.value = false
+        fetchDepartment().then((data) => {
+            departments.value = data
+            startBuild()
+            existingDepartments.value = getUniqueItems(departments.value);
+        })
+    } catch (error) {
+        console.log('что то с удалением', error)
+    }
 }
 
 
@@ -223,9 +258,19 @@ function getNamesAsString(): void {
             </div>
         </div>
         <div>
-            <Tree :value="departmentTree" :expandedKeys="expandedKeys" filterMode="lenient" class="w-full md:w-[100%]">
-                <template #default="slotProps">
-                    <b @click="selectedDepartment(slotProps.node)">{{ slotProps.node.label }}</b>
+            <Tree :value="departmentTree" :expandedKeys="expandedKeys" filterMode="lenient"
+                class="w-full md:w-[100%] tereeSpecial">
+                <template #default="slotProps" class="w-full md:w-[100%]">
+                    <div class="wrapperSlotProps">
+                        <b @click="selectedDepartment(slotProps.node)">{{ slotProps.node.label }}</b>
+                        <div>
+                            <Button class="mr-3" icon="pi pi-pencil" severity="warn" aria-label="Notification"
+                                @click="selectedEditDepartment(slotProps.node)" />
+                            <Button icon="pi pi-times" severity="danger" aria-label="Cancel"
+                                @click="selectedDeleteDepartment(slotProps.node)" />
+                        </div>
+
+                    </div>
                 </template>
             </Tree>
             <Dialog v-model:visible="visible" modal header="Описание обязаностей" :style="{ width: '80%' }">
@@ -237,9 +282,50 @@ function getNamesAsString(): void {
             :style="{ width: '80%' }">
             <div>Такой отдел уже есть!!!</div>
         </Dialog>
+        <Dialog v-model:visible="visibleDeleteDepartment" modal header="Удаление отдела" :style="{ width: '25rem' }">
+            <span class="text-surface-500 dark:text-surface-400 block mb-8">Вы хотите удалить
+                отдел {{ departmentFromDelete }} ?</span>
+            <div class="flex justify-end gap-2">
+                <Button type="button" label="Отмена" severity="secondary"
+                    @click="visibleDeleteDepartment = false"></Button>
+                <Button type="button" label="Удалить" @click="deleteDepartmentForm"></Button>
+            </div>
+        </Dialog>
+        <Dialog v-model:visible="editDepartmentVisible" modal :header="`Редактирование отдела: ${editedDepartment}`"
+            :style="{ width: '80%' }">
+            <div class="group_form-control-one">
+                <div class="form-control">
+                    <label for="participants1" style="color: #000;">Участники</label>
+                    <MultiSelect v-model="selectedName" @change="getNamesAsString()" id="participants1"
+                        :options="usersString" optionLabel="firstname" filter placeholder="Участник"
+                        :maxSelectedLabels="3" class="w-full md:w-[100%]" />
+                </div>
+            </div>
+            <div class="group_form-control">
+                <div class="form-control">
+                    <label for="department_description" style="color: #000;">Описание обязаностей</label>
+                    <textarea v-model="form.department_description" style="border: 1px solid #ccc;" type="text"
+                        id="department_description" placeholder="Описание обязаностей"></textarea>
+                </div>
+            </div>
+        </Dialog>
     </div>
 </template>
 <style lang="scss">
+.tereeSpecial {
+    .p-tree-node-label {
+        width: 100%;
+
+        .wrapperSlotProps {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+    }
+}
+
 .saveButton {
     background: #06a80b;
     min-height: 42px;

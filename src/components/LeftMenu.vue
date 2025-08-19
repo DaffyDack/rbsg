@@ -54,7 +54,7 @@ function ExitStatus() {
         </RouterLink>
         <RouterLink to="/CreatingDepartment">
           <div class="flex items-center justify-center">
-            <i class="pi pi-list-check"></i>
+            <i class="pi pi-pencil"></i>
           </div>
           <span v-show="isSidebarOpen" class="namePage">Создание отдела</span>
         </RouterLink>
@@ -107,7 +107,7 @@ function ExitStatus() {
           <span>Для тестов</span>
         </RouterLink>
       </li>
-        <li v-if="name.role === 'ADMIN'" @click="toggleSidebar">
+      <li v-if="name.role === 'ADMIN'" @click="toggleSidebar">
         <RouterLink to="/Price">
           <div class="flex items-center justify-center">
             <i class="pi pi-user"></i>
