@@ -1,13 +1,13 @@
-  <script setup>
+  <script setup lang="ts">
   import { ref,computed, watch } from 'vue'
   import { onMounted } from 'vue';
   import Button from 'primevue/button';
   import html2pdf from 'html2pdf.js'
- 
-  
+  import { type IProduct } from '../../views/Price.vue'
+    
    const exportToPDF = () => {
 
-    const element = document.getElementById('pdf')
+    const element = document.getElementById('pdf')as HTMLElement
     const options = {
          margin:       [1,0.47],
         filename:     'table.pdf',
@@ -20,35 +20,35 @@
     html2pdf().set(options).from(element).save()
    }
 
-    const {items} = defineProps(['items']);
+    const {items}= defineProps(['items']);
 
     const totalCostList = computed(() => {
-        return items.reduce((acc, product) => {
-                return acc + parseFloat(product.totalCost); 
+        return items.reduce((acc: number, product: IProduct ) => {
+                return acc + product.totalCost; 
         }, 0).toFixed(2); 
     });
 
-      const calculateSmallWholesaleList = computed(() => {
-        return items.reduce((acc, product) => {
-                return acc + parseFloat(product.calculateSmallWholesalePrice); 
+      const calculateSmallWholesaleList = computed<number>(() => {
+        return items.reduce((acc: number, product: IProduct) => {
+                return acc + product.calculateSmallWholesalePrice; 
         }, 0).toFixed(2); 
     });
 
-    const calculateWholesaleList = computed(() => {
+    const calculateWholesaleList = computed<number>(() => {
     
-         return items.reduce((acc, product) => {
-                return acc + parseFloat(product.calculateWholesalePrice); 
+         return items.reduce((acc: number, product: IProduct) => {
+                return acc + product.calculateWholesalePrice; 
         }, 0).toFixed(2); 
     });
 
-    const calculateDealerList = computed(() => {
-       return items.reduce((acc, product) => {
-                return acc + parseFloat(product.calculateDealerPrice); 
+    const calculateDealerList = computed<number>(() => {
+       return items.reduce((acc: number, product: IProduct) => {
+                return acc + product.calculateDealerPrice; 
             }, 0).toFixed(2); 
        });
 </script>
 
-<template>
+<template>s
     <div id="pdf">
         
         <table id="pdf" v-if="items.length >0" >
@@ -68,7 +68,7 @@
               <th>Мелкий опт<br>(от 6 листов)</br> <br>Скидка 10%</br> </th>
               <th>Опт <br>(от 30 листов)</br><br>Скидка 20%</br></th>
               <th>Дилер <br>Скидка 30%</br></th>
-              <th class="buttonAdd"></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -88,10 +88,8 @@
                 <th>{{item.calculateSmallWholesalePrice}}</th>
                 <th>{{item.calculateWholesalePrice}}</th>
                 <th>{{item.calculateDealerPrice}}</th>
-                <tr class="buttonAdd">
-                    <div class="buttonAdd">
-                        <Button @click="$emit('remove', index)">X</Button>
-                    </div>
+                <tr class="buttonAdd" @click="$emit('remove', index)">
+                  Х
                 </tr>
          </tr>
          <tr v-if="items.length >0" class="trTotal">
@@ -135,13 +133,18 @@
 .buttonAdd {
     display: flex;
     justify-content: center;
-    // min-width: 70px;
+    min-width: 50px;
     height: 50px;
     width: auto;
-   
-    // background: white;
+     background: white;
 
 } 
+.buttonAdd:hover {
+     background-color: rgb(157, 167, 176); 
+      box-shadow: 0 0 10px rgba(0, 138, 251, 0.8);
+      transition-delay:0.1s
+
+}
     .body-price {
         background: white;
         display: flex;
