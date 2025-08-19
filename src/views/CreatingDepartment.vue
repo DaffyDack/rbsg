@@ -7,8 +7,8 @@ import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 
 
-import { creadetDepartment, deleteDepartmentsByCode, fetchDepartment } from '../http/userAPI.js'
-
+import { creadetDepartment, deleteDepartmentsByCode, fetchDepartment, changeInfoDepartment } from '../http/userAPI.js'
+const nameRole = ref(JSON.parse(localStorage.getItem('role') || ''))
 const usersString = ref()
 const departments = ref()
 const departmentTree = ref()
@@ -49,6 +49,11 @@ interface Form {
     participants: any
     code: string
 }
+interface changeForm {
+    department_description: string,
+    participants: any
+    id: number
+}
 interface Item {
     department: string;
     code: string;
@@ -58,6 +63,7 @@ interface name {
 }
 const ThereIsAlreadyDepartmentVisible = ref<boolean>(false)
 const selectedName = ref<name[]>([]);
+const selectedNameChange = ref<name[]>([]);
 const form = ref<Form>({
     fullname: '',
     department: '',
@@ -66,6 +72,12 @@ const form = ref<Form>({
     department_affiliation: '',
     participants: '',
     code: '',
+})
+
+const changeFormDepartment = ref<changeForm>({
+    department_description: '',
+    participants: '',
+    id: 0,
 })
 const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
@@ -95,6 +107,9 @@ const selectedDeleteDepartment = (e: any) => {
 
 const selectedEditDepartment = async (e: any) => {
     editedDepartment.value = e.data.department
+    changeFormDepartment.value.department_description = e.data.department_description
+    changeFormDepartment.value.participants = e.data.participants
+    changeFormDepartment.value.id = e.data.id
     editDepartmentVisible.value = true
 }
 
@@ -180,6 +195,26 @@ const deleteDepartmentForm = async () => {
     }
 }
 
+const changeDepartmentForm = async () => {
+    try {
+        const newObject = {
+            id: changeFormDepartment.value.id,
+            department_description: changeFormDepartment.value.department_description,
+            participants: changeFormDepartment.value.participants,
+        }
+        const response = await changeInfoDepartment(newObject)
+        editDepartmentVisible.value = false
+        fetchDepartment().then((data) => {
+            departments.value = data
+            startBuild()
+            existingDepartments.value = getUniqueItems(departments.value);
+        })
+    } catch (error) {
+        console.log('что то с изменениями', error)
+    }
+
+}
+
 
 function buildTree(departments: any) {
     const map: Record<string, TreeNode> = {};
@@ -212,10 +247,13 @@ const startBuild = () => {
 function getNamesAsString(): void {
     form.value.participants = selectedName.value.map(item => item.firstname).join(', ');
 }
+function getNamesChangeDepartmen(): void {
+    changeFormDepartment.value.participants = selectedNameChange.value.map(item => item.firstname).join(', ');
+}
 </script>
 <template>
     <div>
-        <div>
+        <div v-if="nameRole.role === 'ADMIN'">
             <div class="group_form-control-five">
                 <div class="form-control">
                     <label for="jobContactTel" style="color: #fff;">Название отдела</label>
@@ -263,7 +301,7 @@ function getNamesAsString(): void {
                 <template #default="slotProps" class="w-full md:w-[100%]">
                     <div class="wrapperSlotProps">
                         <b @click="selectedDepartment(slotProps.node)">{{ slotProps.node.label }}</b>
-                        <div>
+                        <div v-if="nameRole.role === 'ADMIN'">
                             <Button class="mr-3" icon="pi pi-pencil" severity="warn" aria-label="Notification"
                                 @click="selectedEditDepartment(slotProps.node)" />
                             <Button icon="pi pi-times" severity="danger" aria-label="Cancel"
@@ -275,7 +313,7 @@ function getNamesAsString(): void {
             </Tree>
             <Dialog v-model:visible="visible" modal header="Описание обязаностей" :style="{ width: '80%' }">
                 <div>Кто в отделе: {{ relatedToDepartment }}</div>
-                <div>{{ departmentInfo }}</div>
+                <div>Должностные обязанности: {{ departmentInfo }}</div>
             </Dialog>
         </div>
         <Dialog v-model:visible="ThereIsAlreadyDepartmentVisible" modal header="Повторение отдела"
@@ -296,7 +334,7 @@ function getNamesAsString(): void {
             <div class="group_form-control-one">
                 <div class="form-control">
                     <label for="participants1" style="color: #000;">Участники</label>
-                    <MultiSelect v-model="selectedName" @change="getNamesAsString()" id="participants1"
+                    <MultiSelect v-model="selectedNameChange" @change="getNamesChangeDepartmen()" id="participants1"
                         :options="usersString" optionLabel="firstname" filter placeholder="Участник"
                         :maxSelectedLabels="3" class="w-full md:w-[100%]" />
                 </div>
@@ -304,9 +342,14 @@ function getNamesAsString(): void {
             <div class="group_form-control">
                 <div class="form-control">
                     <label for="department_description" style="color: #000;">Описание обязаностей</label>
-                    <textarea v-model="form.department_description" style="border: 1px solid #ccc;" type="text"
-                        id="department_description" placeholder="Описание обязаностей"></textarea>
+                    <textarea v-model="changeFormDepartment.department_description" style="border: 1px solid #ccc;"
+                        type="text" id="department_description" placeholder="Описание обязаностей"></textarea>
                 </div>
+            </div>
+            <div class="flex justify-end gap-2">
+                <Button type="button" label="Отмена" severity="secondary"
+                    @click="editDepartmentVisible = false"></Button>
+                <Button type="button" label="Изменить" @click="changeDepartmentForm"></Button>
             </div>
         </Dialog>
     </div>

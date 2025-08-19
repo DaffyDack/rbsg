@@ -56,7 +56,7 @@ function ExitStatus() {
           <div class="flex items-center justify-center">
             <i class="pi pi-pencil"></i>
           </div>
-          <span v-show="isSidebarOpen" class="namePage">Создание отдела</span>
+          <span v-show="isSidebarOpen" class="namePage">Отделы</span>
         </RouterLink>
       </li>
       <li @click="toggleSidebar">

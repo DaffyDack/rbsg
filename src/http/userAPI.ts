@@ -5,7 +5,10 @@ export const registration = async (formData: any) => {
   const { data } = await $host.post('api/user/registration', formData)
   return jwtDecode(data.token)
 }
-
+export const changeInfoDepartment = async (department: any) => {
+  const { data } = await $host.post('api/user/changeinfodepartment', department)
+  return data
+}
 export const creadetDepartment = async (department: any) => {
   const { data } = await $host.post('api/user/creadetdepartment', department)
   return data

@@ -136,6 +136,26 @@ class DepartmentController {
       console.log('что то с удалением департаментом не то', error)
     }
   }
+
+  async changeInfoDepartment(req, res) {
+    try {
+      const { id, department_description, participants } = req.body
+      const updatedCount = await Department.update(
+        {
+          department_description: department_description, // Новое значение для колонки code
+          participants: participants, // Новое значение для колонки info
+        },
+        {
+          where: {
+            id: id, // Условие для поиска записи по id
+          },
+        },
+      )
+      return res.json(updatedCount)
+    } catch (error) {
+      console.error('Ошибка при обновлении записи:', error)
+    }
+  }
 }
 
 module.exports = new DepartmentController()
