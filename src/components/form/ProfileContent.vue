@@ -4,6 +4,7 @@ import Select from 'primevue/select'
 import DatePicker from 'primevue/datepicker'
 import Password from 'primevue/password';
 import Calendar from 'primevue/calendar';
+import InputMask from 'primevue/inputmask';
 
 import { checkEmail, checkLength } from '../../utils/helper.js'
 const props = defineProps(['check'])
@@ -253,11 +254,11 @@ maxDate.value.setFullYear(nextYear);
     <div class="group_form-control-four">
       <div class="form-control">
         <label for="mobile_self">Мобильный телефон (личный)</label>
-        <input type="text" id="mobile_self" v-model="form.mobilephone" placeholder="Мобильный телефон (личный)" />
+        <InputMask type="text" mask="+7 999-999-9999" id="mobile_self" v-model="form.mobilephone" placeholder="Мобильный телефон (личный)" />
       </div>
       <div class="form-control">
         <label for="mobile_work">Мобильный телефон (рабчий)</label>
-        <input type="text" id="mobile_work" v-model="form.workphone" placeholder="Мобильный телефон (рабочий)" />
+        <InputMask type="text" mask="+7 999-999-9999" id="mobile_work" v-model="form.workphone" placeholder="Мобильный телефон (рабочий)" />
       </div>
       <div class="form-control">
         <label for="link_whatsapp">Ссылка на ватсам</label>

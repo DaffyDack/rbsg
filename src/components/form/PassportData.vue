@@ -1,17 +1,26 @@
 <script setup lang="ts">
 import { ref, watch, defineEmits } from 'vue'
 import Select from 'primevue/select'
+import InputMask from 'primevue/inputmask';
+import Calendar from 'primevue/calendar';
 
 interface Form {
-  cantry: string
+  cantry: string;
+  series: string;
+  pasportNumber: string
+  datePasport: string
+  
 }
 const form = ref<Form>({
   cantry: '',
+  series: '',
+  pasportNumber: '',
+  datePasport: '',
 })
 
 const cantry = ref([
-  { name: 'USER', code: 'USER' },
-  { name: 'ADMIN', code: 'ADMIN' },
+  { name: 'Россия', code: 'Россия' },
+  { name: 'Казахстан', code: 'Казахстан' },
 ])
 </script>
 
@@ -22,17 +31,17 @@ const cantry = ref([
         <div class="mb-2">Паспортные данные</div>
         <div class="group_form-control-tree">
           <div class="form-control">
-            <input type="number" placeholder="Серия" />
+            <InputMask type="text" mask="9999" placeholder="Серия"/>
           </div>
           <div class="form-control">
-            <input type="number" placeholder="Номер" />
+            <InputMask type="text" mask="999999" placeholder="Номер"/>
           </div>
           <div class="form-control">
-            <input type="number" placeholder="Дата выдачи" />
+            <Calendar type="text" placeholder="Дата выдачи"/>
           </div>
         </div>
         <div class="form-control">
-          <input type="text" placeholder="кем выдан" />
+          <input type="text" placeholder="Кем выдан, код подразделения"/>
         </div>
         <div class="mb-2">Гражданство</div>
         <div class="form-control">
