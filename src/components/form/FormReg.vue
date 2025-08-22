@@ -6,7 +6,7 @@ import { registration, fetchUzers } from '../../http/userAPI.js'
 
 import ProfileContact from './ProfileContent.vue'
 import JobInformationContentfrom from './JobInformationContent.vue'
-import JobContactComponent from './JobContactComponent.vue'
+import JobContactComponent from '@/components/form/JobContactComponent.vue'
 import PersonalContactsComponent from './PersonalContactsComponent.vue'
 import PassportData from './PassportData.vue'
 
