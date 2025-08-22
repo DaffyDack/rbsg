@@ -41,7 +41,8 @@ const infoProfile = ref({
   department: store.info.department,
   positions: store.info.positions
 })
-
+const foneNumber = infoProfile.value.mobilephone.slice(1)
+console.log(foneNumber)
 
 const userTabs: Ref<UserTab[]> = ref([
   { component: 'ProfileContent', title: 'Профиль', errors: false },
@@ -86,7 +87,7 @@ const userTabs: Ref<UserTab[]> = ref([
                           <img src="../assets/SMS.svg" alt="SMS" width="46px" />
                        </div>
                     </a>  
-                    <a href="">
+                    <a href="href=https://wa.me/{{foneNumber}}">
                        <div class="social_button">
                           <img src="../assets/whatsapp.svg" alt="whatsapp" width="46px" />
                       </div>
@@ -136,7 +137,7 @@ const userTabs: Ref<UserTab[]> = ref([
       text-align: center;
       font-size: 22px;
       font-style: normal;
-      font-weight: 800;
+      font-weight: 600;
       line-height: normal;
       background: linear-gradient(90deg, #FF33E4 0%, #178FFF 100%);
       background-clip: text;
