@@ -261,7 +261,7 @@ function getNamesChangeDepartmen(): void {
                 </div>
                 <div class="form-control">
                     <label for="participant1" style="color: #fff;">Руководитель</label>
-                    <Select v-model="form.fullname" id="Participant" :options="usersString" optionLabel="firstname"
+                    <Select v-model="form.fullname" id="Participant" :options="usersString" optionLabel="fullname"
                         placeholder="Руководитель" class="w-full" />
                 </div>
                 <div class="form-control">
@@ -271,7 +271,7 @@ function getNamesChangeDepartmen(): void {
                 <div class="form-control">
                     <label for="participants" style="color: #fff;">Участники</label>
                     <MultiSelect v-model="selectedName" @change="getNamesAsString()" id="participants"
-                        :options="usersString" optionLabel="firstname" filter placeholder="Участник"
+                        :options="usersString" optionLabel="fullname" filter placeholder="Участник"
                         :maxSelectedLabels="3" class="w-full md:w-80" />
                 </div>
                 <div class="form-control">

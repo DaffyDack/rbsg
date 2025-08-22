@@ -55,6 +55,7 @@ const generatejwt = (
   telegram,
   datebirth,
   img,
+  fullname,
   working_contact_workphone,
   code,
 ) => {
@@ -77,6 +78,7 @@ const generatejwt = (
       telegram,
       datebirth,
       img,
+      fullname,
       working_contact_workphone,
       code,
     },
@@ -107,6 +109,7 @@ class UserController {
         workphone,
         telegram,
         datebirth,
+        fullname,
         code,
       } = req.body
 
@@ -147,6 +150,7 @@ class UserController {
         telegram,
         datebirth,
         img: fileName,
+        fullname,
         code: newCode,
         jobfunctions,
       })
@@ -173,6 +177,7 @@ class UserController {
         user.telegram,
         user.datebirth,
         user.img,
+        user.fullname,
         user.code,
         // WC?.workphone,
       )
@@ -211,6 +216,7 @@ class UserController {
       user.telegram,
       user.datebirth,
       user.img,
+      user.fullname,
       user.code,
       // WC?.workphone,
     )
@@ -235,6 +241,7 @@ class UserController {
       req.user.telegram,
       req.user.datebirth,
       req.user.img,
+      req.user.fullname,
       req.user.code,
       // req.WC?.workphone,
     )
