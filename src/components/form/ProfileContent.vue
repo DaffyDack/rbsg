@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { ref, watch, defineEmits } from 'vue'
+import { ref, watch, defineEmits,computed } from 'vue'
 import Select from 'primevue/select'
 import DatePicker from 'primevue/datepicker'
+import Password from 'primevue/password';
+import Calendar from 'primevue/calendar';
+import InputMask from 'primevue/inputmask';
 
 import { checkEmail, checkLength } from '../../utils/helper.js'
 const props = defineProps(['check'])
 const upload = ref()
-const date = ref()
+const date = ref();
+const minDate = ref(new Date());
+const maxDate = ref(new Date());
 
 type ErrorType = 'firstname' | 'password'
 
@@ -194,7 +199,7 @@ watch(
       errors.value.email = checkEmail(form.value.email)
     }
     if (form.value.password) {
-      errors.value['password'] = checkLength('password', form.value.firstname, 1, 15)
+      errors.value['password'] = checkLength('password', form.value.password, 1, 15)
     }
     if (form.value.password2 !== form.value.password) {
       errors.value.password2 = 'Пароль не совподает'
@@ -203,6 +208,15 @@ watch(
     }
   },
 )
+
+let today = new Date();
+let month = today.getMonth();
+let year = today.getFullYear();
+let prevYear = (year - 65)
+let nextYear = (year - 18)
+minDate.value.setFullYear(prevYear);
+maxDate.value.setFullYear(nextYear);
+
 </script>
 
 <template>
@@ -231,20 +245,20 @@ watch(
             class="w-full" />
         </div>
         <div class="form-control">
-          <label for="birth_day">День рождения</label>
-          <DatePicker v-model="form.datebirth" style="width: 100%" id="birth_day" placeholder="День рождения"
-            dateFormat="dd/mm/yy" />
+          <label for="birth_day">Дата рождения</label>
+          <Calendar v-model="form.datebirth" style="width: 100%" id="birth_day" placeholder="День рождения"
+            dateFormat="dd/mm/yy"  :minDate="minDate" :maxDate="maxDate" :manualInput="false" />
         </div>
       </div>
     </div>
     <div class="group_form-control-four">
       <div class="form-control">
         <label for="mobile_self">Мобильный телефон (личный)</label>
-        <input type="text" id="mobile_self" v-model="form.mobilephone" placeholder="Мобильный телефон (личный)" />
+        <InputMask type="text" mask="+7 999-999-9999" id="mobile_self" v-model="form.mobilephone" placeholder="Мобильный телефон (личный)" />
       </div>
       <div class="form-control">
         <label for="mobile_work">Мобильный телефон (рабчий)</label>
-        <input type="text" id="mobile_work" v-model="form.workphone" placeholder="Мобильный телефон (рабочий)" />
+        <InputMask type="text" mask="+7 999-999-9999" id="mobile_work" v-model="form.workphone" placeholder="Мобильный телефон (рабочий)" />
       </div>
       <div class="form-control">
         <label for="link_whatsapp">Ссылка на ватсам</label>
@@ -273,7 +287,7 @@ watch(
     <div class="group_form-control-four">
       <div class="form-control" :class="{ error: errors.password, success: !errors.password && form.password != '' }">
         <label for="password">Пароль</label>
-        <input type="password" v-model="form.password" id="password" placeholder="Введите пароль" />
+        <Password v-model="form.password" id="password" variant="filled" placeholder="Введите пароль" toggleMask />
         <small v-if="errors.password">{{ errors.password }}</small>
       </div>
 
@@ -301,10 +315,23 @@ watch(
         placeholder="Должностные обязанности"></textarea>
     </div>
     <div class="form-control" :class="{ error: errors.file, success: !errors.file && form.file != '' }">
-      <label for="selctFile">Грузим фото</label>
+      <label for="selctFile">Загрузить фото</label>
       <input type="file" ref="upload" id="selctFile" @change="previewFiles" />
       <small v-if="errors.file">{{ errors.file }}</small>
     </div>
 
   </div>
 </template>
+
+<style scoped> 
+.p-password {
+    width: 100%;
+    display: inline-flex;
+    position: relative;
+
+}
+.p-inputtext.p-variant-filled {
+    background: none;
+}
+
+</style>

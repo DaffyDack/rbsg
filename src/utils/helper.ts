@@ -34,7 +34,7 @@ export function checkLength(err: ErrorType, input: string, min: number, max: num
       valid: '',
     },
   }
-
+ 
   if (input.length < min) {
     return messages[err].tooShort
   } else if (input.length > max) {

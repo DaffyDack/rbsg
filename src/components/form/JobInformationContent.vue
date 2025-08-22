@@ -2,6 +2,7 @@
 import { ref, watch, defineEmits } from 'vue'
 import { checkLength } from '../../utils/helper.js'
 import Select from 'primevue/select'
+import Calendar from 'primevue/calendar';
 const props = defineProps(['check'])
 const test = ref()
 const emit = defineEmits()
@@ -196,19 +197,19 @@ defineExpose({ CheckingJobInformationComponent })
             <div class="group_form-control-tree">
                 <div class="form-control">
                     <label for="jobInformationDateOfficialEmployment">Дата официального трудоустройства</label>
-                    <input type="text" id="jobInformationDateOfficialEmployment"
+                    <Calendar type="text" v-model="form.dateEmployment" style="width: 100%" id="jobInformationDateOfficialEmployment"
                         placeholder="Дата официального трудоустройства" />
                 </div>
-                <div class="form-control"
-                    :class="{ error: errors.startDate, success: !errors.startDate && form.startDate != '' }">
+                <div class="form-control">
+                    <!-- :class="{ error: errors.startDate, success: !errors.startDate && form.startDate != '' }"> -->
                     <label for="jobInformationStartDate">Дата начала работы</label>
-                    <input type="text" v-model="form.startDate" id="jobInformationStartDate"
-                        placeholder="Дата начала работы" />
-                    <small v-if="errors.startDate">{{ errors.startDate }}</small>
+                    <Calendar v-model="form.startDate" style="width: 100%" id="jobInformationStartDate" placeholder="Дата начала работы" dateFormat="dd/mm/yy"/>
+                    
+                    <!-- <small v-if="errors.startDate">{{ errors.startDate }}</small> -->
                 </div>
                 <div class="form-control">
                     <label for="jobInformationProbationPeriodUntil">Испытательный срок до</label>
-                    <input type="text" id="jobInformationProbationPeriodUntil" placeholder="Испытательный срок до" />
+                    <Calendar type="text"v-modal="form.probationPeriod" style="width: 100%" id="jobInformationProbationPeriodUntil" placeholder="Испытательный срок до" dateFormat="dd/mm/yy"/>
                 </div>
             </div>
             <div class="italic">Совмещение</div>
@@ -247,7 +248,7 @@ defineExpose({ CheckingJobInformationComponent })
                     </div>
                     <div class="form-control">
                         <label for="jobInformationStartDateCombination">Дата начала совмещения</label>
-                        <input type="text" id="jobInformationStartDateCombination" placeholder="/ __ . __ . ____ /" />
+                        <Calendar type="text" style="width: 100%"  id="jobInformationStartDateCombination" placeholder="dd/mm/yy" />
                     </div>
                 </div>
                 <div class="group_form-control-four">
