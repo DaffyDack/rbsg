@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import InputNumber from 'primevue/inputnumber';
 import Dropdown from 'primevue/dropdown';
-import { ref, computed, watch } from "vue";
-import PriceList from 'c:/Users/new/OneDrive/Документы/ERP/Progect ERP/rbsg/src/components/price/PriceList.vue';
+import { ref, computed } from "vue";
+import PriceList from '@/components/price/PriceList.vue';
 import FloatLabel from 'primevue/floatlabel';
 import Button from 'primevue/button';
-import InputText from 'primevue/inputtext';
 
 export interface IProduct {
     name: string;
@@ -16,10 +14,10 @@ export interface IProduct {
     texture: string;
     purposes: string;
     additional: string;
-    totalCost:  number;
-    calculateSmallWholesalePrice:  number;
+    totalCost: number;
+    calculateSmallWholesalePrice: number;
     calculateWholesalePrice: number;
-    calculateDealerPrice:  number;
+    calculateDealerPrice: number;
 }
 interface Area {
     name: string;
@@ -30,16 +28,16 @@ interface Thickness {
     price: string;
 }
 interface UniqueValue {
-    name: string ;
+    name: string;
 }
 interface IValute {
     [key: string]: {
-        Previous: number; 
+        Previous: number;
     };
 }
 interface IgetItem {
-    kraft:string;
-    article:string
+    kraft: string;
+    article: string
 }
 const selectedName = ref()
 const selectedSize = ref();
@@ -53,41 +51,15 @@ const euro = ref('')
 
 
 const token = "0f54e5e6b25475a140f44143c70830db"
-<<<<<<< HEAD
-const urlAPpi = "https://currate.ru/api/?get=rates&pairs=USDRUB,&key=0f54e5e6b25475a140f44143c70830db";
-const query = ref("");
-
-
-watch(query, async () => {
-    try {
-        const res = await fetch("https://currate.ru/api/?get=rates&pairs=USDRUB,&key=0f54e5e6b25475a140f44143c70830db");
-        const data = await res.json();
-        console.log(data)
-        answerApi.value = data.answer;
-        console.log(answerApi.value);
-    } catch (error) {
-        answerApi.value = 'Ошибка! Нет доступа к API. ' + error.message;
-        console.error(error);
-    }
-});
-console.log(answerApi.value)
-
-const products = [
-    { name: 'Белый Холодный (Cold White)', size: '1840х3670мм', thickness: '12мм', article: 'RC851XL', kraft: 'Черный', texture: 'SF (шагрень)', purposes: 'Интерьерный стандартный', additional: 'Защитная пленка' },
-    { name: 'Белый Холодный (Cold White)', size: '1860х4300мм', thickness: '12мм', article: 'RC851XL', kraft: 'Черный', texture: 'SF (шагрень)', purposes: 'Интерьерный стандартный', additional: 'Защитная пленка' },
-    { name: 'Белый Холодный (Cold White)', size: '1300х3050мм', thickness: '6мм', article: 'RC851XL', kraft: 'Черный', texture: 'SF (шагрень)', purposes: 'Интерьерный стандартный', additional: 'Защитная пленка' },
-    { name: 'Слоновая кость (IVORY)', size: '1840х3670мм', thickness: '12мм', article: 'RC855XL', kraft: 'Черный', texture: 'SF (шагрень)', purposes: 'Интерьерный стандартный', additional: 'Защитная пленка' },
-    { name: 'Графит (Dark Grey)', size: '1860х4300мм', thickness: '12мм', article: 'RC811111XL', kraft: 'Черный', texture: 'SF (шагрень)', purposes: 'Интерьерный стандартный', additional: 'Защитная пленка Overlay с двух стороyн' }
-=======
 const urlAPpi = 'https://www.cbr-xml-daily.ru/daily_json.js';
 
-const getСourse =async() => {
-      try {
+const getСourse = async () => {
+    try {
         const res = await fetch(urlAPpi);
-        const data  = await res.json();
-        euro.value  = data.Valute.EUR.Previous.toFixed(2)
+        const data = await res.json();
+        euro.value = data.Valute.EUR.Previous.toFixed(2)
     } catch (error) {
-         euro.value = 'Ошибка! Нет доступа к API. ';  
+        euro.value = 'Ошибка! Нет доступа к API. ';
         console.error(error);
     }
 }
@@ -103,7 +75,7 @@ getСourse()
 //         console.error(error);
 //     }
 // });
-  
+
 
 const products: IProduct[] = [
     {
@@ -141,7 +113,6 @@ const products: IProduct[] = [
         calculateWholesalePrice: 0,
         calculateDealerPrice: 0
     }
->>>>>>> it2
 ];
 const area = [
     { name: '1840х3670мм', area: '6.753 м2' },
@@ -164,13 +135,12 @@ const smallWholesale = 10;
 const wholesale = 20;
 const dealersale = 30;
 
-<<<<<<< HEAD
-const getUniqueValues = (key) => {
+const getUniqueValues = <T extends keyof IProduct>(key: T) => {
     return [...new Set(products.map(product => product[key]))].map(value => ({ name: value }))
 }
 
 
-const filteredNames = computed(() => {
+const filteredNames = computed<UniqueValue[]>(() => {
 
     if (!selectedSize.value && !selectedThickness.value && !selectedPurpose.value && !selectedTexture.value && !selectedAdditional.value) {
         return getUniqueValues('name')
@@ -178,46 +148,20 @@ const filteredNames = computed(() => {
     return getUniqueValues('name').filter(name =>
         products.some(product =>
             product.name === name.name &&
+
             (!selectedSize.value || product.size === selectedSize.value.name) &&
             (!selectedThickness.value || product.thickness === selectedThickness.value.name) &&
             (!selectedPurpose.value || product.purposes === selectedPurpose.value.name) &&
             (!selectedTexture.value || product.texture === selectedTexture.value.name) &&
             (!selectedAdditional.value || product.additional === selectedAdditional.value.name)
         )
-=======
-const getUniqueValues = <T extends keyof IProduct>(key: T) => {
-    return [...new Set(products.map(product => product[key]))].map(value => ({name: value}))
-}
-
-
-const filteredNames = computed<UniqueValue[]>(() => {
-       
-    if (!selectedSize.value && !selectedThickness.value && !selectedPurpose.value && !selectedTexture.value && !selectedAdditional.value) {
-        return getUniqueValues('name')
-    }
-   return getUniqueValues('name').filter(name => 
-        products.some(product => 
-        product.name === name.name &&
-        
-        (!selectedSize.value || product.size === selectedSize.value.name) &&
-        (!selectedThickness.value || product.thickness === selectedThickness.value.name) &&
-        (!selectedPurpose.value || product.purposes === selectedPurpose.value.name) &&
-        (!selectedTexture.value || product.texture === selectedTexture.value.name) &&
-        (!selectedAdditional.value || product.additional === selectedAdditional.value.name)
-    )
->>>>>>> it2
     );
 });
 
 
 
-<<<<<<< HEAD
-const filteredSizes = computed(() => {
-    if (!selectedName.value && !selectedAdditional.value && !selectedPurpose.value && !selectedThickness.value && selectedTexture.value) {
-=======
 const filteredSizes = computed<UniqueValue[]>(() => {
-    if(!selectedName.value && !selectedAdditional.value && !selectedPurpose.value && !selectedThickness.value && selectedTexture.value) {
->>>>>>> it2
+    if (!selectedName.value && !selectedAdditional.value && !selectedPurpose.value && !selectedThickness.value && selectedTexture.value) {
         return getUniqueValues('size')
     }
     return getUniqueValues('size').filter(size =>
@@ -300,15 +244,9 @@ const filteredTexture = computed<UniqueValue[]>(() => {
     );
 });
 
-<<<<<<< HEAD
-const getItem = computed(() => {
+const getItem = computed<"" | IProduct | undefined>(() => {
     if (!selectedName.value) {
         return ''
-=======
-const getItem = computed<"" | IProduct | undefined >(() => {
-    if(!selectedName.value) {
-      return''
->>>>>>> it2
     }
     const selelectedNameProduct = selectedName.value ? selectedName.value.name : null
     const articleFoName = products.find(item => item.name === selelectedNameProduct)
@@ -322,18 +260,17 @@ const purposes = ref([
 
 
 const selectedItem = computed(() => {
-<<<<<<< HEAD
-    // if(selectedName.value) {
+
     const item = {
-        kraft: getItem ? getItem.kraft : null,
-        article: getItem ? getItem.article : null,
+        kraft: getItem.value && typeof getItem.value !== "string" ? getItem.value.kraft : null,
+        article: getItem.value && typeof getItem.value !== "string" ? getItem.value.article : null,
         name: selectedName.value ? selectedName.value.name : null,
         size: selectedSize.value ? selectedSize.value.name : null,
         thickness: selectedThickness.value ? selectedThickness.value.name : null,
-        finishTexture: selectedTexture.value ? selectedTexture.value.name : null,
+        texture: selectedTexture.value ? selectedTexture.value.name : null,
         purpose: selectedPurpose.value ? selectedPurpose.value.name : null,
         additional: selectedAdditional.value ? selectedAdditional.value.name : null
-    }
+    };
 
     const matchedItem = products.find(product =>
 
@@ -348,47 +285,13 @@ const selectedItem = computed(() => {
     )
 
     return matchedItem ? matchedItem : null;
-    // }
+
 })
 
 
-const calculateTotalPrice = (selectedItem) => {
+const calculateTotalPrice = (selectedItem: IProduct | undefined) => {
 
-    if (!selectedItem && !selectedItem.value.thickness && !selectedItem.value.size && selectedItem.value.name) {
-=======
- 
-            const item = {
-        kraft: getItem.value && typeof getItem.value !== "string" ? getItem.value.kraft : null,
-        article: getItem.value && typeof getItem.value !== "string" ? getItem.value.article : null,
-        name: selectedName.value ? selectedName.value.name : null,
-        size: selectedSize.value ? selectedSize.value.name : null,
-        thickness: selectedThickness.value ? selectedThickness.value.name : null,
-        texture: selectedTexture.value ? selectedTexture.value.name : null,
-        purpose: selectedPurpose.value ? selectedPurpose.value.name : null,
-        additional: selectedAdditional.value ? selectedAdditional.value.name : null
-    };
-    
-        const matchedItem = products.find(product => 
-           
-            (!item.article || product.article === item.article) &&
-            (!item.kraft || product.kraft === item.kraft) &&
-            (!item.name || product.name === item.name) &&
-            (!item.size || product.size === item.size) &&
-            (!item.thickness || product.thickness === item.thickness) &&
-            (!item.purpose || product.purposes === item.purpose) &&
-            (!item.texture || product.texture === item.texture) &&
-            (!item.additional || product.additional === item.additional)
-        )
-        
-        return matchedItem ? matchedItem : null;
-    
-})
-
-
-const calculateTotalPrice = (selectedItem: IProduct| undefined) => {
-  
-    if(!selectedItem ) {
->>>>>>> it2
+    if (!selectedItem) {
         return 0.00
     }
     const areaItem = area.find(item => item.name == selectedItem.size)
@@ -396,69 +299,40 @@ const calculateTotalPrice = (selectedItem: IProduct| undefined) => {
         return 0.00
     }
     const areaInSquareMeters = parseFloat(areaItem.area)
-<<<<<<< HEAD
     const pricePerSquareMeter = thickness.find(item => item.name === selectedItem.thickness)
     if (!pricePerSquareMeter) return 0.00
-    const totalPrice = areaInSquareMeters * pricePerSquareMeter.price
-    if (!selectedName.value) return 0.00
-=======
-    const pricePerSquareMeter = thickness.find(item => item.name === selectedItem.thickness) 
-    if(!pricePerSquareMeter) return 0.00
     const totalPrice = areaInSquareMeters * Number(pricePerSquareMeter.price) * Number(euro.value)
-    if(!selectedName.value) return 0.00   
->>>>>>> it2
+    if (!selectedName.value) return 0.00
     return totalPrice
 
 }
 
 const totalCost = computed(() => {
-    if(selectedItem.value) {
+    if (selectedItem.value) {
         return Number(calculateTotalPrice(selectedItem.value).toFixed(2))
     }
 });
 
 const calculateSmallWholesalePrice = computed(() => {
-<<<<<<< HEAD
-    if (totalCost === 0) {
+    if (Number(totalCost) === 0) {
         return 0
     }
-    const cost = totalCost.value * (1 - smallWholesale / 100)
-    return cost.toFixed(2)
-})
-const calculateWholesalePrice = computed(() => {
-    if (totalCost === 0) {
-        return 0
-    }
-    const cost = totalCost.value * (1 - wholesale / 100)
-    return cost.toFixed(2)
-})
-const calculateDealerPrice = computed(() => {
-    if (totalCost === 0) {
-        return 0
-    }
-    const cost = totalCost.value * (1 - dealersale / 100)
-    return cost.toFixed(2)
-=======
-    if ( Number(totalCost) === 0) {
-        return 0
-    }
-     const cost = Number(totalCost.value) * (1 - smallWholesale/100)
+    const cost = Number(totalCost.value) * (1 - smallWholesale / 100)
     return Number(cost.toFixed(2))
 })
 const calculateWholesalePrice = computed(() => {
-    if ( Number(totalCost) === 0) {
+    if (Number(totalCost) === 0) {
         return 0
     }
-     const cost = Number(totalCost.value)  * (1 - wholesale/100)
+    const cost = Number(totalCost.value) * (1 - wholesale / 100)
     return Number(cost.toFixed(2))
 })
 const calculateDealerPrice = computed(() => {
-    if ( Number(totalCost) === 0) {
+    if (Number(totalCost) === 0) {
         return 0
     }
-     const cost = Number(totalCost.value) * (1 - dealersale/100)
+    const cost = Number(totalCost.value) * (1 - dealersale / 100)
     return Number(cost.toFixed(2))
->>>>>>> it2
 })
 
 
@@ -466,13 +340,7 @@ const calculateDealerPrice = computed(() => {
 const addProductList = () => {
     const item = selectedItem.value;
     if (item && totalCost.value && selectedName.value && selectedAdditional.value && selectedSize.value && selectedThickness.value && selectedPurpose.value) {
-<<<<<<< HEAD
         const {
-            kraft,
-            article,
-=======
-            const {
->>>>>>> it2
             name,
             size,
             thickness,
@@ -490,13 +358,8 @@ const addProductList = () => {
             texture,
             purposes,
             additional,
-<<<<<<< HEAD
-            photo: null,
-            totalCost: totalCost.value,
-=======
             // photo: null | string, 
-            totalCost: totalCost.value, 
->>>>>>> it2
+            totalCost: totalCost.value,
             calculateDealerPrice: calculateDealerPrice.value,
             calculateWholesalePrice: calculateWholesalePrice.value,
             calculateSmallWholesalePrice: calculateSmallWholesalePrice.value,
@@ -518,13 +381,8 @@ const clearSelections = () => {
     selectedAdditional.value = null;
 };
 
-<<<<<<< HEAD
-const deleteProduct = (index) => {
+const deleteProduct = (index: number) => {
     addedProducts.value.splice(index, 1)
-=======
-const deleteProduct = (index:number) => {
- addedProducts.value.splice(index, 1)
->>>>>>> it2
 }
 
 </script>
@@ -532,9 +390,9 @@ const deleteProduct = (index:number) => {
 <template>
     <div class="container_selected">
         <div class="api">
-             Текущий курс EUR
-          
-            <span class="api">{{euro}} руб.</span>
+            Текущий курс EUR
+
+            <span class="api">{{ euro }} руб.</span>
         </div>
         <div class="grid-container">
             <FloatLabel class="grid-header">
@@ -583,7 +441,7 @@ const deleteProduct = (index:number) => {
         </div>
     </div>
 </template>
-<style scoped>
+<style scoped lang="scss">
 .p-floatlabel:has(.p-invalid) label {
     color: white;
     padding: 0 10px;
@@ -597,7 +455,7 @@ const deleteProduct = (index:number) => {
     user-select: none;
     background: black;
     border: 1px solid var(--p-select-border-color);
-    transition: background var(--p-select-transition-duration), color var(--p-select-transition-duration), border-color var(--p-select-transition-duration), outline-color var(--p-select-transition-duration), box-shadow var(--p-select-transition-duration);
+    // transition: background var(--p-select-transition-duration), color var(--p-select-transition-duration), border-color var(--p-select-transition-duration), outline-color var(--p-select-transition-duration), box-shadow var(--p-select-transition-duration);
     border-radius: var(--p-select-border-radius);
     outline-color: transparent;
     box-shadow: var(--p-select-shadow);
@@ -662,14 +520,9 @@ td {
 
 .buttonAdd {
     display: flex;
-<<<<<<< HEAD
     justify-content: center;
-    background-color: #f0f0f0;
-=======
-    justify-content: center; 
     align-items: center;
-  
->>>>>>> it2
+
 }
 
 .logo {
@@ -684,12 +537,7 @@ td {
 }
 
 .api {
-<<<<<<< HEAD
-    margin: 20px 0;
-=======
-    margin: 20px 
-    ;
->>>>>>> it2
+    margin: 20px;
     color: white;
 }
 </style>

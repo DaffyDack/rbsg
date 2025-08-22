@@ -59,14 +59,14 @@ function ExitStatus() {
           <span v-show="isSidebarOpen" class="namePage">Отделы</span>
         </RouterLink>
       </li>
-      <li @click="toggleSidebar">
+      <!-- <li @click="toggleSidebar">
         <RouterLink to="/MyTasks">
           <div class="flex items-center justify-center">
             <i class="pi pi-clipboard"></i>
           </div>
           <span>Мои задачи</span>
         </RouterLink>
-      </li>
+      </li> -->
       <li @click="toggleSidebar">
         <RouterLink to="/SettingProfile">
           <div class="flex items-center justify-center">

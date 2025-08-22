@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> it2
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useCounterStore } from '../stores/counter'
@@ -128,21 +124,3 @@ const infoProfile = ref({
   }
 }
 </style>
-<<<<<<< HEAD
-=======
-=======
-<template lang="">
-    <div>
-        
-    </div>
-</template>
-<script>
-export default {
-    
-}
-</script>
-<style lang="">
-    
-</style>
->>>>>>> origin/it2
->>>>>>> it2
