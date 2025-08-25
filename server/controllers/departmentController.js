@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const { fn, col, where, Op } = require('sequelize')
-const { Department } = require('../models/models')
+const { Department, Posts } = require('../models/models')
 
 let codeLength = 0
 let numberOfDashes = 0
@@ -119,11 +119,13 @@ class DepartmentController {
     const department = await Department.findAll()
     return res.json(department)
   }
+  async fetchPosts(req, res) {
+    const posts = await Posts.findAll()
+    return res.json(posts)
+  }
   async deleteDepartmentsByCode(req, res) {
     try {
       const { codeDelete } = req.body
-
-      console.log(codeDelete, '??????ЧТО МЫ ХОТИМ УДАЛИТЬ!!!!!')
       const deletedCount = await Department.destroy({
         where: {
           code: {

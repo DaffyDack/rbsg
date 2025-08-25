@@ -88,9 +88,9 @@
           <th>{{ item.calculateSmallWholesalePrice }}</th>
           <th>{{ item.calculateWholesalePrice }}</th>
           <th>{{ item.calculateDealerPrice }}</th>
-        <tr class="buttonAdd" @click="$emit('remove', index)">
-          Х
-        </tr>
+          <th class="buttonAdd" @click="$emit('remove', index)">
+            Х
+          </th>
         </tr>
 
         <tr v-if="items.length > 0" class="trTotal">

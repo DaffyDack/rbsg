@@ -442,11 +442,18 @@ const Department = sequelize.define('department', {
   code: { type: DataTypes.STRING, defaultValue: '0-0' },
 })
 
+const Posts = sequelize.define('posts', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  post: { type: DataTypes.STRING },
+  description: { type: DataTypes.TEXT, defaultValue: 'description post' },
+})
+
 User.hasOne(Admins)
 Admins.belongsTo(User)
 WorkingContacts.belongsTo(User)
 
 module.exports = {
+  Posts,
   User,
   Type,
   Admins,

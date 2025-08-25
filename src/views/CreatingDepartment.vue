@@ -7,7 +7,7 @@ import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
 
 
-import { creadetDepartment, deleteDepartmentsByCode, fetchDepartment, changeInfoDepartment } from '../http/userAPI.js'
+import { creadetDepartment, deleteDepartmentsByCode, fetchDepartment, fetchPosts, changeInfoDepartment } from '../http/userAPI.js'
 const nameRole = ref(JSON.parse(localStorage.getItem('role') || ''))
 const usersString = ref()
 const departments = ref()
@@ -58,9 +58,13 @@ interface Item {
     department: string;
     code: string;
 }
+interface ItemPosts {
+    post: string;
+}
 interface name {
     firstname: string;
 }
+
 const ThereIsAlreadyDepartmentVisible = ref<boolean>(false)
 const selectedName = ref<name[]>([]);
 const selectedNameChange = ref<name[]>([]);
@@ -85,15 +89,18 @@ const addeduser = ref<boolean>(false)
 const visibleDeleteDepartment = ref<boolean>(false);
 const editDepartmentVisible = ref<boolean>(false);
 const departmentInfo = ref<boolean>(false)
+const headDepartment = ref<string>('')
 const editedDepartment = ref<string>('')
 const relatedToDepartment = ref<boolean>(false)
 const existingDepartments = ref<Item[]>([]);
+const posts = ref<ItemPosts[]>([]);
 
 const codeFromDelete = ref<string>('')
 const departmentFromDelete = ref<string>('')
 
 
 const selectedDepartment = (e: any) => {
+    headDepartment.value = e.data.fullname
     departmentInfo.value = e.data.department_description
     relatedToDepartment.value = e.data.participants
     visible.value = true
@@ -132,6 +139,9 @@ onMounted(() => {
         departments.value = data
         startBuild()
         existingDepartments.value = getUniqueItems(departments.value);
+    })
+    fetchPosts().then((data) => {
+        posts.value = data
     })
 })
 function set() {
@@ -266,7 +276,8 @@ function getNamesChangeDepartmen(): void {
                 </div>
                 <div class="form-control">
                     <label for="post" style="color: #fff;">Должность</label>
-                    <input v-model="form.post" type="text" id="post" placeholder="Должность" />
+                    <Select v-model="form.post" id="post" :options="posts" optionLabel="post" placeholder="Должность"
+                        class="w-full" />
                 </div>
                 <div class="form-control">
                     <label for="participants" style="color: #fff;">Участники</label>
@@ -311,9 +322,10 @@ function getNamesChangeDepartmen(): void {
                     </div>
                 </template>
             </Tree>
-            <Dialog v-model:visible="visible" modal header="Описание обязаностей" :style="{ width: '80%' }">
-                <div>Кто в отделе: {{ relatedToDepartment }}</div>
-                <div>Должностные обязанности: {{ departmentInfo }}</div>
+            <Dialog v-model:visible="visible" modal header="Описание обязаностей отдела" :style="{ width: '80%' }">
+                <div class="mb-2">Руководитель отдела: {{ headDepartment }}</div>
+                <div class="mb-2">Кто в отделе: {{ relatedToDepartment }}</div>
+                <div>Должностные обязанности отдела: {{ departmentInfo }}</div>
             </Dialog>
         </div>
         <Dialog v-model:visible="ThereIsAlreadyDepartmentVisible" modal header="Повторение отдела"
@@ -341,7 +353,7 @@ function getNamesChangeDepartmen(): void {
             </div>
             <div class="group_form-control">
                 <div class="form-control">
-                    <label for="department_description" style="color: #000;">Описание обязаностей</label>
+                    <label for="department_description" style="color: #000;">Описание обязаностей отдела</label>
                     <textarea v-model="changeFormDepartment.department_description" style="border: 1px solid #ccc;"
                         type="text" id="department_description" placeholder="Описание обязаностей"></textarea>
                 </div>
