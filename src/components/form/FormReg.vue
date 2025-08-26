@@ -127,8 +127,9 @@ const handleParentMethod = (e: any, tr: boolean) => {
 const JobInformationMethod = (e: any) => {
   errorProfile('JobInformationContent', true)
   console.log(e, 'JobInformationMethod')
-  formDataTest.value.positions = e.positions.name
-  formDataTest.value.department = e.department.name
+  formDataTest.value.positions = e.positions.post
+  formDataTest.value.jobfunctions = e.positions.description
+  formDataTest.value.department = e.department.department
   formDataTest.value.code = e.department.code
 }
 

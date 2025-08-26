@@ -16,7 +16,7 @@ const User = sequelize.define('user', {
   company: { type: DataTypes.STRING, defaultValue: 'company' },
   positions: { type: DataTypes.STRING, defaultValue: 'position' },
   locations: { type: DataTypes.STRING, defaultValue: 'location' },
-  jobfunctions: { type: DataTypes.STRING, defaultValue: 'JobFunctions' },
+  jobfunctions: { type: DataTypes.TEXT, defaultValue: 'JobFunctions' },
   mobilephone: { type: DataTypes.STRING, defaultValue: 'mobilePhone' },
   workphone: { type: DataTypes.STRING, defaultValue: 'workPhone' },
   telegram: { type: DataTypes.STRING, defaultValue: 'telegram' },

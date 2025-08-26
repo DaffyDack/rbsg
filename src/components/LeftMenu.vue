@@ -91,7 +91,7 @@ function ExitStatus() {
           <span>Пирамида древом</span>
         </RouterLink>
       </li>
-      <li v-if="name.role === 'ADMIN'" @click="toggleSidebar">
+      <li @click="toggleSidebar">
         <RouterLink to="/UsersList">
           <div class="flex items-center justify-center">
             <i class="pi pi-users"></i>

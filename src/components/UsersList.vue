@@ -11,17 +11,26 @@ import Dialog from 'primevue/dialog'
 import { useUsersStore } from '../stores/users'
 import { useCounterStore } from '../stores/counter'
 import { fetchUzers, deleleUser } from '@/http/userAPI'
+const name = ref(JSON.parse(localStorage.getItem('role') || ''))
+
 const store = useUsersStore()
 const storeUser = useCounterStore()
 const deleteProductDialog = ref(false)
+const infoJobfunctionsDialog = ref(false)
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
 })
 const product = ref()
+const jobfunctions = ref(null)
 
 function confirmDeleteProduct(e: any) {
   product.value = store.user?.find((x: any) => x.id === e.id) ?? null
   deleteProductDialog.value = true
+}
+function confirmInfoPositions(e: any) {
+  console.log(e, 'Находим сведения о работе')
+  jobfunctions.value = e.jobfunctions
+  infoJobfunctionsDialog.value = true
 }
 
 const deleteUser = async () => {
@@ -52,11 +61,19 @@ console.log(store.user, 'смотрим всех юзеров')
               </IconField>
             </div>
           </template>
-          <Column field="id" header="ID" sortable style="min-width: 25%"></Column>
-          <Column field="email" header="Email" sortable style="min-width: 25%"></Column>
-          <Column field="role" header="Role" sortable style="min-width: 25%"></Column>
-
-          <Column header="Действие" :exportable="false" style="min-width: 25%">
+          <Column field="id" header="ID" sortable></Column>
+          <Column field="department" header="Department"></Column>
+          <Column field="fullname" header="Full Name" sortable></Column>
+          <Column field="email" header="Email" sortable></Column>
+          <Column field="role" header="Role" sortable></Column>
+          <Column field="positions" header="Positions" sortable>
+            <template #body="slotProps">
+              <div @click="confirmInfoPositions(slotProps.data)">
+                {{ slotProps.data.positions }}
+              </div>
+            </template>
+          </Column>
+          <Column v-if="name.role === 'ADMIN'" header="Действие" :exportable="false">
             <template #body="slotProps">
               <Button v-if="storeUser.info.id !== slotProps.data.id" icon="pi pi-trash" outlined rounded
                 severity="danger" @click="confirmDeleteProduct(slotProps.data)" />
@@ -74,6 +91,13 @@ console.log(store.user, 'смотрим всех юзеров')
           <Button label="Отмена" icon="pi pi-times" text @click="deleteProductDialog = false" />
           <Button label="Удалить" icon="pi pi-check" @click="deleteUser" />
         </template>
+      </Dialog>
+
+      <Dialog v-model:visible="infoJobfunctionsDialog" :style="{ width: '50%' }" header="Должностные обязанности"
+        :modal="true">
+        <div class="flex items-center gap-4">
+          {{ jobfunctions }}
+        </div>
       </Dialog>
     </div>
   </div>

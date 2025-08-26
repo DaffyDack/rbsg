@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useUsersStore } from '../stores/users'
 import UsersList from '@/components/UsersList.vue'
 import FormReg from '../components/form/FormReg.vue'
 import { fetchUzers } from '@/http/userAPI'
 
+
 const store = useUsersStore()
+const name = ref(JSON.parse(localStorage.getItem('role') || ''))
 
 onMounted(() => {
   fetchUzers().then((data) => store.registrationCompleted(data))
@@ -14,7 +16,7 @@ onMounted(() => {
 
 <template>
   <div class="containerUserList">
-    <div>
+    <div v-if="name.role === 'ADMIN'">
       <FormReg />
     </div>
     <div>

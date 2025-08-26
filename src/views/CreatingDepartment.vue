@@ -43,7 +43,7 @@ interface TreeNode {
 interface Form {
     fullname: any,
     department: string,
-    post: string
+    post: any
     department_description: string,
     department_affiliation: any,
     participants: any
@@ -154,7 +154,7 @@ const RegistrationDepartment = async () => {
         const formData = new FormData()
         formData.append('fullname', `${form.value.fullname.firstname} ${form.value.fullname.lastname} ${form.value.fullname.patronymic}`)
         formData.append('department', (form.value.department).toLowerCase())
-        formData.append('post', form.value.post)
+        formData.append('post', form.value.post.post)
         formData.append('department_description', form.value.department_description)
         formData.append('department_affiliation', form.value.department_affiliation == '' ? 'администрация' : (form.value.department_affiliation.department).toLowerCase())
         formData.append('code', form.value.department_affiliation == '' ? '0-0' : form.value.department_affiliation.code)

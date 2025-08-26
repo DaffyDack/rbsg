@@ -1,9 +1,27 @@
 <script setup lang="ts">
-import { ref, watch, defineEmits } from 'vue'
+import { ref, watch, defineEmits, onMounted } from 'vue'
 import { checkLength } from '../../utils/helper.js'
 import Select from 'primevue/select'
 import Calendar from 'primevue/calendar';
+
+import { fetchDepartment, fetchPosts } from '../../http/userAPI.js'
+interface ItemPosts {
+    post: string;
+}
+
 const props = defineProps(['check'])
+const departments = ref()
+const posts = ref<ItemPosts[]>([]);
+
+onMounted(() => {
+    // usersString.value = JSON.parse(localStorage.getItem('users') ?? '[]')
+    fetchDepartment().then((data) => {
+        departments.value = data
+    })
+    fetchPosts().then((data) => {
+        posts.value = data
+    })
+})
 const test = ref()
 const emit = defineEmits()
 interface Company {
@@ -61,71 +79,6 @@ const kompany = ref([
 const brand = ref([
     { name: 'КРАФТЕР', code: 'КРАФТЕР' },
     { name: 'АТЕРИ', code: 'АТЕРИ' },
-])
-const positions = ref([
-    { name: 'Генеральный директор', code: 'Генеральный директор' },
-    { name: 'Помощник Ген директор', code: 'Учредитель' },
-    { name: 'Офис - менеджер', code: 'Испольнительный директор' },
-    { name: 'Коммерческий директор', code: 'Коммерческий директор' },
-    { name: 'Менеджер по продажам', code: 'Административный директор' },
-    { name: 'РОП', code: 'Финансовый директор' },
-    { name: 'Координатор', code: 'Директор по маркетингу' },
-    { name: 'Заместитель директора по развитию', code: 'Технический директор' },
-    { name: 'Руководитель проектов', code: 'Директор по строительству' },
-    { name: 'Руководитель монтажных работ', code: 'Директор по персоналу' },
-    { name: 'Главный инженер', code: 'Специалист по кадровому учету' },
-    { name: 'Инженер-Сметчик', code: 'HR менеджер' },
-    { name: 'Арт-директор', code: 'Главный бухгалтер' },
-    { name: 'UX/UI дизайнер', code: 'Главный бухгалтер' },
-    { name: 'Специалист по информационным технологиям', code: 'Главный бухгалтер' },
-    { name: 'Ведущий юрист', code: 'Главный бухгалтер' },
-    { name: 'Глав. Бухгалтер', code: 'Главный бухгалтер' },
-    { name: 'Бухгалтер', code: 'Главный бухгалтер' },
-    { name: 'HR', code: 'Главный бухгалтер' },
-    { name: 'Директор по персоналу', code: 'Главный бухгалтер' },
-    { name: 'Технический директор', code: 'Главный бухгалтер' },
-    { name: 'Директор по строительству', code: 'Главный бухгалтер' },
-    { name: 'Инженер-проектировщик', code: 'Главный бухгалтер' },
-    { name: 'Начальник производства', code: 'Главный бухгалтер' },
-    { name: 'Помощник руководителя проектов ', code: 'Главный бухгалтер' },
-    { name: 'Монтажник', code: 'Главный бухгалтер' },
-    { name: 'Курьер', code: 'Главный бухгалтер' },
-    { name: 'Замерщик', code: 'Главный бухгалтер' },
-    { name: 'Слесарь-сборщик алюминиевых конструкций', code: 'Главный бухгалтер' },
-    { name: 'Оператор форматно-раскроечного станка', code: 'Главный бухгалтер' },
-    { name: 'Рабочий производства', code: 'Главный бухгалтер' },
-    { name: 'Оператор ЧПУ станка', code: 'Главный бухгалтер' },
-    { name: 'Водитель погрузчика', code: 'Главный бухгалтер' },
-    { name: 'Менеджер склада', code: 'Главный бухгалтер' },
-    { name: 'Снабжение', code: 'Главный бухгалтер' },
-    { name: 'Фронт разработчик', code: 'Главный бухгалтер' },
-])
-const department = ref([
-    { name: 'Администрация', code: '0' },
-
-    { name: 'Административный отдел', code: '0-0' },
-    { name: 'Финансовый отдел', code: '0-1' },
-    { name: 'Маркетинговый отдел', code: '0-2' },
-    { name: 'Коммерческий отдел', code: '0-3' },
-
-    { name: 'Отдел кадров', code: '0-0-0' },
-    { name: 'Юридический отдел', code: '0-0-1' },
-    { name: 'Отдел АХО', code: '0-0-2' },
-
-
-    { name: 'Бухгалтерия', code: '0-1-0' },
-
-    { name: 'IT отдел', code: '0-2-0' },
-    { name: 'Отдел маркетинго', code: '0-2-1' },
-
-    { name: 'Отдел развития', code: '0-3-0' },
-    { name: 'Отдел продаж KRAFTER', code: '0-3-1' },
-    { name: 'Отдел продаж листовой HPL', code: '0-3-2' },
-    { name: 'Отдел продаж KRAFTER Мебель', code: '0-3-3' },
-    { name: 'Отдел продаж Атэри', code: '0-3-4' },
-    { name: 'Отдел продаж фурнитура', code: '0-3-5' },
-    { name: 'Тендерный отдел', code: '0-3-6' },
-    { name: 'Сметно-договорной отдел', code: '0-3-7' },
 ])
 
 const errors = ref<Errors>({
@@ -185,31 +138,34 @@ defineExpose({ CheckingJobInformationComponent })
                 </div>
                 <div class="form-control">
                     <label for="jobInformationDepartment">Отдел</label>
-                    <Select v-model="form.department" id="jobInformationPost" :options="department" optionLabel="name"
-                        placeholder="Отдел" class="w-full" />
+                    <Select v-model="form.department" id="jobInformationPost" :options="departments"
+                        optionLabel="department" placeholder="Отдел" class="w-full" />
                 </div>
                 <div class="form-control">
                     <label for="jobInformationPost">Должность</label>
-                    <Select v-model="form.positions" id="jobInformationPost" :options="positions" optionLabel="name"
+                    <Select v-model="form.positions" id="jobInformationPost" :options="posts" optionLabel="post"
                         placeholder="Должность" class="w-full" />
                 </div>
             </div>
             <div class="group_form-control-tree">
                 <div class="form-control">
                     <label for="jobInformationDateOfficialEmployment">Дата официального трудоустройства</label>
-                    <Calendar type="text" v-model="form.dateEmployment" style="width: 100%" id="jobInformationDateOfficialEmployment"
-                        placeholder="Дата официального трудоустройства" />
+                    <Calendar type="text" v-model="form.dateEmployment" style="width: 100%"
+                        id="jobInformationDateOfficialEmployment" placeholder="Дата официального трудоустройства" />
                 </div>
-                <div class="form-control">
-                    <!-- :class="{ error: errors.startDate, success: !errors.startDate && form.startDate != '' }"> -->
+                <div class="form-control"
+                    :class="{ error: errors.startDate, success: !errors.startDate && form.startDate != '' }">
                     <label for="jobInformationStartDate">Дата начала работы</label>
-                    <Calendar v-model="form.startDate" style="width: 100%" id="jobInformationStartDate" placeholder="Дата начала работы" dateFormat="dd/mm/yy"/>
-                    
-                    <!-- <small v-if="errors.startDate">{{ errors.startDate }}</small> -->
+                    <Calendar v-model="form.startDate" style="width: 100%" id="jobInformationStartDate"
+                        placeholder="Дата начала работы" dateFormat="dd/mm/yy" />
+
+                    <small v-if="errors.startDate">{{ errors.startDate }}</small>
                 </div>
                 <div class="form-control">
                     <label for="jobInformationProbationPeriodUntil">Испытательный срок до</label>
-                    <Calendar type="text"v-modal="form.probationPeriod" style="width: 100%" id="jobInformationProbationPeriodUntil" placeholder="Испытательный срок до" dateFormat="dd/mm/yy"/>
+                    <Calendar type="text" v-modal="form.probationPeriod" style="width: 100%"
+                        id="jobInformationProbationPeriodUntil" placeholder="Испытательный срок до"
+                        dateFormat="dd/mm/yy" />
                 </div>
             </div>
             <div class="italic">Совмещение</div>
@@ -248,7 +204,8 @@ defineExpose({ CheckingJobInformationComponent })
                     </div>
                     <div class="form-control">
                         <label for="jobInformationStartDateCombination">Дата начала совмещения</label>
-                        <Calendar type="text" style="width: 100%"  id="jobInformationStartDateCombination" placeholder="dd/mm/yy" />
+                        <Calendar type="text" style="width: 100%" id="jobInformationStartDateCombination"
+                            placeholder="dd/mm/yy" />
                     </div>
                 </div>
                 <div class="group_form-control-four">
