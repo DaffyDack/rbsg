@@ -6,6 +6,7 @@ import FloatLabel from 'primevue/floatlabel';
 import Button from 'primevue/button';
 
 export interface IProduct {
+    supplier: string;
     name: string;
     size: string;
     thickness: string;
@@ -40,6 +41,7 @@ interface IgetItem {
     article: string
 }
 const selectedName = ref()
+const selectedSupplier = ref()
 const selectedSize = ref();
 const selectedPurpose = ref();
 const selectedTexture = ref();
@@ -64,21 +66,12 @@ const getСourse = async () => {
     }
 }
 getСourse()
-// watch(  () => urlAPpi, // Наблюдаемый источник
-//     async (newValue) =>{
-//     try {
-//         const res = await fetch(urlAPpi);
-//         const data  = await res.json();
-//         euro.value  = data.Valute.EUR.Previous.toFixed(2)
-//     } catch (error) {
-//          euro.value = 'Ошибка! Нет доступа к API. ';  
-//         console.error(error);
-//     }
-// });
 
 
-const products: IProduct[] = [
-    {
+
+const pro: IProduct[] = [
+    {   
+        supplier: "Crown Décor",
         name: 'Белый Холодный (Cold White)', size: '1840х3670мм', thickness: '12мм', article: 'RC851XL', kraft: 'Черный', texture: 'SF (шагрень)', purposes: 'Интерьерный стандартный', additional: 'Защитная пленка',
         totalCost: 0,
         calculateSmallWholesalePrice: 0,
@@ -86,6 +79,7 @@ const products: IProduct[] = [
         calculateDealerPrice: 0
     },
     {
+        supplier: "Crown Décor",
         name: 'Белый Холодный (Cold White)', size: '1860х4300мм', thickness: '12мм', article: 'RC851XL', kraft: 'Черный', texture: 'SF (шагрень)', purposes: 'Интерьерный стандартный', additional: 'Защитная пленка',
         totalCost: 0,
         calculateSmallWholesalePrice: 0,
@@ -93,6 +87,7 @@ const products: IProduct[] = [
         calculateDealerPrice: 0
     },
     {
+        supplier: "Crown Décor",
         name: 'Белый Холодный (Cold White)', size: '1300х3050мм', thickness: '6мм', article: 'RC851XL', kraft: 'Черный', texture: 'SF (шагрень)', purposes: 'Интерьерный стандартный', additional: 'Защитная пленка',
         totalCost: 0,
         calculateSmallWholesalePrice: 0,
@@ -100,6 +95,7 @@ const products: IProduct[] = [
         calculateDealerPrice: 0
     },
     {
+        supplier: "Crown Décor",
         name: 'Слоновая кость (IVORY)', size: '1840х3670мм', thickness: '12мм', article: 'RC855XL', kraft: 'Черный', texture: 'SF (шагрень)', purposes: 'Интерьерный стандартный', additional: 'Защитная пленка',
         totalCost: 0,
         calculateSmallWholesalePrice: 0,
@@ -107,6 +103,7 @@ const products: IProduct[] = [
         calculateDealerPrice: 0
     },
     {
+        supplier: "Krafter",
         name: 'Графит (Dark Grey)', size: '1860х4300мм', thickness: '12мм', article: 'RC811111XL', kraft: 'Черный', texture: 'SF (шагрень)', purposes: 'Интерьерный стандартный', additional: 'Защитная пленка Overlay с двух стороyн',
         totalCost: 0,
         calculateSmallWholesalePrice: 0,
@@ -135,10 +132,24 @@ const smallWholesale = 10;
 const wholesale = 20;
 const dealersale = 30;
 
-const getUniqueValues = <T extends keyof IProduct>(key: T) => {
-    return [...new Set(products.map(product => product[key]))].map(value => ({ name: value }))
-}
+const productsFilterOfSupplier = (initialProducts: IProduct[]): IProduct[] => { 
+    if(!selectedSupplier.value) {
+        return initialProducts
+    }
+    return initialProducts.filter((product: IProduct) => 
+        selectedSupplier.value === null || selectedSupplier.value === product.supplier
+    );
+};
+ const products = productsFilterOfSupplier(pro)
 
+const getUniqueValues = <T extends keyof IProduct>(key: T): { name: IProduct[T] }[] => {
+    return [...new Set(products.map((product) => product[key]))].map(value => ({ name: value }));
+};
+
+const filteredSupplier = computed<UniqueValue[]>(() => {
+    return getUniqueValues('supplier')
+})
+// console.log(filteredSupplier())
 
 const filteredNames = computed<UniqueValue[]>(() => {
 
@@ -147,6 +158,7 @@ const filteredNames = computed<UniqueValue[]>(() => {
     }
     return getUniqueValues('name').filter(name =>
         products.some(product =>
+       
             product.name === name.name &&
 
             (!selectedSize.value || product.size === selectedSize.value.name) &&
@@ -262,6 +274,7 @@ const purposes = ref([
 const selectedItem = computed(() => {
 
     const item = {
+        supplier: getItem.value && typeof getItem.value !== "string" ? getItem.value.supplier : null,
         kraft: getItem.value && typeof getItem.value !== "string" ? getItem.value.kraft : null,
         article: getItem.value && typeof getItem.value !== "string" ? getItem.value.article : null,
         name: selectedName.value ? selectedName.value.name : null,
@@ -274,6 +287,7 @@ const selectedItem = computed(() => {
 
     const matchedItem = products.find(product =>
 
+        (!item.supplier || product.supplier === item.supplier) &&
         (!item.article || product.article === item.article) &&
         (!item.kraft || product.kraft === item.kraft) &&
         (!item.name || product.name === item.name) &&
@@ -341,6 +355,7 @@ const addProductList = () => {
     const item = selectedItem.value;
     if (item && totalCost.value && selectedName.value && selectedAdditional.value && selectedSize.value && selectedThickness.value && selectedPurpose.value) {
         const {
+           
             name,
             size,
             thickness,
@@ -350,6 +365,7 @@ const addProductList = () => {
         } = item;
 
         const newItem = {
+           
             kraft: item.kraft,
             article: item.article,
             name,
@@ -389,41 +405,47 @@ const deleteProduct = (index: number) => {
 
 <template>
     <div class="container_selected">
-        <div class="api">
-            Текущий курс EUR
+        
 
-            <span class="api">{{ euro }} руб.</span>
+    <span class="api">Текущий курс EUR {{ euro }} руб.</span>
+        <div class="api">
+          
+               <FloatLabel class="grid-header">
+                <Dropdown v-model="selectedSupplier" :options="filteredSupplier" showClear optionLabel="supplier" invalid
+                    class="w-full md:w-9rem" />
+                <label for="ac">Производитель</label>
+            </FloatLabel>
         </div>
         <div class="grid-container">
             <FloatLabel class="grid-header">
                 <Dropdown v-model="selectedName" :options="filteredNames" showClear optionLabel="name" invalid
-                    class="w-full md:w-14rem" />
+                    class="w-full md:w-10rem" />
                 <label for="ac">Наименование </label>
             </FloatLabel>
             <FloatLabel class="grid-header">
                 <Dropdown v-model="selectedSize" :options="filteredSizes" showClear optionLabel="name" invalid
-                    class="w-full md:w-14rem" />
+                    class="w-full md:w-10rem" />
                 <label for="ac">Формат листа </label>
             </FloatLabel>
             <FloatLabel class="grid-header">
                 <Dropdown v-model="selectedThickness" :options="filteredThicknesses" showClear optionLabel="name"
-                    invalid class="w-full md:w-14rem" />
+                    invalid class="w-full md:w-10rem" />
                 <label for="ac">Толщина</label>
             </FloatLabel>
             <!-- <FloatLabel class="grid-header">Крафт (срез)</FloatLabel> -->
             <FloatLabel class="grid-header">
                 <Dropdown v-model="selectedTexture" :options="filteredTexture" showClear optionLabel="name" invalid
-                    class="w-full md:w-14rem" />
+                    class="w-full md:w-10rem" />
                 <label for="ac">Финишная текстура</label>
             </FloatLabel>
             <FloatLabel class="grid-header">
                 <Dropdown v-model="selectedPurpose" :options="filteredPurposes" showClear optionLabel="name" invalid
-                    class="w-full md:w-14rem" />
+                    class="w-full md:w-10rem" />
                 <label for="ac">Назначение</label>
             </FloatLabel>
             <FloatLabel class="grid-header">
                 <Dropdown v-model="selectedAdditional" :options="filteredAdditionals" showClear optionLabel="name"
-                    invalid class="w-full md:w-14rem" />
+                    invalid class="w-full md:w-10rem" />
                 <label for="ac">Дополнительно</label>
             </FloatLabel>
         </div>

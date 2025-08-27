@@ -4,6 +4,7 @@ import { RouterLink } from 'vue-router'
 import { useCounterStore } from '../stores/counter'
 import { useRouter } from 'vue-router'
 
+ 
 const emit = defineEmits(['counterEvent'])
 const router = useRouter()
 const store = useCounterStore()
@@ -108,7 +109,7 @@ function ExitStatus() {
         </RouterLink>
       </li>
       <li v-if="name.role === 'ADMIN'" @click="toggleSidebar">
-        <RouterLink to="/Price">
+        <RouterLink to="/PriceBox">
           <div class="flex items-center justify-center">
             <i class="pi pi-user"></i>
           </div>
