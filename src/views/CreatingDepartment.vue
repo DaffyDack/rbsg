@@ -53,6 +53,7 @@ interface changeForm {
     department_description: string,
     participants: any
     id: number
+    director: string | undefined
 }
 interface Item {
     department: string;
@@ -62,12 +63,13 @@ interface ItemPosts {
     post: string;
 }
 interface name {
-    firstname: string;
+    fullname: string;
 }
 
 const ThereIsAlreadyDepartmentVisible = ref<boolean>(false)
 const selectedName = ref<name[]>([]);
 const selectedNameChange = ref<name[]>([]);
+const selectedDirectorChange = ref<{ fullname: string }>()
 const form = ref<Form>({
     fullname: '',
     department: '',
@@ -82,6 +84,7 @@ const changeFormDepartment = ref<changeForm>({
     department_description: '',
     participants: '',
     id: 0,
+    director: ''
 })
 const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
@@ -90,19 +93,24 @@ const visibleDeleteDepartment = ref<boolean>(false);
 const editDepartmentVisible = ref<boolean>(false);
 const departmentInfo = ref<boolean>(false)
 const headDepartment = ref<string>('')
+const positionInDepartment = ref<string>('')
 const editedDepartment = ref<string>('')
 const relatedToDepartment = ref<boolean>(false)
 const existingDepartments = ref<Item[]>([]);
 const posts = ref<ItemPosts[]>([]);
 
 const codeFromDelete = ref<string>('')
-const departmentFromDelete = ref<string>('')
+const departmentFromDelete = ref({
+    fullname: ''
+})
 
 
 const selectedDepartment = (e: any) => {
+    console.log('!!!!', e.data)
     headDepartment.value = e.data.fullname
     departmentInfo.value = e.data.department_description
     relatedToDepartment.value = e.data.participants
+    positionInDepartment.value = e.data.post
     visible.value = true
 }
 const selectedDeleteDepartment = (e: any) => {
@@ -117,6 +125,7 @@ const selectedEditDepartment = async (e: any) => {
     changeFormDepartment.value.department_description = e.data.department_description
     changeFormDepartment.value.participants = e.data.participants
     changeFormDepartment.value.id = e.data.id
+    changeFormDepartment.value.director = e.data.director
     editDepartmentVisible.value = true
 }
 
@@ -152,8 +161,10 @@ function set() {
 const RegistrationDepartment = async () => {
     try {
         const formData = new FormData()
-        formData.append('fullname', `${form.value.fullname.firstname} ${form.value.fullname.lastname} ${form.value.fullname.patronymic}`)
-        formData.append('department', (form.value.department).toLowerCase())
+        formData.append('fullname', form.value.fullname == '' ? `Отсутствует` :
+            `${form.value.fullname.firstname} ${form.value.fullname.lastname} ${form.value.fullname.patronymic}`
+        )
+        formData.append('department', (form.value.department))
         formData.append('post', form.value.post.post)
         formData.append('department_description', form.value.department_description)
         formData.append('department_affiliation', form.value.department_affiliation == '' ? 'администрация' : (form.value.department_affiliation.department).toLowerCase())
@@ -211,6 +222,7 @@ const changeDepartmentForm = async () => {
             id: changeFormDepartment.value.id,
             department_description: changeFormDepartment.value.department_description,
             participants: changeFormDepartment.value.participants,
+            fullname: changeFormDepartment.value.director,
         }
         const response = await changeInfoDepartment(newObject)
         editDepartmentVisible.value = false
@@ -255,10 +267,13 @@ const startBuild = () => {
     departmentTree.value = buildTree(departments.value);
 };
 function getNamesAsString(): void {
-    form.value.participants = selectedName.value.map(item => item.firstname).join(', ');
+    form.value.participants = selectedName.value.map(item => item.fullname).join(', ');
 }
 function getNamesChangeDepartmen(): void {
-    changeFormDepartment.value.participants = selectedNameChange.value.map(item => item.firstname).join(', ');
+    changeFormDepartment.value.participants = selectedNameChange.value.map(item => item.fullname).join(', ');
+}
+function getDirectorChangeDepartmen() {
+    changeFormDepartment.value.director = selectedDirectorChange.value?.fullname;
 }
 </script>
 <template>
@@ -271,13 +286,13 @@ function getNamesChangeDepartmen(): void {
                 </div>
                 <div class="form-control">
                     <label for="participant1" style="color: #fff;">Руководитель</label>
-                    <Select v-model="form.fullname" id="Participant" :options="usersString" optionLabel="fullname"
-                        placeholder="Руководитель" class="w-full" />
+                    <Select v-model="form.fullname" id="Participant" filter :options="usersString"
+                        optionLabel="fullname" placeholder="Руководитель" class="w-full" />
                 </div>
                 <div class="form-control">
                     <label for="post" style="color: #fff;">Должность</label>
-                    <Select v-model="form.post" id="post" :options="posts" optionLabel="post" placeholder="Должность"
-                        class="w-full" />
+                    <Select v-model="form.post" id="post" filter :options="posts" optionLabel="post"
+                        placeholder="Должность" class="w-full" />
                 </div>
                 <div class="form-control">
                     <label for="participants" style="color: #fff;">Участники</label>
@@ -287,7 +302,7 @@ function getNamesChangeDepartmen(): void {
                 </div>
                 <div class="form-control">
                     <label for="participant" style="color: #fff;">Пренадлежность к отделу</label>
-                    <Select v-model="form.department_affiliation" id="Participant" :options="existingDepartments"
+                    <Select v-model="form.department_affiliation" filter id="Participant" :options="existingDepartments"
                         optionLabel="department" placeholder="Пренадлежность к отделу" class="w-full" />
                 </div>
             </div>
@@ -323,7 +338,11 @@ function getNamesChangeDepartmen(): void {
                 </template>
             </Tree>
             <Dialog v-model:visible="visible" modal header="Описание обязаностей отдела" :style="{ width: '80%' }">
-                <div class="mb-2">Руководитель отдела: {{ headDepartment }}</div>
+                <div class="mb-2">Руководитель отдела: {{ headDepartment }} (Должность в отделе: {{ positionInDepartment
+                    ==
+                    "undefined" ?
+                    'Отсутствует' :
+                    positionInDepartment }})</div>
                 <div class="mb-2">Кто в отделе: {{ relatedToDepartment }}</div>
                 <div>Должностные обязанности отдела: {{ departmentInfo }}</div>
             </Dialog>
@@ -343,11 +362,17 @@ function getNamesChangeDepartmen(): void {
         </Dialog>
         <Dialog v-model:visible="editDepartmentVisible" modal :header="`Редактирование отдела: ${editedDepartment}`"
             :style="{ width: '80%' }">
-            <div class="group_form-control-one">
+            <div class="group_form-control-two">
+                <div class="form-control">
+                    <label for="Director" style="color: #000;">Руководитель</label>
+                    <Select v-model="selectedDirectorChange" filter @change="getDirectorChangeDepartmen()" id="Director"
+                        :options="usersString" optionLabel="fullname" placeholder="Руководитель"
+                        class="w-full md:w-[100%]" />
+                </div>
                 <div class="form-control">
                     <label for="participants1" style="color: #000;">Участники</label>
                     <MultiSelect v-model="selectedNameChange" @change="getNamesChangeDepartmen()" id="participants1"
-                        :options="usersString" optionLabel="firstname" filter placeholder="Участник"
+                        :options="usersString" optionLabel="fullname" filter placeholder="Участник"
                         :maxSelectedLabels="3" class="w-full md:w-[100%]" />
                 </div>
             </div>

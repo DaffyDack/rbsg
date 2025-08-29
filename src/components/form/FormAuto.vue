@@ -57,7 +57,7 @@ watch(
       checkEmail(form.value.email)
     }
     if (form.value.password) {
-      checkLength('password', form.value.password, 1, 2)
+      checkLength('password', form.value.password, 1, 20)
     }
   },
 )

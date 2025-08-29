@@ -48,8 +48,8 @@ interface formDataTest {
 
 const userTabs: Ref<UserTab[]> = ref([
   { component: 'ProfileContent', title: 'Профиль', errors: false },
-  { component: '', title: 'Контакты рабочие', errors: false },
   { component: 'JobInformationContent', title: 'Данные о работе', errors: false },
+  { component: '', title: 'Контакты рабочие', errors: false },
   { component: '', title: 'Личные контакты', errors: false },
   { component: '', title: 'Паспортные данные', errors: false },
   { component: '', title: 'Прочие личные данные', errors: false },
@@ -183,12 +183,12 @@ const errorProfile = (e: any, tr: boolean) => {
                     @callErrorProfile="errorProfile" @callNormComponent="updateErrors" />
                 </TabPanel>
                 <TabPanel value="1">
-                  <JobContactComponent />
-                </TabPanel>
-                <TabPanel value="2">
                   <JobInformationContentfrom ref="RequestJobInformationComponent"
                     @callParentMethod="JobInformationMethod" @callErrorProfile="errorProfile"
                     @callNormComponent="updateErrors" />
+                </TabPanel>
+                <TabPanel value="2">
+                  <JobContactComponent />
                 </TabPanel>
                 <TabPanel value="3">
                   <PersonalContactsComponent />

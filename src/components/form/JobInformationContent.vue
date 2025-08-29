@@ -49,6 +49,7 @@ interface Form {
     TwoCombiningBrand: string
     TwoCombiningDepartment: string
     TwoCombiningStartDateOfCombination: string
+    startDateCombination: string
 }
 
 
@@ -70,6 +71,7 @@ const form = ref<Form>({
     TwoCombiningBrand: '',
     TwoCombiningDepartment: '',
     TwoCombiningStartDateOfCombination: '',
+    startDateCombination: ''
 })
 const kompany = ref([
     { name: 'РБС ГРУПП', code: 'РБС ГРУПП' },
@@ -163,9 +165,8 @@ defineExpose({ CheckingJobInformationComponent })
                 </div>
                 <div class="form-control">
                     <label for="jobInformationProbationPeriodUntil">Испытательный срок до</label>
-                    <Calendar type="text" v-modal="form.probationPeriod" style="width: 100%"
-                        id="jobInformationProbationPeriodUntil" placeholder="Испытательный срок до"
-                        dateFormat="dd/mm/yy" />
+                    <Calendar v-model="form.probationPeriod" style="width: 100%" id="jobInformationProbationPeriodUntil"
+                        placeholder="Испытательный срок до" dateFormat="dd/mm/yy" />
                 </div>
             </div>
             <div class="italic">Совмещение</div>
@@ -204,8 +205,8 @@ defineExpose({ CheckingJobInformationComponent })
                     </div>
                     <div class="form-control">
                         <label for="jobInformationStartDateCombination">Дата начала совмещения</label>
-                        <Calendar type="text" style="width: 100%" id="jobInformationStartDateCombination"
-                            placeholder="dd/mm/yy" />
+                        <!-- <Calendar v-modal="form.startDateCombination" type="text" style="width: 100%"
+                            id="jobInformationStartDateCombination" placeholder="dd/mm/yy" /> -->
                     </div>
                 </div>
                 <div class="group_form-control-four">
