@@ -5,7 +5,6 @@ import UsersList from '@/components/UsersList.vue'
 import FormReg from '../components/form/FormReg.vue'
 import { fetchUzers } from '@/http/userAPI'
 
-
 const store = useUsersStore()
 const name = ref(JSON.parse(localStorage.getItem('role') || ''))
 

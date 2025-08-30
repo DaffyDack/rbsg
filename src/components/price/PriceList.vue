@@ -2,7 +2,6 @@
   import { ref, computed, watch } from 'vue'
   import { onMounted } from 'vue';
   import Button from 'primevue/button';
-  import html2pdf from 'html2pdf.js'
   import { type IProduct } from '../../views/Price.vue'
 
   const exportToPDF = () => {
@@ -17,7 +16,6 @@
       jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
     }
 
-    html2pdf().set(options).from(element).save()
   }
 
   const { items } = defineProps(['items']);

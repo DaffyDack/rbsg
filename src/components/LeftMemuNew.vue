@@ -88,8 +88,6 @@ $sidebar-padding-inline-start: 1rem;
 // }
 </style> -->
 
-
-
 <script setup lang="ts">
 import { shallowRef, ref } from 'vue'
 import { RouterLink } from 'vue-router'
@@ -120,8 +118,6 @@ function ExitStatus() {
 
 <template>
   <aside :vue:is-open="isSidebarOpen">
-
-
     <ul class="sidebar-head">
       <li>
         <img src="" alt="logo" width="32" height="32" />
@@ -210,10 +206,12 @@ function ExitStatus() {
 
 .wrapper {
   overflow: scroll;
-  background: linear-gradient(45deg,
-      rgba(86, 0, 60, 1) 0%,
-      rgba(7, 62, 137, 1) 35%,
-      rgba(41, 182, 253, 1) 100%);
+  background: linear-gradient(
+    45deg,
+    rgba(86, 0, 60, 1) 0%,
+    rgba(7, 62, 137, 1) 35%,
+    rgba(41, 182, 253, 1) 100%
+  );
 }
 
 $sidebar-width: 4rem;
@@ -223,7 +221,8 @@ $sidebar-padding-inline-start: 1rem;
 
 aside {
   color: #ffffff;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
     linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
     linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
     linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),

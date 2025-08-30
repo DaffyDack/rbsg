@@ -1,427 +1,538 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import Select from 'primevue/select'
-import MultiSelect from 'primevue/multiselect';
-import Tree from 'primevue/tree';
-import Dialog from 'primevue/dialog';
-import Button from 'primevue/button';
+import MultiSelect from 'primevue/multiselect'
+import Tree from 'primevue/tree'
+import Dialog from 'primevue/dialog'
+import Button from 'primevue/button'
 
-
-import { creadetDepartment, deleteDepartmentsByCode, fetchDepartment, fetchPosts, changeInfoDepartment } from '../http/userAPI.js'
+import {
+  creadetDepartment,
+  deleteDepartmentsByCode,
+  fetchDepartment,
+  fetchPosts,
+  changeInfoDepartment,
+} from '../http/userAPI.js'
 const nameRole = ref(JSON.parse(localStorage.getItem('role') || ''))
 const usersString = ref()
 const departments = ref()
 const departmentTree = ref()
-const visible = ref(false);
+const visible = ref(false)
 const expandedKeys = ref({
-    '0': true,
-    '0-0': true,
-    '0-1': true,
-    '0-2': true,
-    '0-3': true,
-    '0-4': true,
-    '0-5': true,
-    '0-6': true,
-    '0-7': true,
-    '0-8': true,
-    '0-9': true,
-    '0-10': true,
-    '0-11': true,
-    '0-12': true,
-    '0-13': true,
-    '0-14': true,
-});
+  '0': true,
+  '0-0': true,
+  '0-1': true,
+  '0-2': true,
+  '0-3': true,
+  '0-4': true,
+  '0-5': true,
+  '0-6': true,
+  '0-7': true,
+  '0-8': true,
+  '0-9': true,
+  '0-10': true,
+  '0-11': true,
+  '0-12': true,
+  '0-13': true,
+  '0-14': true,
+})
 
 interface TreeNode {
-    key: string;
-    label: string
-    data: object
-    // icon: string
-    children: TreeNode[];
+  key: string
+  label: string
+  data: object
+  // icon: string
+  children: TreeNode[]
 }
 
 interface Form {
-    fullname: any,
-    department: string,
-    post: any
-    department_description: string,
-    department_affiliation: any,
-    participants: any
-    code: string
+  fullname: any
+  department: string
+  post: any
+  department_description: string
+  department_affiliation: any
+  participants: any
+  code: string
 }
 interface changeForm {
-    department_description: string,
-    participants: any
-    id: number
-    director: string | undefined
+  department_description: string
+  participants: any
+  id: number
+  director: string | undefined
 }
 interface Item {
-    department: string;
-    code: string;
+  department: string
+  code: string
 }
 interface ItemPosts {
-    post: string;
+  post: string
 }
 interface name {
-    fullname: string;
+  fullname: string
 }
 
 const ThereIsAlreadyDepartmentVisible = ref<boolean>(false)
-const selectedName = ref<name[]>([]);
-const selectedNameChange = ref<name[]>([]);
+const selectedName = ref<name[]>([])
+const selectedNameChange = ref<name[]>([])
 const selectedDirectorChange = ref<{ fullname: string }>()
 const form = ref<Form>({
-    fullname: '',
-    department: '',
-    post: '',
-    department_description: '',
-    department_affiliation: '',
-    participants: '',
-    code: '',
+  fullname: '',
+  department: '',
+  post: '',
+  department_description: '',
+  department_affiliation: '',
+  participants: '',
+  code: '',
 })
 
 const changeFormDepartment = ref<changeForm>({
-    department_description: '',
-    participants: '',
-    id: 0,
-    director: ''
+  department_description: '',
+  participants: '',
+  id: 0,
+  director: '',
 })
 const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
 const addeduser = ref<boolean>(false)
-const visibleDeleteDepartment = ref<boolean>(false);
-const editDepartmentVisible = ref<boolean>(false);
+const visibleDeleteDepartment = ref<boolean>(false)
+const editDepartmentVisible = ref<boolean>(false)
 const departmentInfo = ref<boolean>(false)
 const headDepartment = ref<string>('')
 const positionInDepartment = ref<string>('')
 const editedDepartment = ref<string>('')
 const relatedToDepartment = ref<boolean>(false)
-const existingDepartments = ref<Item[]>([]);
-const posts = ref<ItemPosts[]>([]);
+const existingDepartments = ref<Item[]>([])
+const posts = ref<ItemPosts[]>([])
 
 const codeFromDelete = ref<string>('')
 const departmentFromDelete = ref({
-    fullname: ''
+  fullname: '',
 })
 
-
 const selectedDepartment = (e: any) => {
-    console.log('!!!!', e.data)
-    headDepartment.value = e.data.fullname
-    departmentInfo.value = e.data.department_description
-    relatedToDepartment.value = e.data.participants
-    positionInDepartment.value = e.data.post
-    visible.value = true
+  console.log('!!!!', e.data)
+  headDepartment.value = e.data.fullname
+  departmentInfo.value = e.data.department_description
+  relatedToDepartment.value = e.data.participants
+  positionInDepartment.value = e.data.post
+  visible.value = true
 }
 const selectedDeleteDepartment = (e: any) => {
-    console.log(e.data.code, e.data.id, 'Нам анужно найти ID')
-    codeFromDelete.value = e.data.code
-    departmentFromDelete.value = e.data.department
-    visibleDeleteDepartment.value = true
+  console.log(e.data.code, e.data.id, 'Нам анужно найти ID')
+  codeFromDelete.value = e.data.code
+  departmentFromDelete.value = e.data.department
+  visibleDeleteDepartment.value = true
 }
 
 const selectedEditDepartment = async (e: any) => {
-    editedDepartment.value = e.data.department
-    changeFormDepartment.value.department_description = e.data.department_description
-    changeFormDepartment.value.participants = e.data.participants
-    changeFormDepartment.value.id = e.data.id
-    changeFormDepartment.value.director = e.data.director
-    editDepartmentVisible.value = true
+  editedDepartment.value = e.data.department
+  changeFormDepartment.value.department_description = e.data.department_description
+  changeFormDepartment.value.participants = e.data.participants
+  changeFormDepartment.value.id = e.data.id
+  changeFormDepartment.value.director = e.data.director
+  editDepartmentVisible.value = true
 }
 
 function getUniqueItems(arr: Item[]): Item[] {
-    const uniqueItemsMap = new Map<string, Item>();
-    arr.forEach(item => {
-        if (!uniqueItemsMap.has(item.department)) {
-            uniqueItemsMap.set(item.department, item);
-        }
-    });
+  const uniqueItemsMap = new Map<string, Item>()
+  arr.forEach((item) => {
+    if (!uniqueItemsMap.has(item.department)) {
+      uniqueItemsMap.set(item.department, item)
+    }
+  })
 
-    return Array.from(uniqueItemsMap.values());
+  return Array.from(uniqueItemsMap.values())
 }
-
-
 
 onMounted(() => {
-    usersString.value = JSON.parse(localStorage.getItem('users') ?? '[]')
-    fetchDepartment().then((data) => {
-        departments.value = data
-        startBuild()
-        existingDepartments.value = getUniqueItems(departments.value);
-    })
-    fetchPosts().then((data) => {
-        posts.value = data
-    })
+  usersString.value = JSON.parse(localStorage.getItem('users') ?? '[]')
+  fetchDepartment().then((data) => {
+    departments.value = data
+    startBuild()
+    existingDepartments.value = getUniqueItems(departments.value)
+  })
+  fetchPosts().then((data) => {
+    posts.value = data
+  })
 })
 function set() {
-    setTimeout(() => {
-        addeduser.value = false
-    }, 2000)
+  setTimeout(() => {
+    addeduser.value = false
+  }, 2000)
 }
 const RegistrationDepartment = async () => {
-    try {
-        const formData = new FormData()
-        formData.append('fullname', form.value.fullname == '' ? `Отсутствует` :
-            `${form.value.fullname.firstname} ${form.value.fullname.lastname} ${form.value.fullname.patronymic}`
-        )
-        formData.append('department', (form.value.department))
-        formData.append('post', form.value.post.post)
-        formData.append('department_description', form.value.department_description)
-        formData.append('department_affiliation', form.value.department_affiliation == '' ? 'администрация' : (form.value.department_affiliation.department).toLowerCase())
-        formData.append('code', form.value.department_affiliation == '' ? '0-0' : form.value.department_affiliation.code)
-        formData.append('participants', form.value.participants)
-        const response = await creadetDepartment(formData)
-        if (response['name'] !== undefined) {
-            ThereIsAlreadyDepartmentVisible.value = true
-        } else {
-            console.log(response, 'че в ответе')
-            condition.value = false
-            addeduser.value = true
-            set()
-            fetchDepartment().then((data) => {
-                departments.value = data
-                startBuild()
-                existingDepartments.value = getUniqueItems(departments.value);
-                Object.keys(form.value).forEach(key => {
-                    // @ts-ignore
-                    form.value[key] = '';
-                });
-                selectedName.value = []
-            })
-        }
-    } catch (e: any) {
-        messageCondition.value = e.response.data.message
-        condition.value = true
+  try {
+    const formData = new FormData()
+    formData.append(
+      'fullname',
+      form.value.fullname == ''
+        ? `Отсутствует`
+        : `${form.value.fullname.firstname} ${form.value.fullname.lastname} ${form.value.fullname.patronymic}`,
+    )
+    formData.append('department', form.value.department)
+    formData.append('post', form.value.post.post)
+    formData.append('department_description', form.value.department_description)
+    formData.append(
+      'department_affiliation',
+      form.value.department_affiliation == ''
+        ? 'администрация'
+        : form.value.department_affiliation.department.toLowerCase(),
+    )
+    formData.append(
+      'code',
+      form.value.department_affiliation == '' ? '0-0' : form.value.department_affiliation.code,
+    )
+    formData.append('participants', form.value.participants)
+    const response = await creadetDepartment(formData)
+    if (response['name'] !== undefined) {
+      ThereIsAlreadyDepartmentVisible.value = true
+    } else {
+      console.log(response, 'че в ответе')
+      condition.value = false
+      addeduser.value = true
+      set()
+      fetchDepartment().then((data) => {
+        departments.value = data
+        startBuild()
+        existingDepartments.value = getUniqueItems(departments.value)
+        Object.keys(form.value).forEach((key) => {
+          // @ts-ignore
+          form.value[key] = ''
+        })
+        selectedName.value = []
+      })
     }
+  } catch (e: any) {
+    messageCondition.value = e.response.data.message
+    condition.value = true
+  }
 }
 
 const creadetDepartmentForm = () => {
-    departments.value = null
-    RegistrationDepartment()
+  departments.value = null
+  RegistrationDepartment()
 }
 const deleteDepartmentForm = async () => {
-    try {
-        const formData = new FormData()
-        formData.append('codeDelete', codeFromDelete.value)
-        const response = await deleteDepartmentsByCode(formData)
-        console.log(response, 'после удаления')
-        visibleDeleteDepartment.value = false
-        fetchDepartment().then((data) => {
-            departments.value = data
-            startBuild()
-            existingDepartments.value = getUniqueItems(departments.value);
-        })
-    } catch (error) {
-        console.log('что то с удалением', error)
-    }
+  try {
+    const formData = new FormData()
+    formData.append('codeDelete', codeFromDelete.value)
+    const response = await deleteDepartmentsByCode(formData)
+    console.log(response, 'после удаления')
+    visibleDeleteDepartment.value = false
+    fetchDepartment().then((data) => {
+      departments.value = data
+      startBuild()
+      existingDepartments.value = getUniqueItems(departments.value)
+    })
+  } catch (error) {
+    console.log('что то с удалением', error)
+  }
 }
 
 const changeDepartmentForm = async () => {
-    try {
-        const newObject = {
-            id: changeFormDepartment.value.id,
-            department_description: changeFormDepartment.value.department_description,
-            participants: changeFormDepartment.value.participants,
-            fullname: changeFormDepartment.value.director,
-        }
-        const response = await changeInfoDepartment(newObject)
-        editDepartmentVisible.value = false
-        fetchDepartment().then((data) => {
-            departments.value = data
-            startBuild()
-            existingDepartments.value = getUniqueItems(departments.value);
-        })
-    } catch (error) {
-        console.log('что то с изменениями', error)
+  try {
+    const newObject = {
+      id: changeFormDepartment.value.id,
+      department_description: changeFormDepartment.value.department_description,
+      participants: changeFormDepartment.value.participants,
+      fullname: changeFormDepartment.value.director,
     }
-
+    const response = await changeInfoDepartment(newObject)
+    editDepartmentVisible.value = false
+    fetchDepartment().then((data) => {
+      departments.value = data
+      startBuild()
+      existingDepartments.value = getUniqueItems(departments.value)
+    })
+  } catch (error) {
+    console.log('что то с изменениями', error)
+  }
 }
-
 
 function buildTree(departments: any) {
-    const map: Record<string, TreeNode> = {};
-    const tree: TreeNode[] = [];
-    departments.forEach((department: { code: any; fullname: string, department: string }) => {
-        map[department.code] = {
-            key: department.code,
-            children: [],
-            label: `${department.department} (${department.fullname}) `,
-            data: department
-        };
-    });
+  const map: Record<string, TreeNode> = {}
+  const tree: TreeNode[] = []
+  departments.forEach((department: { code: any; fullname: string; department: string }) => {
+    map[department.code] = {
+      key: department.code,
+      children: [],
+      label: `${department.department} (${department.fullname}) `,
+      data: department,
+    }
+  })
 
-    departments.forEach((department: { code: any; }) => {
-        const { code } = department;
-        const parentCode = code.split('-').slice(0, -1).join('-');
+  departments.forEach((department: { code: any }) => {
+    const { code } = department
+    const parentCode = code.split('-').slice(0, -1).join('-')
 
-        if (parentCode in map) {
-            map[parentCode].children.push(map[code]);
-        } else {
-            tree.push(map[code]);
-        }
-    });
+    if (parentCode in map) {
+      map[parentCode].children.push(map[code])
+    } else {
+      tree.push(map[code])
+    }
+  })
 
-    return tree;
+  return tree
 }
 const startBuild = () => {
-    departmentTree.value = buildTree(departments.value);
-};
+  departmentTree.value = buildTree(departments.value)
+}
 function getNamesAsString(): void {
-    form.value.participants = selectedName.value.map(item => item.fullname).join(', ');
+  form.value.participants = selectedName.value.map((item) => item.fullname).join(', ')
 }
 function getNamesChangeDepartmen(): void {
-    changeFormDepartment.value.participants = selectedNameChange.value.map(item => item.fullname).join(', ');
+  changeFormDepartment.value.participants = selectedNameChange.value
+    .map((item) => item.fullname)
+    .join(', ')
 }
 function getDirectorChangeDepartmen() {
-    changeFormDepartment.value.director = selectedDirectorChange.value?.fullname;
+  changeFormDepartment.value.director = selectedDirectorChange.value?.fullname
 }
 </script>
 <template>
-    <div>
-        <div v-if="nameRole.role === 'ADMIN'">
-            <div class="group_form-control-five">
-                <div class="form-control">
-                    <label for="jobContactTel" style="color: #fff;">Название отдела</label>
-                    <input v-model="form.department" type="text" id="jobContactTel" placeholder="Название отдела" />
-                </div>
-                <div class="form-control">
-                    <label for="participant1" style="color: #fff;">Руководитель</label>
-                    <Select v-model="form.fullname" id="Participant" filter :options="usersString"
-                        optionLabel="fullname" placeholder="Руководитель" class="w-full" />
-                </div>
-                <div class="form-control">
-                    <label for="post" style="color: #fff;">Должность</label>
-                    <Select v-model="form.post" id="post" filter :options="posts" optionLabel="post"
-                        placeholder="Должность" class="w-full" />
-                </div>
-                <div class="form-control">
-                    <label for="participants" style="color: #fff;">Участники</label>
-                    <MultiSelect v-model="selectedName" @change="getNamesAsString()" id="participants"
-                        :options="usersString" optionLabel="fullname" filter placeholder="Участник"
-                        :maxSelectedLabels="3" class="w-full md:w-80" />
-                </div>
-                <div class="form-control">
-                    <label for="participant" style="color: #fff;">Пренадлежность к отделу</label>
-                    <Select v-model="form.department_affiliation" filter id="Participant" :options="existingDepartments"
-                        optionLabel="department" placeholder="Пренадлежность к отделу" class="w-full" />
-                </div>
-            </div>
-            <div class="group_form-control">
-                <div class="form-control">
-                    <label for="department_description" style="color: #fff;">Описание обязаностей</label>
-                    <textarea v-model="form.department_description" type="text" id="department_description"
-                        placeholder="Описание обязаностей"></textarea>
-                </div>
-            </div>
-            <div class="group_form-control mb-5">
-                <div>
-                    <div v-if="addeduser" class="text-green-600 mb-5">Отдел добавлен!</div>
-                    <div v-if="condition" class="text-red-600 mb-5">{{ messageCondition }}</div>
-                </div>
-                <button class="saveButton" @click="creadetDepartmentForm">Сохранить</button>
-            </div>
+  <div>
+    <div v-if="nameRole.role === 'ADMIN'">
+      <div class="group_form-control-five">
+        <div class="form-control">
+          <label for="jobContactTel" style="color: #fff">Название отдела</label>
+          <input
+            v-model="form.department"
+            type="text"
+            id="jobContactTel"
+            placeholder="Название отдела"
+          />
         </div>
+        <div class="form-control">
+          <label for="participant1" style="color: #fff">Руководитель</label>
+          <Select
+            v-model="form.fullname"
+            id="Participant"
+            filter
+            :options="usersString"
+            optionLabel="fullname"
+            placeholder="Руководитель"
+            class="w-full"
+          />
+        </div>
+        <div class="form-control">
+          <label for="post" style="color: #fff">Должность</label>
+          <Select
+            v-model="form.post"
+            id="post"
+            filter
+            :options="posts"
+            optionLabel="post"
+            placeholder="Должность"
+            class="w-full"
+          />
+        </div>
+        <div class="form-control">
+          <label for="participants" style="color: #fff">Участники</label>
+          <MultiSelect
+            v-model="selectedName"
+            @change="getNamesAsString()"
+            id="participants"
+            :options="usersString"
+            optionLabel="fullname"
+            filter
+            placeholder="Участник"
+            :maxSelectedLabels="3"
+            class="w-full md:w-80"
+          />
+        </div>
+        <div class="form-control">
+          <label for="participant" style="color: #fff">Пренадлежность к отделу</label>
+          <Select
+            v-model="form.department_affiliation"
+            filter
+            id="Participant"
+            :options="existingDepartments"
+            optionLabel="department"
+            placeholder="Пренадлежность к отделу"
+            class="w-full"
+          />
+        </div>
+      </div>
+      <div class="group_form-control">
+        <div class="form-control">
+          <label for="department_description" style="color: #fff">Описание обязаностей</label>
+          <textarea
+            v-model="form.department_description"
+            type="text"
+            id="department_description"
+            placeholder="Описание обязаностей"
+          ></textarea>
+        </div>
+      </div>
+      <div class="group_form-control mb-5">
         <div>
-            <Tree :value="departmentTree" :expandedKeys="expandedKeys" filterMode="lenient"
-                class="w-full md:w-[100%] tereeSpecial">
-                <template #default="slotProps" class="w-full md:w-[100%]">
-                    <div class="wrapperSlotProps">
-                        <b @click="selectedDepartment(slotProps.node)">{{ slotProps.node.label }}</b>
-                        <div v-if="nameRole.role === 'ADMIN'">
-                            <Button class="mr-3" icon="pi pi-pencil" severity="warn" aria-label="Notification"
-                                @click="selectedEditDepartment(slotProps.node)" />
-                            <Button icon="pi pi-times" severity="danger" aria-label="Cancel"
-                                @click="selectedDeleteDepartment(slotProps.node)" />
-                        </div>
-
-                    </div>
-                </template>
-            </Tree>
-            <Dialog v-model:visible="visible" modal header="Описание обязаностей отдела" :style="{ width: '80%' }">
-                <div class="mb-2">Руководитель отдела: {{ headDepartment }} (Должность в отделе: {{ positionInDepartment
-                    ==
-                    "undefined" ?
-                    'Отсутствует' :
-                    positionInDepartment }})</div>
-                <div class="mb-2">Кто в отделе: {{ relatedToDepartment }}</div>
-                <div>Должностные обязанности отдела: {{ departmentInfo }}</div>
-            </Dialog>
+          <div v-if="addeduser" class="text-green-600 mb-5">Отдел добавлен!</div>
+          <div v-if="condition" class="text-red-600 mb-5">{{ messageCondition }}</div>
         </div>
-        <Dialog v-model:visible="ThereIsAlreadyDepartmentVisible" modal header="Повторение отдела"
-            :style="{ width: '80%' }">
-            <div>Такой отдел уже есть!!!</div>
-        </Dialog>
-        <Dialog v-model:visible="visibleDeleteDepartment" modal header="Удаление отдела" :style="{ width: '25rem' }">
-            <span class="text-surface-500 dark:text-surface-400 block mb-8">Вы хотите удалить
-                отдел {{ departmentFromDelete }} ?</span>
-            <div class="flex justify-end gap-2">
-                <Button type="button" label="Отмена" severity="secondary"
-                    @click="visibleDeleteDepartment = false"></Button>
-                <Button type="button" label="Удалить" @click="deleteDepartmentForm"></Button>
-            </div>
-        </Dialog>
-        <Dialog v-model:visible="editDepartmentVisible" modal :header="`Редактирование отдела: ${editedDepartment}`"
-            :style="{ width: '80%' }">
-            <div class="group_form-control-two">
-                <div class="form-control">
-                    <label for="Director" style="color: #000;">Руководитель</label>
-                    <Select v-model="selectedDirectorChange" filter @change="getDirectorChangeDepartmen()" id="Director"
-                        :options="usersString" optionLabel="fullname" placeholder="Руководитель"
-                        class="w-full md:w-[100%]" />
-                </div>
-                <div class="form-control">
-                    <label for="participants1" style="color: #000;">Участники</label>
-                    <MultiSelect v-model="selectedNameChange" @change="getNamesChangeDepartmen()" id="participants1"
-                        :options="usersString" optionLabel="fullname" filter placeholder="Участник"
-                        :maxSelectedLabels="3" class="w-full md:w-[100%]" />
-                </div>
-            </div>
-            <div class="group_form-control">
-                <div class="form-control">
-                    <label for="department_description" style="color: #000;">Описание обязаностей отдела</label>
-                    <textarea v-model="changeFormDepartment.department_description" style="border: 1px solid #ccc;"
-                        type="text" id="department_description" placeholder="Описание обязаностей"></textarea>
-                </div>
-            </div>
-            <div class="flex justify-end gap-2">
-                <Button type="button" label="Отмена" severity="secondary"
-                    @click="editDepartmentVisible = false"></Button>
-                <Button type="button" label="Изменить" @click="changeDepartmentForm"></Button>
-            </div>
-        </Dialog>
+        <button class="saveButton" @click="creadetDepartmentForm">Сохранить</button>
+      </div>
     </div>
+    <div>
+      <Tree
+        :value="departmentTree"
+        :expandedKeys="expandedKeys"
+        filterMode="lenient"
+        class="w-full md:w-[100%] tereeSpecial"
+      >
+        <template #default="slotProps" class="w-full md:w-[100%]">
+          <div class="wrapperSlotProps">
+            <b @click="selectedDepartment(slotProps.node)">{{ slotProps.node.label }}</b>
+            <div v-if="nameRole.role === 'ADMIN'">
+              <Button
+                class="mr-3"
+                icon="pi pi-pencil"
+                severity="warn"
+                aria-label="Notification"
+                @click="selectedEditDepartment(slotProps.node)"
+              />
+              <Button
+                icon="pi pi-times"
+                severity="danger"
+                aria-label="Cancel"
+                @click="selectedDeleteDepartment(slotProps.node)"
+              />
+            </div>
+          </div>
+        </template>
+      </Tree>
+      <Dialog
+        v-model:visible="visible"
+        modal
+        header="Описание обязаностей отдела"
+        :style="{ width: '80%' }"
+      >
+        <div class="mb-2">
+          Руководитель отдела: {{ headDepartment }} (Должность в отделе:
+          {{ positionInDepartment == 'undefined' ? 'Отсутствует' : positionInDepartment }})
+        </div>
+        <div class="mb-2">Кто в отделе: {{ relatedToDepartment }}</div>
+        <div>Должностные обязанности отдела: {{ departmentInfo }}</div>
+      </Dialog>
+    </div>
+    <Dialog
+      v-model:visible="ThereIsAlreadyDepartmentVisible"
+      modal
+      header="Повторение отдела"
+      :style="{ width: '80%' }"
+    >
+      <div>Такой отдел уже есть!!!</div>
+    </Dialog>
+    <Dialog
+      v-model:visible="visibleDeleteDepartment"
+      modal
+      header="Удаление отдела"
+      :style="{ width: '25rem' }"
+    >
+      <span class="text-surface-500 dark:text-surface-400 block mb-8"
+        >Вы хотите удалить отдел {{ departmentFromDelete }} ?</span
+      >
+      <div class="flex justify-end gap-2">
+        <Button
+          type="button"
+          label="Отмена"
+          severity="secondary"
+          @click="visibleDeleteDepartment = false"
+        ></Button>
+        <Button type="button" label="Удалить" @click="deleteDepartmentForm"></Button>
+      </div>
+    </Dialog>
+    <Dialog
+      v-model:visible="editDepartmentVisible"
+      modal
+      :header="`Редактирование отдела: ${editedDepartment}`"
+      :style="{ width: '80%' }"
+    >
+      <div class="group_form-control-two">
+        <div class="form-control">
+          <label for="Director" style="color: #000">Руководитель</label>
+          <Select
+            v-model="selectedDirectorChange"
+            filter
+            @change="getDirectorChangeDepartmen()"
+            id="Director"
+            :options="usersString"
+            optionLabel="fullname"
+            placeholder="Руководитель"
+            class="w-full md:w-[100%]"
+          />
+        </div>
+        <div class="form-control">
+          <label for="participants1" style="color: #000">Участники</label>
+          <MultiSelect
+            v-model="selectedNameChange"
+            @change="getNamesChangeDepartmen()"
+            id="participants1"
+            :options="usersString"
+            optionLabel="fullname"
+            filter
+            placeholder="Участник"
+            :maxSelectedLabels="3"
+            class="w-full md:w-[100%]"
+          />
+        </div>
+      </div>
+      <div class="group_form-control">
+        <div class="form-control">
+          <label for="department_description" style="color: #000"
+            >Описание обязаностей отдела</label
+          >
+          <textarea
+            v-model="changeFormDepartment.department_description"
+            style="border: 1px solid #ccc"
+            type="text"
+            id="department_description"
+            placeholder="Описание обязаностей"
+          ></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2">
+        <Button
+          type="button"
+          label="Отмена"
+          severity="secondary"
+          @click="editDepartmentVisible = false"
+        ></Button>
+        <Button type="button" label="Изменить" @click="changeDepartmentForm"></Button>
+      </div>
+    </Dialog>
+  </div>
 </template>
 <style lang="scss">
 .tereeSpecial {
-    .p-tree-node-label {
-        width: 100%;
+  .p-tree-node-label {
+    width: 100%;
 
-        .wrapperSlotProps {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 5px;
-            border: 1px solid #ccc;
-        }
+    .wrapperSlotProps {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 5px;
+      border: 1px solid #ccc;
     }
+  }
 }
 
 .saveButton {
-    background: #06a80b;
-    min-height: 42px;
-    min-width: 280px;
-    border-radius: 16px;
-    margin-right: 15px;
+  background: #06a80b;
+  min-height: 42px;
+  min-width: 280px;
+  border-radius: 16px;
+  margin-right: 15px;
 }
 
 .department {
-    padding: 10px;
-    margin: 10px;
-    background: #3b372669;
-    border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  background: #3b372669;
+  border-radius: 10px;
 
-    div {
-        color: #5f645f;
-    }
+  div {
+    color: #5f645f;
+  }
 }
 </style>

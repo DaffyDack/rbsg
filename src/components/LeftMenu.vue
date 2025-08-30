@@ -27,23 +27,28 @@ function ExitStatus() {
   localStorage.removeItem('users')
   router.push({ path: '/' })
 }
-
-
 </script>
 
 <template>
-
   <aside :vue:is-open="isSidebarOpen">
-    <ul class="sidebar-head" style="padding: 0;">
+    <ul class="sidebar-head" style="padding: 0">
       <div class="burgerContainer" @click="toggleSidebar">
         <button class="burger" :class="{ active: isSidebarOpen }"></button>
       </div>
     </ul>
-    <h4 v-show="isSidebarOpen" class="namePage" :transparent="!isSidebarOpen">{{ name.role }}-{{ name.email }}</h4>
+    <h4 v-show="isSidebarOpen" class="namePage" :transparent="!isSidebarOpen">
+      {{ name.role }}-{{ name.email }}
+    </h4>
     <ul v-show="isSidebarOpen" class="namePage">
-      <div v-show="isSidebarOpen" class="namePage"
-        style="width: 96px; height: 96px; border-radius: 100%;  margin: 0 auto;">
-        <div class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + avatar.img + ')' }"></div>
+      <div
+        v-show="isSidebarOpen"
+        class="namePage"
+        style="width: 96px; height: 96px; border-radius: 100%; margin: 0 auto"
+      >
+        <div
+          class="img"
+          :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + avatar.img + ')' }"
+        ></div>
       </div>
       <li @click="toggleSidebar">
         <RouterLink to="/">
@@ -156,7 +161,6 @@ function ExitStatus() {
   margin: 30px auto;
 }
 
-
 .burger::before,
 .burger::after {
   content: '';
@@ -167,22 +171,25 @@ function ExitStatus() {
   height: 2px;
   border-radius: 10px;
   background: white;
-
 }
 
 .burger::before {
   top: 0;
   box-shadow: 0 6px 0 white;
-  transition: box-shadow .3s .15s, top .3s .15s, transform .3s;
+  transition:
+    box-shadow 0.3s 0.15s,
+    top 0.3s 0.15s,
+    transform 0.3s;
 }
 
 .burger::after {
   bottom: 0;
-  transition: bottom .3s .10s, transform .2s;
+  transition:
+    bottom 0.3s 0.1s,
+    transform 0.2s;
 }
 
 .burger.active::before {
-
   top: 11px;
   transform: rotate(45deg);
   box-shadow: 0 6px 0 rgba(0, 0, 0, 0);
@@ -193,18 +200,18 @@ function ExitStatus() {
   transform: rotate(-45deg);
 }
 
-
 .namePage {
   min-width: 100px;
-
 }
 
 .wrapper {
   overflow: scroll;
-  background: linear-gradient(45deg,
-      rgba(86, 0, 60, 1) 0%,
-      rgba(7, 62, 137, 1) 35%,
-      rgba(41, 182, 253, 1) 100%);
+  background: linear-gradient(
+    45deg,
+    rgba(86, 0, 60, 1) 0%,
+    rgba(7, 62, 137, 1) 35%,
+    rgba(41, 182, 253, 1) 100%
+  );
 }
 
 $sidebar-width: 4rem;
@@ -213,7 +220,7 @@ $toggle-duration: 300ms;
 $sidebar-padding-inline-start: 1rem;
 
 aside {
-  border: solid 1px #396F74;
+  border: solid 1px #396f74;
   border-left: none;
 
   position: fixed;
@@ -221,7 +228,8 @@ aside {
   border-radius: 0 15px 15px 0;
   z-index: 10;
   color: #ffffff;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
     linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
     linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
     linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),

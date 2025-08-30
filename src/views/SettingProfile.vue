@@ -39,7 +39,7 @@ const infoProfile = ref({
   lastname: store.info.lastname,
   patronymic: store.info.patronymic,
   department: store.info.department,
-  positions: store.info.positions
+  positions: store.info.positions,
 })
 const foneNumber = infoProfile.value.mobilephone.slice(1)
 console.log(foneNumber)
@@ -77,7 +77,9 @@ const userTabs: Ref<UserTab[]> = ref([
                         <img src="../assets/telegram.svg" alt="telegram" width="46px" />
                       </div>
                     </a>
-                    <a href="https://outlook.live.com/mail/0/deeplink/compose?to={{infoProfile.email}}">
+                    <a
+                      href="https://outlook.live.com/mail/0/deeplink/compose?to={{infoProfile.email}}"
+                    >
                       <div class="social_button">
                         <img src="../assets/email.svg" alt="email" width="46px" />
                       </div>
@@ -142,7 +144,7 @@ const userTabs: Ref<UserTab[]> = ref([
     font-style: normal;
     font-weight: 600;
     line-height: normal;
-    background: linear-gradient(90deg, #FF33E4 0%, #178FFF 100%);
+    background: linear-gradient(90deg, #ff33e4 0%, #178fff 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -153,15 +155,14 @@ const userTabs: Ref<UserTab[]> = ref([
   border-radius: 36px;
   border: rgba(57, 111, 116, 1);
   height: 100%;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
     linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
     linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
     linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
     linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
 
-
   .nano {
-
     .profile_section {
       display: grid;
       grid-template-columns: 1fr 100px 1fr;
@@ -173,7 +174,6 @@ const userTabs: Ref<UserTab[]> = ref([
       border: none;
       display: flex;
       justify-content: center;
-
     }
 
     .social_tab {
@@ -182,7 +182,7 @@ const userTabs: Ref<UserTab[]> = ref([
       flex-direction: column;
       height: 328 px;
 
-      gap: 24px
+      gap: 24px;
     }
 
     .social_button {
@@ -199,13 +199,12 @@ const userTabs: Ref<UserTab[]> = ref([
     .social_button:hover {
       background-color: rgba(6, 75, 131, 0.4);
       box-shadow: 0 0 10px rgba(0, 138, 251, 0.8);
-      transition-delay: 0s
+      transition-delay: 0s;
     }
 
     .p-tabpanels {
       background: none;
       padding: 0;
-
     }
 
     .p-tab-active {
@@ -221,7 +220,6 @@ const userTabs: Ref<UserTab[]> = ref([
 
 <style scoped lang="scss">
 .sidebar {
-
   width: -webkit-fill-available;
   transition: all 0.3s ease-in-out;
   z-index: 100;
@@ -244,7 +242,6 @@ const userTabs: Ref<UserTab[]> = ref([
     max-height: 100%;
     min-height: auto;
 
-
     .group_form-control-two,
     .group_form-control-tree {
       display: flex;
@@ -254,13 +251,13 @@ const userTabs: Ref<UserTab[]> = ref([
       color: #fff;
       width: 100%;
 
-      >div {
+      > div {
         border-radius: 15px;
       }
     }
 
     .group_form-control-tree {
-      >div {
+      > div {
         border-radius: 15px;
       }
     }
@@ -269,9 +266,7 @@ const userTabs: Ref<UserTab[]> = ref([
       display: flex;
       height: 100%;
 
-
-      >div {
-
+      > div {
         border-radius: 15px;
         padding: 24px;
       }
@@ -290,7 +285,6 @@ const userTabs: Ref<UserTab[]> = ref([
 
     & .е1 {
       display: flex;
-
     }
 
     & .des {

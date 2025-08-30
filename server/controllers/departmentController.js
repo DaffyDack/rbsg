@@ -141,12 +141,12 @@ class DepartmentController {
 
   async changeInfoDepartment(req, res) {
     try {
-      const { id, department_description, participants, fullname } = req.body
+      const { id, fullname, department_description, participants } = req.body
       const updatedCount = await Department.update(
         {
+          fullname: fullname, // Новое значение для колонки info
           department_description: department_description, // Новое значение для колонки code
           participants: participants, // Новое значение для колонки info
-          fullname: fullname, // Новое значение для колонки info
         },
         {
           where: {

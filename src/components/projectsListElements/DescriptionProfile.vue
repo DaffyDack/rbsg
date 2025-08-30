@@ -30,30 +30,26 @@ function countFullYaer(date: any) {
 
   let birthdate = new Date(year, month - 1, day)
   if (isNaN(birthdate.getTime())) {
-    console.error('Преданные данные дня рождения не корректны:', date);
-    return NaN;
+    console.error('Преданные данные дня рождения не корректны:', date)
+    return NaN
   }
   let age = today.getFullYear() - birthdate.getFullYear()
-  const birthPassed = today.getMonth() > month || (today.getMonth() === month && today.getDate() >= day)
+  const birthPassed =
+    today.getMonth() > month || (today.getMonth() === month && today.getDate() >= day)
   if (!birthPassed) {
-    age--;
+    age--
   }
 
   return age
 }
 
 let age = countFullYaer(store.info.datebirth)
-
 </script>
-
-
-
 
 <template>
   <div class="descriptions_profile">
     <div class="descriptions_name">
       <p class="family">
-
         {{ infoProfile.lastname }} {{ infoProfile.firstname }} {{ infoProfile.patronymic }}
       </p>
     </div>
@@ -66,7 +62,6 @@ let age = countFullYaer(store.info.datebirth)
     </div>
 
     <div class="labelContact">
-
       <div>Прямой руководитель</div>
       <div>{{ infoProfile.patronymic }}</div>
       <div>День рождения</div>
@@ -79,17 +74,16 @@ let age = countFullYaer(store.info.datebirth)
 
     <div class="cards_information">
       <div class="card_form">
-        <img class="imd_card" src="../../assets/location.svg" alt="Локация">
+        <img class="imd_card" src="../../assets/location.svg" alt="Локация" />
         <span class="text_card">{{ infoProfile.locations }}</span>
       </div>
       <div class="card_form">
-        <img class="imd_card" src="../../assets/cake.svg" alt="Локация">
+        <img class="imd_card" src="../../assets/cake.svg" alt="Локация" />
         <span class="text_card">{{ infoProfile.datebirth }}</span>
         <span class="text_age">{{ age }}</span>
-
       </div>
       <div class="card_form">
-        <img class="imd_card" src="../../assets/group.svg" alt="Рабочая группа">
+        <img class="imd_card" src="../../assets/group.svg" alt="Рабочая группа" />
         <span>Рабочая группa</span>
         <span class="text_card">{{ infoProfile.department }}</span>
       </div>
@@ -101,7 +95,6 @@ let age = countFullYaer(store.info.datebirth)
   </div>
 </template>
 
-
 <style lang="scss">
 .descriptions_profile {
   padding: 15px;
@@ -111,8 +104,6 @@ let age = countFullYaer(store.info.datebirth)
     display: flex;
     justify-content: baseline;
     margin-top: 36px;
-
-
   }
 
   .card_form {
@@ -128,7 +119,6 @@ let age = countFullYaer(store.info.datebirth)
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
   }
 
   .text_card {
@@ -148,7 +138,8 @@ let age = countFullYaer(store.info.datebirth)
     margin-top: 36px;
     align-items: center;
     border-radius: 36px;
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
+    background:
+      linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
       linear-gradient(270deg, rgba(6, 75, 131, 0.15) 14.42%, rgba(0, 138, 251, 0.15) 100%);
   }
 
@@ -163,8 +154,6 @@ let age = countFullYaer(store.info.datebirth)
     font-family: Manrope;
     font-size: 16px;
 
-
-
     div:nth-child(odd) {
       // color: #939393;
       font-size: 14px;
@@ -173,7 +162,6 @@ let age = countFullYaer(store.info.datebirth)
     div:nth-child(even) {
       color: #ffffff;
       font-size: 14px;
-
     }
 
     .card_form {
@@ -189,22 +177,21 @@ let age = countFullYaer(store.info.datebirth)
       flex-direction: column;
       align-items: center;
       justify-content: space-evenly;
-
     }
 
     .family {
       font-size: 56px;
-      word-wrap: normal
+      word-wrap: normal;
     }
 
     .text_age {
-      color: #FFF;
+      color: #fff;
       text-align: center;
       font-family: Manrope;
       font-size: 64px;
       font-style: normal;
       font-weight: 600;
-      line-height: 74px
+      line-height: 74px;
     }
 
     .jobfunctions {
@@ -219,7 +206,6 @@ let age = countFullYaer(store.info.datebirth)
 
     .text-description {
       margin-top: 15px;
-
     }
   }
 }

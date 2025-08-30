@@ -19,15 +19,16 @@ const infoProfile = ref({
 </script>
 <template>
   <div class="title">
-
-    <div class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + infoProfile.img + ')' }"></div>
+    <div
+      class="img"
+      :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + infoProfile.img + ')' }"
+    ></div>
     <div class="status">
       <div class="rating">
         <span class="el_rating">Senior </span>
         <span class="number">10</span>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -50,7 +51,6 @@ const infoProfile = ref({
     background-size: cover;
     background-position: center;
     aspect-ratio: 9 / 15;
-
   }
 
   .avatar {
@@ -85,7 +85,6 @@ const infoProfile = ref({
     position: absolute;
     top: 40px;
     right: 40px;
-
 
     .rating {
       display: flex;

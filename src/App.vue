@@ -7,7 +7,6 @@ import { useCounterStore } from './stores/counter'
 import { useUsersStore } from './stores/users'
 import { check } from './http/userAPI'
 
-
 import ProgressSpinner from 'primevue/progressspinner'
 
 const store = useCounterStore()
@@ -29,7 +28,6 @@ onMounted(() => {
       loading.value = false
     })
 })
-
 
 function incrCounter() {
   componentKey.value++
@@ -63,14 +61,12 @@ function toggleSidebar() {
 <style scoped lang="scss">
 @use './assets/scss/colors' as clr;
 
-
-
 .namePage {
   min-width: 100px;
 }
 
 .wrapper {
-  background-color: #000E1A;
+  background-color: #000e1a;
   // background: linear-gradient(45deg,
   //     rgb(0, 0, 0)100%,
   //     // rgba(7, 62, 137, 1) 35%,
@@ -84,7 +80,6 @@ $sidebar-padding-inline-start: 1rem;
 
 .p-10 {
   padding: 50px 50px 50px 70px;
-
 }
 
 ul {
@@ -178,4 +173,5 @@ h4[transparent='true'] {
   transform: translateX(-100%);
 }
 
-//form</style>
+//form
+</style>
