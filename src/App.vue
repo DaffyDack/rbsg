@@ -173,5 +173,4 @@ h4[transparent='true'] {
   transform: translateX(-100%);
 }
 
-//form
-</style>
+//form</style>

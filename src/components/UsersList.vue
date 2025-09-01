@@ -39,24 +39,16 @@ const deleteUser = async () => {
   deleteProductDialog.value = false
   product.value = {}
 }
-console.log(store.user, 'смотрим всех юзеров')
 </script>
 
 <template>
   <div>
     <div class="wrapperTable mt-5">
       <div class="card">
-        <DataTable
-          ref="dt"
-          :value="store.user"
-          dataKey="id"
-          :paginator="true"
-          :rows="10"
-          :filters="filters"
+        <DataTable ref="dt" :value="store.user" dataKey="id" :paginator="true" :rows="10" :filters="filters"
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           :rowsPerPageOptions="[5, 10, 25]"
-          currentPageReportTemplate="Показать от {first} до {last} из {totalRecords} пользователей"
-        >
+          currentPageReportTemplate="Показать от {first} до {last} из {totalRecords} пользователей">
           <template #header>
             <div class="flex flex-wrap gap-2 items-center justify-between">
               <h4 class="m-0">Список пользователей</h4>
@@ -69,11 +61,11 @@ console.log(store.user, 'смотрим всех юзеров')
             </div>
           </template>
           <Column field="id" header="ID" sortable></Column>
-          <Column field="department" header="Department"></Column>
-          <Column field="fullname" header="Full Name" sortable></Column>
+          <Column field="department" header="Отдел" sortable></Column>
+          <Column field="fullname" header="Имя" sortable></Column>
           <Column field="email" header="Email" sortable></Column>
-          <Column field="role" header="Role" sortable></Column>
-          <Column field="positions" header="Positions" sortable>
+          <Column field="role" header="Роль" sortable></Column>
+          <Column field="positions" header="Должность" sortable>
             <template #body="slotProps">
               <div @click="confirmInfoPositions(slotProps.data)">
                 {{ slotProps.data.positions }}
@@ -82,30 +74,17 @@ console.log(store.user, 'смотрим всех юзеров')
           </Column>
           <Column v-if="name.role === 'ADMIN'" header="Действие" :exportable="false">
             <template #body="slotProps">
-              <Button
-                v-if="storeUser.info.id !== slotProps.data.id"
-                icon="pi pi-trash"
-                outlined
-                rounded
-                severity="danger"
-                @click="confirmDeleteProduct(slotProps.data)"
-              />
+              <Button v-if="storeUser.info.id !== slotProps.data.id" icon="pi pi-trash" outlined rounded
+                severity="danger" @click="confirmDeleteProduct(slotProps.data)" />
             </template>
           </Column>
         </DataTable>
       </div>
 
-      <Dialog
-        v-model:visible="deleteProductDialog"
-        :style="{ width: '450px' }"
-        header="Вы уверены?"
-        :modal="true"
-      >
+      <Dialog v-model:visible="deleteProductDialog" :style="{ width: '450px' }" header="Вы уверены?" :modal="true">
         <div class="flex items-center gap-4">
           <i class="pi pi-exclamation-triangle !text-3xl" />
-          <span v-if="product"
-            >Удалить пользователя <b>{{ product.email }}</b> ?</span
-          >
+          <span v-if="product">Удалить пользователя <b>{{ product.email }}</b> ?</span>
         </div>
         <template #footer>
           <Button label="Отмена" icon="pi pi-times" text @click="deleteProductDialog = false" />
@@ -113,12 +92,8 @@ console.log(store.user, 'смотрим всех юзеров')
         </template>
       </Dialog>
 
-      <Dialog
-        v-model:visible="infoJobfunctionsDialog"
-        :style="{ width: '50%' }"
-        header="Должностные обязанности"
-        :modal="true"
-      >
+      <Dialog v-model:visible="infoJobfunctionsDialog" :style="{ width: '50%' }" header="Должностные обязанности"
+        :modal="true">
         <div class="flex items-center gap-4">
           {{ jobfunctions }}
         </div>

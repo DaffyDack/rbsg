@@ -58,7 +58,7 @@ const form = ref<Form>({
   department: { name: 'IT отдел', code: 'IT отдел' },
   positions: { name: 'Генеральный директор', code: 'Генеральный директор' },
   dateEmployment: '',
-  startDate: '',
+  startDate: 'По дефолту заполнена для проврки на ошибки',
   probationPeriod: '',
   combiningPosition: '',
   combiningCompfny: '',
@@ -129,86 +129,43 @@ defineExpose({ CheckingJobInformationComponent })
       <div class="group_form-control-four">
         <div class="form-control">
           <label for="jobInformationCompany">Компания</label>
-          <Select
-            v-model="form.company"
-            id="jobInformationCompany"
-            :options="kompany"
-            optionLabel="name"
-            placeholder="Компания"
-            class="w-full"
-          />
+          <Select v-model="form.company" id="jobInformationCompany" :options="kompany" optionLabel="name"
+            placeholder="Компания" class="w-full" />
         </div>
         <div class="form-control">
           <label for="jobInformationBrand">Бренд</label>
-          <Select
-            v-model="form.brand"
-            id="jobInformationBrand"
-            :options="brand"
-            optionLabel="name"
-            placeholder="Компания"
-            class="w-full"
-          />
+          <Select v-model="form.brand" id="jobInformationBrand" :options="brand" optionLabel="name"
+            placeholder="Компания" class="w-full" />
         </div>
         <div class="form-control">
           <label for="jobInformationDepartment">Отдел</label>
-          <Select
-            v-model="form.department"
-            id="jobInformationPost"
-            :options="departments"
-            optionLabel="department"
-            placeholder="Отдел"
-            class="w-full"
-          />
+          <Select v-model="form.department" id="jobInformationPost" :options="departments" optionLabel="department"
+            placeholder="Отдел" class="w-full" />
         </div>
         <div class="form-control">
           <label for="jobInformationPost">Должность</label>
-          <Select
-            v-model="form.positions"
-            id="jobInformationPost"
-            :options="posts"
-            optionLabel="post"
-            placeholder="Должность"
-            class="w-full"
-          />
+          <Select v-model="form.positions" id="jobInformationPost" :options="posts" optionLabel="post"
+            placeholder="Должность" class="w-full" />
         </div>
       </div>
       <div class="group_form-control-tree">
         <div class="form-control">
-          <label for="jobInformationDateOfficialEmployment"
-            >Дата официального трудоустройства</label
-          >
-          <Calendar
-            type="text"
-            v-model="form.dateEmployment"
-            style="width: 100%"
-            id="jobInformationDateOfficialEmployment"
-            placeholder="Дата официального трудоустройства"
-          />
+          <label for="jobInformationDateOfficialEmployment">Дата официального трудоустройства</label>
+          <Calendar type="text" v-model="form.dateEmployment" style="width: 100%"
+            id="jobInformationDateOfficialEmployment" placeholder="Дата официального трудоустройства" />
         </div>
-        <div
-          class="form-control"
-          :class="{ error: errors.startDate, success: !errors.startDate && form.startDate != '' }"
-        >
+        <div class="form-control"
+          :class="{ error: errors.startDate, success: !errors.startDate && form.startDate != '' }">
           <label for="jobInformationStartDate">Дата начала работы</label>
-          <Calendar
-            v-model="form.startDate"
-            style="width: 100%"
-            id="jobInformationStartDate"
-            placeholder="Дата начала работы"
-            dateFormat="dd/mm/yy"
-          />
+          <Calendar v-model="form.startDate" style="width: 100%" id="jobInformationStartDate"
+            placeholder="Дата начала работы" dateFormat="dd/mm/yy" />
 
           <small v-if="errors.startDate">{{ errors.startDate }}</small>
         </div>
         <div class="form-control">
           <label for="jobInformationProbationPeriodUntil">Испытательный срок до</label>
-          <Calendar
-            v-model="form.probationPeriod"
-            style="width: 100%"
-            id="jobInformationProbationPeriodUntil"
-            placeholder="Испытательный срок до"
-            dateFormat="dd/mm/yy"
-          />
+          <Calendar v-model="form.probationPeriod" style="width: 100%" id="jobInformationProbationPeriodUntil"
+            placeholder="Испытательный срок до" dateFormat="dd/mm/yy" />
         </div>
       </div>
       <div class="italic">Совмещение</div>
@@ -275,11 +232,7 @@ defineExpose({ CheckingJobInformationComponent })
           </div>
           <div class="form-control">
             <label for="jobInformationProbationPeriod">Испытательный срок до</label>
-            <input
-              type="text"
-              id="jobInformationProbationPeriod"
-              placeholder="Испытательный срок до"
-            />
+            <input type="text" id="jobInformationProbationPeriod" placeholder="Испытательный срок до" />
           </div>
         </div>
       </div>

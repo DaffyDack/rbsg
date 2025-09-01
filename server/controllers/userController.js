@@ -190,7 +190,6 @@ class UserController {
   async login(req, res, next) {
     const { email, password } = req.body
     const user = await User.findOne({ where: { email } })
-    console.log(user, 'user есть')
     const WC = await WorkingContacts.findOne({ where: { userId: user.id } })
     if (!user) {
       return next(ApiError.internal('пользователь не найден'))
