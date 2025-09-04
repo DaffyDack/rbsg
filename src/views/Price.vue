@@ -407,7 +407,7 @@ const deleteProduct = (index: number) => {
     <div class="container_selected">
         
 
-    <span class="api">Текущий курс EUR {{ euro }} руб.</span>
+   
         <div class="api">
           
                <FloatLabel class="grid-header">

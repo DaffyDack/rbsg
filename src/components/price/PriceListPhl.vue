@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import { ref, type Ref,computed,watchEffect} from 'vue';
+import { ref, type Ref,computed,watchEffect, watch} from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 
-const props = defineProps<{ items: Array<Record<string, any>> }>();
+
+
+const props = defineProps<{ 
+     items: Array<Record<string, any>>,
+    curs: Array<Record<string, any>>}>();
+
+
 const selectedValues = ref({});
 const filteredOptions = ref({});
-// const uniqueKeys = ref<string[]>([]);
-
+const smallWholesale = 10;
+const wholesale = 20;
+const dealersale = 30;
 
 
 
@@ -19,8 +26,13 @@ const getUniqueKeys = (items: Array<Record<string, any>>) => {
     return [];
 };
 const uniqueKeys = computed(()=> {
-    return getUniqueKeys(props.items).slice(0, -4)
+    return getUniqueKeys(props.items).slice(0, 9)
 })
+
+const uniqueKeysTable = computed(()=> {
+    return getUniqueKeys(props.items)
+})
+
    watchEffect(() => {
          uniqueKeys.value.forEach(key => {
              filteredOptions.value[key] = [...new Set(props.items
@@ -38,60 +50,93 @@ const uniqueKeys = computed(()=> {
     });
 
     const updateFilteredOptions = () => {
-    uniqueKeys.value.forEach(key => {
-        filteredOptions.value[key] = [...new Set(props.items.map(product => product[key]))];
+        uniqueKeys.value.forEach(key => {
+            const selectedKeys = Object.keys(selectedValues.value).filter(k => selectedValues.value[k]);
+            
+            filteredOptions.value[key] = [...new Set(props.items
+                .filter(product => {
+                    return selectedKeys.every(filterKey => 
+                        product[filterKey] === selectedValues.value[filterKey]
+                    );
+                })
+                .map(product => product[key]))];
+        });
+    };
+
+
+    watchEffect(() => {
+        updateFilteredOptions();
+        selectedValues.value = {};
+        filteredOptions.value = {}
     });
-};
 
-//     const filterOptions = (changedKey) => {
-//         const selectedFilters = Object.keys(selectedValues.value)
-//         .filter(key => selectedValues.value[key])
-//         .reduce((acc, key) => {
-//         acc[key] = selectedValues.value[key];
-//         return acc;
-//         }, {});
-
-
-//      uniqueKeys.forEach(key => {
-//             filteredOptions.value[key] = [...new Set(props.items
-//             .filter(product => {
-//                 return Object.keys(selectedFilters).every(filterKey => product[filterKey] === selectedFilters[filterKey]);
-//             })
-//             .map(product => product[key]))];
-//         });
-// };
 
     const filteredProducts = computed(() => {
-        return props.items.filter(product => {
-            return Object.keys(selectedValues.value).every(key => {
+    const filtered = props.items.filter(product => {
+        return Object.keys(selectedValues.value).every(key => {
             return !selectedValues.value[key] || product[key] === selectedValues.value[key];
-            });
         });
     });
 
-    console.log(filteredProducts.value)
+    
+    filtered.forEach(product => {
+        const price = product.price ;
+        const totalCost = price * props.curs; 
+        product.totalCost = totalCost.toFixed(2);
+        product.calculateSmallWholesalePrice = (totalCost * (1 - smallWholesale / 100)).toFixed(2);
+        product.calculateWholesalePrice = (totalCost * (1 - wholesale / 100)).toFixed(2);
+        product.calculateDealerPrice = (totalCost * (1 - dealersale / 100)).toFixed(2);
+    });
+
+    return filtered;
+
+    });
+    
+
+
+
+
+
+const calculateTotalPrice = (filteredProducts) => {
+    let total = 0;
+
+   
+     filteredProducts.forEach(product => {
+        const price = product.price || 0;
+        total = price * props.curs; 
+        product.totalCost = total.toFixed(2);
+        product.calculateSmallWholesalePrice = (product.totalCost * (1 - smallWholesale / 100)).toFixed(2);
+        product.calculateWholesalePrice = (product.totalCost * (1 - wholesale / 100)).toFixed(2);
+        product.calculateDealerPrice = (product.totalCost * (1 - dealersale / 100)).toFixed(2);
+    });
+
+    return total;
+};
+
+
+calculateTotalPrice(filteredProducts.value)
+
+
 </script>
 
 
 
-
-
-<template lang="">
-    <div>форма для листового</div>
-
+<template>
     <div class="grid-container">
         <div class="table_select" v-for="(key, index) in uniqueKeys" :key="index">
             <label :for="key">{{ key }}</label>
-            <select :id="key" v-model="selectedValues[key]" @change="filterOptions(key)">
-               
+            <select :id="key" v-model="selectedValues[key]">
                 <option v-for="value in filteredOptions[key]" :key="value" :value="value">{{ value }}</option>
             </select>
         </div>
-     </div>
-     <DataTable :value="filteredProducts" class="p-datatable-striped">
-        <Column v-for="(key, index) in uniqueKeys" :key="index" :field="key" :header="key"></Column>
+    </div>
+   
+    <DataTable :value="filteredProducts" class="p-datatable-striped">
+        <Column v-for="(key, index) in uniqueKeysTable" :key="index" :field="key" :header="key"></Column>
     </DataTable>
 </template>
+
+
 
 
 <style lang="scss">

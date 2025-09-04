@@ -5,24 +5,12 @@ import Tab from 'primevue/tab'
 import Tabs from 'primevue/tabs'
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel'
-import { ref, type Ref, onMounted, computed} from 'vue';
+import { ref, type Ref, onMounted, computed,watch} from 'vue';
 import Price from './Price.vue'
-import PriceListPhl from '@/components/price/PriceListPhl.vue'
+import PriceListPhl from '@/components/price/priceListPhl.vue'
+import DatePrice from '@/components/price/DatePrice.vue'
+import type { JSX } from 'vue/jsx-runtime';
 
-const products = ref([]);
-onMounted(async () => {
-  try {
-    const response = await fetch('../../public/data.json'); 
-    if (!response.ok) {
-      throw new Error('Сеть ответила с ошибкой');
-    }
-    const data = await response.json();
-    console.log(data)
-    products.value = data; 
-    } catch (error) {
-    console.error('Ошибка при получении данных:', error);
-  }
-});
 
 interface Tabs {
   component: string
@@ -36,16 +24,101 @@ const tabs: Ref<Tabs[]> = ref([
   { component: '', title: 'Столешницы раскрой', errors: false },
   ]);
 
+const euro = ref('EUR')
+const products = ref([]);
+const selectedCourse = ref('EUR')
+const selectedTypeCalc = ref('В наличии')
+let categoryProducts = []
+const urlInStock =  '../../public/dataPrice.json'
+const urlOrder =  '../../public/data.json'
+const urlOrderDate =  '../../public/orderDate.json'
+
+
+const valute =  {'Американский доллар': 'USD', 'Индийская рупия': 'INR', 'Евро': 'EUR'}
+const typeCalc = {"Заказ": "Заказ", 'В наличии': "В наличии"}
+
+const token = "0f54e5e6b25475a140f44143c70830db"
+const urlAPpi = 'https://www.cbr-xml-daily.ru/daily_json.js';
+
+const getСourse = async () => {
+    try {
+        const res = await fetch(urlAPpi);
+        const data = await res.json();
+        const course = data.Valute[selectedCourse.value]
+        const nominal = course.Nominal
+        const valute = course.Previous.toFixed(2)/nominal
+        
+        if (course) {
+          euro.value = valute.toFixed(2);
+        
+        } else {
+          euro.value = '';
+        
+        }
+    } catch (error) {
+        euro.value = 'Ошибка! или валюта не выбрана. ';
+        console.error(error);
+    }
+}
+getСourse()
+
+
+
+const getProducts = async () => {
+ let url = urlInStock
+  try {
+    if(selectedTypeCalc.value === 'Заказ') {
+      url =urlOrder
+    
+    }
+    const response = await fetch(`${url}`); 
+    if (!response.ok) {
+      throw new Error('Сеть ответила с ошибкой');
+    }
+
+    const data = await response.json();
+    const resOrder = await fetch(`${urlOrderDate}`)
+
+    // console.log(categoryProducts)
+    products.value = data; 
+    } catch (error) {
+    console.error('Ошибка при получении данных:', error);
+  }
+}
+onMounted(getProducts);
+
+watch(selectedTypeCalc, (newValue) => {
+    getProducts();
+});
+
+
+
+
+
+
 </script>
 <template>
    <div class="sidebar">
       <div class="nano">
+        <div>
+          <select :id="key" v-model="selectedCourse" @change="getСourse"  style="width: 100px">
+            
+            <option v-for="value in valute" :key="value" :value="value">{{ value }}</option>
+          </select>
+          <span class="api">Текущий курс {{selectedCourse}} {{ euro }} руб.</span>
+          <div>
+             <select :id="key" v-model="selectedTypeCalc" @change="getСourse"  style="width: 100px">
+            
+            <option v-for="value in typeCalc" :key="value" :value="value">{{ value }}</option>
+          </select>
+          </div>
+        </div>
         <div class="title_setting_profile">Расчет стоимости продукции</div>
         <div class="wrapper_setting_profile">
           <div class="cardTab">  
              <Tabs value="0" scrollable>
       <TabList>
-        <Tab v-for="(tab, i) in tabs" :key="i" :value="String(i)" class="tag_error">
+        <Tab v-for="(tab, i) in tabs" :key="i" :value="String(i)" class="tag_error">  
           <span class="tag" :class="{ error: tab.errors }"></span>
           {{ tab.title }}
         </Tab>
@@ -54,8 +127,11 @@ const tabs: Ref<Tabs[]> = ref([
            <TabPanel  value="0">
                   <Price />
            </TabPanel>
-           <TabPanel value="1">
-                 <PriceListPhl :items= "products"/>
+            <TabPanel value="1">               
+                   <PriceListPhl :items="products" :curs="euro" />                
+                </TabPanel>
+          <TabPanel  value="2">
+                  <DatePrice :items="products"/>
            </TabPanel>
       </TabPanels>
     </Tabs>
@@ -122,33 +198,7 @@ const tabs: Ref<Tabs[]> = ref([
   border-radius: 24px;
   margin-top: 25px;
 
-  // .card {
-  //    padding: 20px;
-  //   border-radius: 16px;
-  //   overflow: hidden;
-  //   margin-bottom: 16px;
-
-    
-  //   .tag_error {
-  //     position: relative;
-
-  //     .tag {
-  //       display: block;
-  //       opacity: 0;
-  //       width: 10px;
-  //       height: 10px;
-  //       background: red;
-  //       position: absolute;
-  //       right: 8px;
-  //       top: 16px;
-  //       border-radius: 100%;
-
-  //       &.error {
-  //         opacity: 1;
-  //       }
-  //     }
-  //   }
-  // }
+ 
 
   .buttonWrapper {
     color: #fff;
