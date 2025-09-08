@@ -6,7 +6,6 @@ import Tabs from 'primevue/tabs'
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel'
 import { ref, type Ref, onMounted, computed,watch} from 'vue';
-import Price from './Price.vue'
 import PriceListPhl from '@/components/price/priceListPhl.vue'
 import DatePrice from '@/components/price/DatePrice.vue'
 import type { JSX } from 'vue/jsx-runtime';
