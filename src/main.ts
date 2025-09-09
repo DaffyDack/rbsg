@@ -17,6 +17,10 @@ app.use(createPinia())
 app.use(PrimeVue, {
   theme: {
     preset: Aura,
+    options: {
+      darkModeSelector: false,
+      cssLayer: false,
+    },
   },
   locale: {
     dayNames: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],

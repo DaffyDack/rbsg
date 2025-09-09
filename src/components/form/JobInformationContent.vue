@@ -139,12 +139,12 @@ defineExpose({ CheckingJobInformationComponent })
         </div>
         <div class="form-control">
           <label for="jobInformationDepartment">Отдел</label>
-          <Select v-model="form.department" id="jobInformationPost" :options="departments" optionLabel="department"
-            placeholder="Отдел" class="w-full" />
+          <Select v-model="form.department" filter id="jobInformationPost" :options="departments"
+            optionLabel="department" placeholder="Отдел" class="w-full" />
         </div>
         <div class="form-control">
           <label for="jobInformationPost">Должность</label>
-          <Select v-model="form.positions" id="jobInformationPost" :options="posts" optionLabel="post"
+          <Select v-model="form.positions" filter id="jobInformationPost" :options="posts" optionLabel="post"
             placeholder="Должность" class="w-full" />
         </div>
       </div>

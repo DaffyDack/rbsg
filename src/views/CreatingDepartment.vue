@@ -101,7 +101,9 @@ const headDepartment = ref<string>('')
 const positionInDepartment = ref<string>('')
 const editedDepartment = ref<string>('')
 const relatedToDepartment = ref<boolean>(false)
-const existingDepartments = ref<Item[]>([])
+const existingDepartments = ref<Item[]>([
+  { department: "Корневой отдел", code: "0" }
+])
 const posts = ref<ItemPosts[]>([])
 
 const codeFromDelete = ref<string>('')
@@ -149,7 +151,7 @@ onMounted(() => {
   fetchDepartment().then((data) => {
     departments.value = data
     startBuild()
-    existingDepartments.value = getUniqueItems(departments.value)
+    existingDepartments.value = [...existingDepartments.value, ...getUniqueItems(departments.value)]
   })
   fetchPosts().then((data) => {
     posts.value = data
@@ -171,6 +173,7 @@ const RegistrationDepartment = async () => {
     )
     formData.append('department', form.value.department)
     formData.append('post', form.value.post.post)
+    formData.append('participants', form.value.participants)
     formData.append('department_description', form.value.department_description)
     formData.append(
       'department_affiliation',
@@ -182,7 +185,6 @@ const RegistrationDepartment = async () => {
       'code',
       form.value.department_affiliation == '' ? '0-0' : form.value.department_affiliation.code,
     )
-    formData.append('participants', form.value.participants)
     const response = await creadetDepartment(formData)
     if (response['name'] !== undefined) {
       ThereIsAlreadyDepartmentVisible.value = true
@@ -194,7 +196,7 @@ const RegistrationDepartment = async () => {
       fetchDepartment().then((data) => {
         departments.value = data
         startBuild()
-        existingDepartments.value = getUniqueItems(departments.value)
+        existingDepartments.value = [...existingDepartments.value, ...getUniqueItems(departments.value)]
         Object.keys(form.value).forEach((key) => {
           // @ts-ignore
           form.value[key] = ''
@@ -210,6 +212,9 @@ const RegistrationDepartment = async () => {
 
 const creadetDepartmentForm = () => {
   departments.value = null
+  existingDepartments.value = [
+    { department: "Корневой отдел", code: "0" }
+  ]
   RegistrationDepartment()
 }
 const deleteDepartmentForm = async () => {
@@ -222,7 +227,7 @@ const deleteDepartmentForm = async () => {
     fetchDepartment().then((data) => {
       departments.value = data
       startBuild()
-      existingDepartments.value = getUniqueItems(departments.value)
+      existingDepartments.value = [...existingDepartments.value, ...getUniqueItems(departments.value)]
     })
   } catch (error) {
     console.log('что то с удалением', error)
@@ -242,8 +247,9 @@ const changeDepartmentForm = async () => {
     fetchDepartment().then((data) => {
       departments.value = data
       startBuild()
-      existingDepartments.value = getUniqueItems(departments.value)
+      existingDepartments.value = [...existingDepartments.value, ...getUniqueItems(departments.value)]
     })
+    selectedNameChange.value = []
   } catch (error) {
     console.log('что то с изменениями', error)
   }
@@ -295,73 +301,34 @@ function getDirectorChangeDepartmen() {
       <div class="group_form-control-five">
         <div class="form-control">
           <label for="jobContactTel" style="color: #fff">Название отдела</label>
-          <input
-            v-model="form.department"
-            type="text"
-            id="jobContactTel"
-            placeholder="Название отдела"
-          />
+          <input v-model="form.department" type="text" id="jobContactTel" placeholder="Название отдела" />
         </div>
         <div class="form-control">
           <label for="participant1" style="color: #fff">Руководитель</label>
-          <Select
-            v-model="form.fullname"
-            id="Participant"
-            filter
-            :options="usersString"
-            optionLabel="fullname"
-            placeholder="Руководитель"
-            class="w-full"
-          />
+          <Select v-model="form.fullname" id="Participant" filter :options="usersString" optionLabel="fullname"
+            placeholder="Руководитель" class="w-full" />
         </div>
         <div class="form-control">
           <label for="post" style="color: #fff">Должность</label>
-          <Select
-            v-model="form.post"
-            id="post"
-            filter
-            :options="posts"
-            optionLabel="post"
-            placeholder="Должность"
-            class="w-full"
-          />
+          <Select v-model="form.post" id="post" filter :options="posts" optionLabel="post" placeholder="Должность"
+            class="w-full" />
         </div>
         <div class="form-control">
           <label for="participants" style="color: #fff">Участники</label>
-          <MultiSelect
-            v-model="selectedName"
-            @change="getNamesAsString()"
-            id="participants"
-            :options="usersString"
-            optionLabel="fullname"
-            filter
-            placeholder="Участник"
-            :maxSelectedLabels="3"
-            class="w-full md:w-80"
-          />
+          <MultiSelect v-model="selectedName" @change="getNamesAsString()" id="participants" :options="usersString"
+            optionLabel="fullname" filter placeholder="Участник" :maxSelectedLabels="3" class="w-full md:w-80" />
         </div>
         <div class="form-control">
           <label for="participant" style="color: #fff">Пренадлежность к отделу</label>
-          <Select
-            v-model="form.department_affiliation"
-            filter
-            id="Participant"
-            :options="existingDepartments"
-            optionLabel="department"
-            placeholder="Пренадлежность к отделу"
-            class="w-full"
-          />
+          <Select v-model="form.department_affiliation" filter id="Participant" :options="existingDepartments"
+            optionLabel="department" placeholder="Пренадлежность к отделу" class="w-full" />
         </div>
       </div>
       <div class="group_form-control">
         <div class="form-control">
           <label for="department_description" style="color: #fff">Описание обязаностей</label>
-          <textarea
-            v-model="form.department_description"
-            type="text"
-            id="department_description"
-            placeholder="Описание обязаностей"
-          ></textarea>
+          <textarea v-model="form.department_description" type="text" id="department_description"
+            placeholder="Описание обязаностей"></textarea>
         </div>
       </div>
       <div class="group_form-control mb-5">
@@ -373,39 +340,21 @@ function getDirectorChangeDepartmen() {
       </div>
     </div>
     <div>
-      <Tree
-        :value="departmentTree"
-        :expandedKeys="expandedKeys"
-        filterMode="lenient"
-        class="w-full md:w-[100%] tereeSpecial"
-      >
+      <Tree :value="departmentTree" :expandedKeys="expandedKeys" filterMode="lenient"
+        class="w-full md:w-[100%] tereeSpecial">
         <template #default="slotProps" class="w-full md:w-[100%]">
           <div class="wrapperSlotProps">
             <b @click="selectedDepartment(slotProps.node)">{{ slotProps.node.label }}</b>
             <div v-if="nameRole.role === 'ADMIN'">
-              <Button
-                class="mr-3"
-                icon="pi pi-pencil"
-                severity="warn"
-                aria-label="Notification"
-                @click="selectedEditDepartment(slotProps.node)"
-              />
-              <Button
-                icon="pi pi-times"
-                severity="danger"
-                aria-label="Cancel"
-                @click="selectedDeleteDepartment(slotProps.node)"
-              />
+              <Button class="mr-3" icon="pi pi-pencil" severity="warn" aria-label="Notification"
+                @click="selectedEditDepartment(slotProps.node)" />
+              <Button icon="pi pi-times" severity="danger" aria-label="Cancel"
+                @click="selectedDeleteDepartment(slotProps.node)" />
             </div>
           </div>
         </template>
       </Tree>
-      <Dialog
-        v-model:visible="visible"
-        modal
-        header="Описание обязаностей отдела"
-        :style="{ width: '80%' }"
-      >
+      <Dialog v-model:visible="visible" modal header="Описание обязаностей отдела" :style="{ width: '80%' }">
         <div class="mb-2">
           Руководитель отдела: {{ headDepartment }} (Должность в отделе:
           {{ positionInDepartment == 'undefined' ? 'Отсутствует' : positionInDepartment }})
@@ -414,89 +363,42 @@ function getDirectorChangeDepartmen() {
         <div>Должностные обязанности отдела: {{ departmentInfo }}</div>
       </Dialog>
     </div>
-    <Dialog
-      v-model:visible="ThereIsAlreadyDepartmentVisible"
-      modal
-      header="Повторение отдела"
-      :style="{ width: '80%' }"
-    >
+    <Dialog v-model:visible="ThereIsAlreadyDepartmentVisible" modal header="Повторение отдела"
+      :style="{ width: '80%' }">
       <div>Такой отдел уже есть!!!</div>
     </Dialog>
-    <Dialog
-      v-model:visible="visibleDeleteDepartment"
-      modal
-      header="Удаление отдела"
-      :style="{ width: '25rem' }"
-    >
-      <span class="text-surface-500 dark:text-surface-400 block mb-8"
-        >Вы хотите удалить отдел {{ departmentFromDelete }} ?</span
-      >
+    <Dialog v-model:visible="visibleDeleteDepartment" modal header="Удаление отдела" :style="{ width: '25rem' }">
+      <span class="text-surface-500 dark:text-surface-400 block mb-8">Вы хотите удалить отдел {{ departmentFromDelete }}
+        ?</span>
       <div class="flex justify-end gap-2">
-        <Button
-          type="button"
-          label="Отмена"
-          severity="secondary"
-          @click="visibleDeleteDepartment = false"
-        ></Button>
+        <Button type="button" label="Отмена" severity="secondary" @click="visibleDeleteDepartment = false"></Button>
         <Button type="button" label="Удалить" @click="deleteDepartmentForm"></Button>
       </div>
     </Dialog>
-    <Dialog
-      v-model:visible="editDepartmentVisible"
-      modal
-      :header="`Редактирование отдела: ${editedDepartment}`"
-      :style="{ width: '80%' }"
-    >
+    <Dialog v-model:visible="editDepartmentVisible" modal :header="`Редактирование отдела: ${editedDepartment}`"
+      :style="{ width: '80%' }">
       <div class="group_form-control-two">
         <div class="form-control">
           <label for="Director" style="color: #000">Руководитель</label>
-          <Select
-            v-model="selectedDirectorChange"
-            filter
-            @change="getDirectorChangeDepartmen()"
-            id="Director"
-            :options="usersString"
-            optionLabel="fullname"
-            placeholder="Руководитель"
-            class="w-full md:w-[100%]"
-          />
+          <Select v-model="selectedDirectorChange" filter @change="getDirectorChangeDepartmen()" id="Director"
+            :options="usersString" optionLabel="fullname" placeholder="Руководитель" class="w-full md:w-[100%]" />
         </div>
         <div class="form-control">
           <label for="participants1" style="color: #000">Участники</label>
-          <MultiSelect
-            v-model="selectedNameChange"
-            @change="getNamesChangeDepartmen()"
-            id="participants1"
-            :options="usersString"
-            optionLabel="fullname"
-            filter
-            placeholder="Участник"
-            :maxSelectedLabels="3"
-            class="w-full md:w-[100%]"
-          />
+          <MultiSelect v-model="selectedNameChange" @change="getNamesChangeDepartmen()" id="participants1"
+            :options="usersString" optionLabel="fullname" filter placeholder="Участник" :maxSelectedLabels="3"
+            class="w-full md:w-[100%]" />
         </div>
       </div>
       <div class="group_form-control">
         <div class="form-control">
-          <label for="department_description" style="color: #000"
-            >Описание обязаностей отдела</label
-          >
-          <textarea
-            v-model="changeFormDepartment.department_description"
-            style="border: 1px solid #ccc"
-            type="text"
-            id="department_description"
-            placeholder="Описание обязаностей"
-          ></textarea>
+          <label for="department_description" style="color: #000">Описание обязаностей отдела</label>
+          <textarea v-model="changeFormDepartment.department_description" style="border: 1px solid #ccc" type="text"
+            id="department_description" placeholder="Описание обязаностей"></textarea>
         </div>
       </div>
       <div class="flex justify-end gap-2">
-        <Button
-          type="button"
-          label="Отмена"
-          severity="secondary"
-          @click="editDepartmentVisible = false"
-        ></Button>
+        <Button type="button" label="Отмена" severity="secondary" @click="editDepartmentVisible = false"></Button>
         <Button type="button" label="Изменить" @click="changeDepartmentForm"></Button>
       </div>
     </Dialog>

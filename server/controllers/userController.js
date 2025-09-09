@@ -129,7 +129,6 @@ class UserController {
         return next(ApiError.badRequest('Такой пользователь уже существует!'))
       }
       const hashPassword = await bcrypt.hash(password, 5)
-      const parentCode = '0-0-3'
       const newCode = await generateNewCode(code)
 
       const user = await User.create({
@@ -182,6 +181,83 @@ class UserController {
         // WC?.workphone,
       )
 
+      return res.json({ token })
+    } catch (error) {
+      return next(ApiError.badRequest(error.message))
+    }
+  }
+  async changeInfoUser(req, res, next) {
+    try {
+      const {
+        id,
+        fullname,
+        firstname,
+        lastname,
+        patronymic,
+        gender,
+        datebirth,
+        mobilephone,
+        workphone,
+        department,
+        positions,
+        role,
+        password,
+        email,
+      } = req.body
+
+      let fileName = false
+      let hashPassword = false
+      if (req.files !== null) {
+        const { img } = req.files
+        fileName = uuid.v4() + '.jpg'
+        await img.mv(path.resolve(__dirname, '..', 'static', fileName))
+      }
+      if (email !== '') {
+        const candidate = await User.findOne({ where: { email } })
+        if (candidate) {
+          return next(ApiError.badRequest('Такой пользователь уже существует!'))
+        }
+      }
+      if (password !== '') {
+        hashPassword = await bcrypt.hash(password, 5)
+      }
+      const updatedData = {
+        fullname,
+        firstname,
+        lastname,
+        patronymic,
+        gender,
+        datebirth,
+        mobilephone,
+        workphone,
+        department,
+        positions,
+        role,
+      }
+      if (fileName) updatedData.img = fileName
+      if (hashPassword) updatedData.password = hashPassword
+      if (email) updatedData.email = email
+
+      const updatedCount = await User.update(updatedData, {
+        where: {
+          id: id,
+        },
+      })
+      const token = generatejwt(
+        updatedCount.fullname,
+        updatedCount.firstname,
+        updatedCount.lastname,
+        updatedCount.patronymic,
+        updatedCount.gender,
+        updatedCount.datebirth,
+        updatedCount.mobilephone,
+        updatedCount.workphone,
+        updatedCount.department,
+        updatedCount.positions,
+        updatedCount.role,
+        updatedCount?.email,
+        updatedCount?.img,
+      )
       return res.json({ token })
     } catch (error) {
       return next(ApiError.badRequest(error.message))

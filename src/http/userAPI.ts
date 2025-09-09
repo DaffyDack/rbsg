@@ -9,6 +9,10 @@ export const changeInfoDepartment = async (department: any) => {
   const { data } = await $host.post('api/user/changeinfodepartment', department)
   return data
 }
+export const changeInfoUser = async (user: any) => {
+  const { data } = await $host.post('api/user/changeinfouser', user)
+  return jwtDecode(data.token)
+}
 export const creadetDepartment = async (department: any) => {
   const { data } = await $host.post('api/user/creadetdepartment', department)
   return data

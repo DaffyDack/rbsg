@@ -179,20 +179,13 @@ const errorProfile = (e: any, tr: boolean) => {
               </TabList>
               <TabPanels>
                 <TabPanel value="0">
-                  <ProfileContact
-                    ref="RequestProfileComponent"
-                    @callParentMethod="handleParentMethod"
-                    @callErrorProfile="errorProfile"
-                    @callNormComponent="updateErrors"
-                  />
+                  <ProfileContact ref="RequestProfileComponent" @callParentMethod="handleParentMethod"
+                    @callErrorProfile="errorProfile" @callNormComponent="updateErrors" />
                 </TabPanel>
                 <TabPanel value="1">
-                  <JobInformationContentfrom
-                    ref="RequestJobInformationComponent"
-                    @callParentMethod="JobInformationMethod"
-                    @callErrorProfile="errorProfile"
-                    @callNormComponent="updateErrors"
-                  />
+                  <JobInformationContentfrom ref="RequestJobInformationComponent"
+                    @callParentMethod="JobInformationMethod" @callErrorProfile="errorProfile"
+                    @callNormComponent="updateErrors" />
                 </TabPanel>
                 <TabPanel value="2">
                   <JobContactComponent />
