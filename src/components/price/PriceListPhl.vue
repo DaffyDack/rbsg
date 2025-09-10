@@ -7,7 +7,8 @@ import Column from 'primevue/column';
 
 const props = defineProps<{ 
      items: Array<Record<string, any>>,
-    curs: Array<Record<string, any>>}>();
+     curs: Array<Record<string, any>>;
+     initialPrice: Array<Record<string, any>>}>();
 
 
 const selectedValues = ref({});
@@ -80,8 +81,13 @@ const uniqueKeysTable = computed(()=> {
 
     
     filtered.forEach(product => {
+        const initiolPrice = props.initialPrice
+        const selectCours = initiolPrice/props.curs
+       
         const price = product.price ;
-        const totalCost = price * props.curs; 
+        const areaInSquareMeters = parseFloat(product.area)
+
+        const totalCost = (price * selectCours * props.curs  * areaInSquareMeters) || 0; 
         product.totalCost = totalCost.toFixed(2);
         product.calculateSmallWholesalePrice = (totalCost * (1 - smallWholesale / 100)).toFixed(2);
         product.calculateWholesalePrice = (totalCost * (1 - wholesale / 100)).toFixed(2);
@@ -91,32 +97,10 @@ const uniqueKeysTable = computed(()=> {
     return filtered;
 
     });
-    
-
-
-
-
-
-const calculateTotalPrice = (filteredProducts) => {
-    let total = 0;
-
-   
-     filteredProducts.forEach(product => {
-        const price = product.price || 0;
-        total = price * props.curs; 
-        product.totalCost = total.toFixed(2);
-        product.calculateSmallWholesalePrice = (product.totalCost * (1 - smallWholesale / 100)).toFixed(2);
-        product.calculateWholesalePrice = (product.totalCost * (1 - wholesale / 100)).toFixed(2);
-        product.calculateDealerPrice = (product.totalCost * (1 - dealersale / 100)).toFixed(2);
+     const hasSelectedValues = computed(() => {
+    return Object.values(selectedValues.value).some(value => value !== null && value !== '');
     });
-
-    return total;
-};
-
-
-calculateTotalPrice(filteredProducts.value)
-
-
+    
 </script>
 
 
@@ -131,7 +115,7 @@ calculateTotalPrice(filteredProducts.value)
         </div>
     </div>
    
-    <DataTable :value="filteredProducts" class="p-datatable-striped">
+    <DataTable v-if="hasSelectedValues" :value="filteredProducts" class="p-datatable-striped">
         <Column v-for="(key, index) in uniqueKeysTable" :key="index" :field="key" :header="key"></Column>
     </DataTable>
 </template>

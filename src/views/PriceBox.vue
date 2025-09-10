@@ -3,12 +3,14 @@
 import TabList from 'primevue/tablist'
 import Tab from 'primevue/tab'
 import Tabs from 'primevue/tabs'
-import TabView from 'primevue/tabview';
+
 import TabPanel from 'primevue/tabpanel'
 import { ref, type Ref, onMounted, computed,watch} from 'vue';
-import PriceListPhl from '@/components/price/priceListPhl.vue'
+import PriceListPhl from '@/components/price/PriceListPhl.vue'
 import DatePrice from '@/components/price/DatePrice.vue'
-import type { JSX } from 'vue/jsx-runtime';
+import InputNumber from 'primevue/inputnumber';
+import FormPrice from '@/components/price/FormPrice.vue';
+const name = ref(JSON.parse(localStorage.getItem('role') || ''))
 
 
 interface Tabs {
@@ -24,10 +26,13 @@ const tabs: Ref<Tabs[]> = ref([
   ]);
 
 const euro = ref('EUR')
+const initialPrice = ref('EUR')
 const products = ref([]);
 const selectedCourse = ref('EUR')
 const selectedTypeCalc = ref('В наличии')
-let categoryProducts = []
+
+const  inputConversion = ref(1.03)
+const inputOverheadCosts = ref(1.7)
 const urlInStock =  '../../public/dataPrice.json'
 const urlOrder =  '../../public/data.json'
 const urlOrderDate =  '../../public/orderDate.json'
@@ -38,18 +43,27 @@ const typeCalc = {"Заказ": "Заказ", 'В наличии': "В нали�
 
 const token = "0f54e5e6b25475a140f44143c70830db"
 const urlAPpi = 'https://www.cbr-xml-daily.ru/daily_json.js';
+const dataRatio = computed(() => {
+  return {
+  inputConversion: inputConversion.value,
+  inputOverheadCosts: inputOverheadCosts.value
+}
+} )
 
 const getСourse = async () => {
     try {
         const res = await fetch(urlAPpi);
         const data = await res.json();
         const course = data.Valute[selectedCourse.value]
+       
         const nominal = course.Nominal
         const valute = course.Previous.toFixed(2)/nominal
-        
+        if(selectedCourse.value === 'EUR') {
+          initialPrice.value = course;
+
+        }
         if (course) {
           euro.value = valute.toFixed(2);
-        
         } else {
           euro.value = '';
         
@@ -87,11 +101,12 @@ const getProducts = async () => {
 onMounted(getProducts);
 
 watch(selectedTypeCalc, (newValue) => {
+   
     getProducts();
 });
 
 
-
+console.log(inputConversion)
 
 
 
@@ -99,18 +114,28 @@ watch(selectedTypeCalc, (newValue) => {
 <template>
    <div class="sidebar">
       <div class="nano">
+ 
         <div>
-          <select :id="key" v-model="selectedCourse" @change="getСourse"  style="width: 100px">
-            
-            <option v-for="value in valute" :key="value" :value="value">{{ value }}</option>
-          </select>
-          <span class="api">Текущий курс {{selectedCourse}} {{ euro }} руб.</span>
-          <div>
-             <select :id="key" v-model="selectedTypeCalc" @change="getСourse"  style="width: 100px">
-            
-            <option v-for="value in typeCalc" :key="value" :value="value">{{ value }}</option>
-          </select>
+            <select v-model="selectedCourse" @change="getСourse"  style="width: 100px">
+              <option v-for="value in valute" :key="value" :value="value">{{ value }}</option>
+            </select>
+            <span class="api">Текущий курс {{selectedCourse}} {{ euro }} руб.</span>
+            <div>
+              <select v-model="selectedTypeCalc" @change="getСourse"  style="width: 100px">
+              
+              <option v-for="value in typeCalc" :key="value" :value="value">{{ value }}</option>
+            </select>
           </div>
+               <div v-if="name.role === 'ADMIN'" class="inputNumber">
+        <div class="flex-auto">
+            <label class ="labelInput">Конвертация</label>
+            <InputNumber v-model="inputConversion " inputId="locale-us" locale="en-US" :minFractionDigits="2" />
+         </div>
+         <div class="flex-auto">
+            <label class ="labelInput" >Накладные расходы</label>
+            <InputNumber v-model="inputOverheadCosts"  inputId="locale-us" locale="en-US" :minFractionDigits="2" />
+        </div>
+    </div>
         </div>
         <div class="title_setting_profile">Расчет стоимости продукции</div>
         <div class="wrapper_setting_profile">
@@ -124,13 +149,14 @@ watch(selectedTypeCalc, (newValue) => {
       </TabList>
       <TabPanels style="background: black;">
            <TabPanel  value="0">
-                  <Price />
-           </TabPanel>
-            <TabPanel value="1">               
-                   <PriceListPhl :items="products" :curs="euro" />                
-                </TabPanel>
+              <DatePrice :items="products" :curs="euro" :dataRatio="dataRatio" :initialPrice="initialPrice"/>
+          </TabPanel>
+          <TabPanel value="1">               
+                   <FormPrice :items="products" />       
+          </TabPanel>
           <TabPanel  value="2">
-                  <DatePrice :items="products"/>
+            
+            <PriceListPhl :items="products" :curs="euro" :initialPrice="initialPrice" />        
            </TabPanel>
       </TabPanels>
     </Tabs>
@@ -142,6 +168,7 @@ watch(selectedTypeCalc, (newValue) => {
 
 <style lang="scss">
 .cardTab {
+
   .p-tabview-tablist {
       display: flex;
       margin: 0;
@@ -176,7 +203,17 @@ watch(selectedTypeCalc, (newValue) => {
 </style>
 
 <style scoped lang="scss">
+  .p-inputnumber .p-component .p-inputwrapper .p-inputwrapper-filled {
+    color: white;
+    padding: 15px;
+  }
+  .labelInput {
+    color: white;
+  }
 
+  .inputNumber {
+    display: flex;
+  }
 .wrapper_setting_profile {
   .p-tablist-tab-list {
     // background: none !important;

@@ -1,52 +1,29 @@
   <script setup lang="ts">
-  import { ref, computed, watch } from 'vue'
+  import { ref, computed, watchEffect} from 'vue'
   import { onMounted } from 'vue';
   import Button from 'primevue/button';
-  import html2pdf from 'html2pdf.js'
+  
   import { type IProduct } from '../../views/Price.vue'
 
-  const exportToPDF = () => {
+  
+  const {items} = defineProps<{items: Array<Record<string, any>>}>();
 
-    const element = document.getElementById('pdf') as HTMLElement
-    const options = {
-      margin: [1, 0.47],
-      filename: 'table.pdf',
-      image: { type: 'pdf', quality: 2 },
-      html2canvas: { scale: 5 },
-      pagebreak: { mode: ['avoid-all', 'css', 'legacy'], before: '#page2el' },
-      jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
-    }
+const getNamesString = computed(() => {
 
-    html2pdf().set(options).from(element).save()
-  }
+       
+        if (items[0].options && Array.isArray(items[0].options)) {
+          
+            return items[0].options.map(type => type.name).join(', ');
+        }
+        return ''; 
 
-  const { items } = defineProps(['items']);
+});
+  
+  let options = getNamesString.value
 
-  const totalCostList = computed(() => {
-    return items.reduce((acc: number, product: IProduct) => {
-      return acc + product.totalCost;
-    }, 0).toFixed(2);
-  });
+  console.log(options)
 
-  const calculateSmallWholesaleList = computed<number>(() => {
-    return items.reduce((acc: number, product: IProduct) => {
-      return acc + product.calculateSmallWholesalePrice;
-    }, 0).toFixed(2);
-  });
-
-  const calculateWholesaleList = computed<number>(() => {
-
-    return items.reduce((acc: number, product: IProduct) => {
-      return acc + product.calculateWholesalePrice;
-    }, 0).toFixed(2);
-  });
-
-  const calculateDealerList = computed<number>(() => {
-    return items.reduce((acc: number, product: IProduct) => {
-      return acc + product.calculateDealerPrice;
-    }, 0).toFixed(2);
-  });
-</script>
+ </script>
 
 <template>
   <div id="pdf">
@@ -55,6 +32,7 @@
       <thead>
         <tr>
           <th>№</th>
+          <th>Производитель</th>
           <th>Фото</th>
           <th>Артикул</th>
           <th>Название</th>
@@ -75,25 +53,24 @@
 
         <tr v-for="(item, index) in items" :key="index">
           <th>{{ index + 1 }}</th>
+          <th>{{ item.manufacturer}}</th>
           <th>фото</th>
           <th>{{ item.article }}</th>
           <th>{{ item.name }}</th>
           <th>{{ item.size }}</th>
-          <th>{{ item.thickness }}</th>
-          <th>{{ item.kraft }}</th>
+          <th>{{ item.name }}</th>
+          <th>{{ item.craft }}</th>
           <th>{{ item.texture }}</th>
-          <th>{{ item.purposes }}</th>
-          <th>{{ item.additional }}</th>
+          <th>{{ item.class }}</th>
+          <th>{{item.options}}</th>
           <th>{{ item.totalCost }}</th>
           <th>{{ item.calculateSmallWholesalePrice }}</th>
           <th>{{ item.calculateWholesalePrice }}</th>
           <th>{{ item.calculateDealerPrice }}</th>
-        <tr class="buttonAdd" @click="$emit('remove', index)">
-          Х
-        </tr>
+          <tr class="buttonAdd" @click="$emit('remove', index)"> Х </tr>
         </tr>
 
-        <tr v-if="items.length > 0" class="trTotal">
+        <!-- <tr v-if="items.length > 0" class="trTotal">
           <th></th>
           <th></th>
           <th></th>
@@ -109,10 +86,10 @@
           <th>{{ calculateWholesaleList }}</th>
           <th>{{ calculateDealerList }}</th>
           <th></th>
-        </tr>
+        </tr> -->
       </tbody>
 
-      <Button @click="exportToPDF">Скачать PDF</Button>
+     
     </table>
   </div>
 </template>

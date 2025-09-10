@@ -126,32 +126,62 @@ const additionally = [
 ]
 
 
-    const replaceCollectionKey= (products) => {
-        return products.map(product => {
-            const { "Коллекция": collection, ...rest } = product;
-            return { ...rest, class: collection };
-         });
-    } 
-   
-   
+const rename = {
+        manufacturer:"Производитель",
+        article: "Артикул",
+        name:"Наименование",
+        craft:"Крафт",
+        texture:"Покрытие",
+        class: "Однотонные (белый холодный)",
+        type: "Назначение",
+        size: "Формат листа",
+        thickness: "Толщина",
+        area: "Площадь"
+    }
 
 
-     export const mergeProducts = (categoryProducts, products) => {
-    const mergedArray = [];
-    products.forEach(product => {
-        const matchingCategoryProducts = categoryProducts.filter(categoryProduct => categoryProduct.class === product.class);
-         matchingCategoryProducts.forEach(categoryProduct => {
+    // const replaceCollectionKey= (products) => {
+    //     return products.map(product => {
+    //         const { "Коллекция": collection, ...rest } = product;
+    //         return { ...rest, class: collection };
+    //      });
+    // } 
+   
+   
+//         function renameKeys(arr, renameMap) {
+//             return arr.map(obj => {
+//                 const newObj = {};
+//                 for (const [newKey, oldKey] of Object.entries(renameMap)) {
+//                     if (oldKey in obj) {
+//                         newObj[newKey] = obj[oldKey];
+//                     }
+//                 }
+//                 return newObj;
+//             });
+//         }
+
+// const renamedData = renameKeys(products, rename);
+// console.log(renamedData);
+
+
+
+//      export const mergeProducts = (categoryProducts, products) => {
+//     const mergedArray = [];
+//     products.forEach(product => {
+//         const matchingCategoryProducts = categoryProducts.filter(categoryProduct => categoryProduct.class === product.class);
+//          matchingCategoryProducts.forEach(categoryProduct => {
            
-            const mergedObject = {
-                ...product,
-                ...categoryProduct 
-            };
+//             const mergedObject = {
+//                 ...product,
+//                 ...categoryProduct 
+//             };
             
-            delete mergedObject.class;
-            mergedArray.push(mergedObject);
-        });
-    });
+//             delete mergedObject.class;
+//             mergedArray.push(mergedObject);
+//         });
+//     });
 
-    return mergedArray;
-}
- const newArrProducts = mergeProducts(categoryProducts, replaceCollectionKey())
+//     return mergedArray;
+// }
+
+//  const newArrProducts = mergeProducts(categoryProducts, replaceCollectionKey())
