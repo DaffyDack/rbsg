@@ -81,12 +81,28 @@ const props = defineProps<{
 const selectedValues = ref({});
 const filteredOptions = ref({});
 const selectedOptions = ref([]);
+const filtredItemsOrder = ref([])
+
+const product = ref({
+  manufacturer: '',
+  article: '',
+  name: '',
+  craft: '',
+  texture: '',
+  class: '',
+  type: '',
+  size: '',
+  thickness: '',
+  area: '',
+  price: ''
+});
+
 const filteredArr = ref(props.items)
 const smallWholesale = 10;
 const wholesale = 20;
 const dealersale = 30;
 
-    console.log(selectedOptions.value)
+
 
 
 const getUniqueKeys = (items: Array<Record<string, number>>) => {
@@ -179,7 +195,6 @@ console.log(summOptionsPrice.value)
             updateFilteredOptions();
             selectedValues.value = {};
             filteredOptions.value = {}
-        //    selectedOptions.value = []
         });
 
 
@@ -194,7 +209,10 @@ console.log(summOptionsPrice.value)
     return Object.values(selectedValues.value).some(value => value !== null && value !== '');
     });
 
-    
+    const addPositionOnOrder =() =>{
+  filtredItemsOrder.value = products.value
+}
+
 </script>
 
 
@@ -203,6 +221,7 @@ console.log(summOptionsPrice.value)
     <div class="table_select">
         <Button @click="clearSelect">Очистить выбор</Button>
         <Button @click="exportToPDF">Скачать PDF</Button>
+         <Button type="submit" label="Сохранить" />
     </div>
     <div class="grid-container">
         <div class="table_select" v-for="(key, index) in uniqueKeys" :key="index">

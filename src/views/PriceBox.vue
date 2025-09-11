@@ -20,23 +20,24 @@ interface Tabs {
 }
 
 const tabs: Ref<Tabs[]> = ref([
-  { component: 'Price', title: 'Листовой PHL', errors: false },
+  { component: 'DataPrice', title: 'Листовой PHL', errors: false },
   { component: 'Price', title: 'Столешницы', errors: false },
   { component: '', title: 'Столешницы раскрой', errors: false },
+  { component: '', title: 'Добавление позиции в базу', errors: false },
   ]);
 
 const euro = ref('EUR')
 const initialPrice = ref('EUR')
 const products = ref([]);
 const selectedCourse = ref('EUR')
-const selectedTypeCalc = ref('В наличии')
+const selectedTypeCalc = ref('Заказ')
+
 
 const  inputConversion = ref(1.03)
 const inputOverheadCosts = ref(1.7)
 const urlInStock =  '../../public/dataPrice.json'
 const urlOrder =  '../../public/data.json'
 const urlOrderDate =  '../../public/orderDate.json'
-
 
 const valute =  {'Американский доллар': 'USD', 'Индийская рупия': 'INR', 'Евро': 'EUR'}
 const typeCalc = {"Заказ": "Заказ", 'В наличии': "В наличии"}
@@ -49,7 +50,6 @@ const dataRatio = computed(() => {
   inputOverheadCosts: inputOverheadCosts.value
 }
 } )
-
 const getСourse = async () => {
     try {
         const res = await fetch(urlAPpi);
@@ -106,7 +106,6 @@ watch(selectedTypeCalc, (newValue) => {
 });
 
 
-console.log(inputConversion)
 
 
 
@@ -151,13 +150,17 @@ console.log(inputConversion)
            <TabPanel  value="0">
               <DatePrice :items="products" :curs="euro" :dataRatio="dataRatio" :initialPrice="initialPrice"/>
           </TabPanel>
-          <TabPanel value="1">               
-                   <FormPrice :items="products" />       
+          <TabPanel value="1"> 
           </TabPanel>
-          <TabPanel  value="2">
-            
+          
+          <TabPanel  value="2">            
             <PriceListPhl :items="products" :curs="euro" :initialPrice="initialPrice" />        
-           </TabPanel>
+          </TabPanel>
+          
+          <TabPanel  value="3">            
+              <FormPrice :items="products"/>        
+          </TabPanel>
+        
       </TabPanels>
     </Tabs>
           </div>
