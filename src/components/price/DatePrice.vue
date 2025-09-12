@@ -12,24 +12,13 @@ const additionally = [
 {name:'дополнительная УФ пленка с одной стороны', price: '4.00'},
 {name:'FR трудногорючий', price: '2.00'},
 ]
- const n = {
-        manufacturer:"Производитель",
-        article: "Артикул",
-        name:"Наименование",
-        craft:"Крафт",
-        texture:"Текстура",
-        class: "Декор",
-        type: "Назначение",
-        size: "Формат листа",
-        thickness: "Толщина",
-        area: "Площадь"
-        }
 
 import { ref, type Ref,computed,watchEffect, watch} from 'vue';
 import PriceList from '@/components/price/PriceList.vue';
 import html2pdf from 'html2pdf.js'
 import Button from 'primevue/button';
 import MultiSelect from 'primevue/multiselect';
+
 
 interface Currency {
     CharCode: string; 
@@ -53,6 +42,20 @@ interface Products {
         area: string,
         price: number
 }
+
+
+const n = {
+       manufacturer:"Производитель",
+       article: "Артикул",
+       name:"Наименование",
+       craft:"Крафт",
+       texture:"Текстура",
+       class: "Декор",
+       type: "Назначение",
+       size: "Формат листа",
+       thickness: "Толщина",
+       area: "Площадь"
+       }
 const exportToPDF = () => {
 
     const element = document.getElementById('pdf') as HTMLElement
@@ -78,10 +81,11 @@ const props = defineProps<{
     
 
 
-const selectedValues = ref({});
-const filteredOptions = ref({});
+const selectedValues = ref();
+const filteredOptions  = ref();
 const selectedOptions = ref([]);
-const filtredItemsOrder = ref([])
+const filteredItemsOrder = ref()
+const cart = ref()
 
 const product = ref({
   manufacturer: '',
@@ -150,13 +154,12 @@ const uniqueKeys = computed(()=> {
     const summOptionsPrice = computed(() => {
 
       return selectedOptions.value.reduce((total, item) => {
-       console.log(item.price)
         return total + Number(item.price);
     }, 0);
     });
 
 
-console.log(summOptionsPrice.value)
+
      const getNamesString = computed(() => {
         if (selectedOptions.value && Array.isArray(selectedOptions.value)) {
             return selectedOptions.value.map(type => type.name).join(', ');
@@ -186,7 +189,7 @@ console.log(summOptionsPrice.value)
         
 ;
         
-        const deleteProduct = (index) => {
+        const deleteProduct = (index: number) => {
              filteredArr.value.splice(index, 1);
         };
       
@@ -209,19 +212,26 @@ console.log(summOptionsPrice.value)
     return Object.values(selectedValues.value).some(value => value !== null && value !== '');
     });
 
-    const addPositionOnOrder =() =>{
-  filtredItemsOrder.value = products.value
+    const addPositionOnOrder = () =>{
+       const existingItems = filteredItemsOrder.value || [];
+       const newItems = filteredProducts.value;
+       filteredItemsOrder.value = [...existingItems, ...newItems];
+
+       cart.value = filteredItemsOrder.value.length;
 }
 
 </script>
 
 
 <template>
-   
-    <div class="table_select">
+       <div class="table_select">
         <Button @click="clearSelect">Очистить выбор</Button>
         <Button @click="exportToPDF">Скачать PDF</Button>
-         <Button type="submit" label="Сохранить" />
+         <Button @click="addPositionOnOrder" label="Сохранить" />
+         <div class="cart"> В КП находится  {{cart}} 
+            <a ></a>
+         </div>
+
     </div>
     <div class="grid-container">
         <div class="table_select" v-for="(key, index) in uniqueKeys" :key="index">
@@ -238,6 +248,9 @@ console.log(summOptionsPrice.value)
    
     <div v-if="hasSelectedValues">
         <PriceList :items="filteredProducts" @remove="deleteProduct"/>
+    </div>
+      <div v-if="filteredItemsOrder">
+        <PriceList :items="filteredItemsOrder"/>
     </div>
    
 </template>
