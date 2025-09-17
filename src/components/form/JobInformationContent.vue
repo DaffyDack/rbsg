@@ -34,7 +34,7 @@ interface Errors {
 interface Form {
   company: Company
   brand: Company
-  department: Company
+  department: string
   positions: Company
   dateEmployment: string
   startDate: string
@@ -55,7 +55,7 @@ interface Form {
 const form = ref<Form>({
   company: { name: 'TOYOTA', code: 'BMW' },
   brand: { name: 'Land Cruiser', code: 'Land Cruiser' },
-  department: { name: 'IT отдел', code: 'IT отдел' },
+  department: '',
   positions: { name: 'Генеральный директор', code: 'Генеральный директор' },
   dateEmployment: '',
   startDate: 'По дефолту заполнена для проврки на ошибки',

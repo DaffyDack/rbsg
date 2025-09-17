@@ -197,12 +197,17 @@ const editUser = async () => {
   }
 }
 function confirmEditUser(e: any) {
-  product.value = store.user?.find((x: any) => x.id === e.id) ?? null
+  product.value = JSON.parse(JSON.stringify(store.user?.find((x: any) => x.id === e.id) ?? null))
   editUserDialog.value = true
 }
 function previewFiles(event: any) {
   product.value.img = event.target.files[0]
 }
+// function set() {
+//   setTimeout(() => {
+//     addeduser.value = false
+//   }, 2000)
+// }
 watch(
   () => [
     newPassword.value.password,
