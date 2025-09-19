@@ -74,14 +74,14 @@ function ExitStatus() {
           <span>Профиль</span>
         </RouterLink>
       </li>
-      <li>
+      <!-- <li>
         <RouterLink to="/PyramidManagement">
           <div class="flex items-center justify-center">
             <i class="pi pi-share-alt"></i>
           </div>
           <span>Пирамида управления</span>
         </RouterLink>
-      </li>
+      </li> -->
       <li @click="toggleSidebar">
         <RouterLink to="/PyramidTree">
           <div class="flex items-center justify-center">
