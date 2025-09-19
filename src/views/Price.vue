@@ -6,18 +6,19 @@ import FloatLabel from 'primevue/floatlabel'
 import Button from 'primevue/button'
 
 export interface IProduct {
-  name: string
-  size: string
-  thickness: string
-  article: string
-  kraft: string
-  texture: string
-  purposes: string
-  additional: string
-  totalCost: number
-  calculateSmallWholesalePrice: number
-  calculateWholesalePrice: number
-  calculateDealerPrice: number
+  supplier: string;
+  name: string;
+  size: string;
+  thickness: string;
+  article: string;
+  kraft: string;
+  texture: string;
+  purposes: string;
+  additional: string;
+  totalCost: number;
+  calculateSmallWholesalePrice: number;
+  calculateWholesalePrice: number;
+  calculateDealerPrice: number;
 }
 interface Area {
   name: string
@@ -40,11 +41,12 @@ interface IgetItem {
   article: string
 }
 const selectedName = ref()
-const selectedSize = ref()
-const selectedPurpose = ref()
-const selectedTexture = ref()
-const selectedThickness = ref()
-const selectedAdditional = ref()
+const selectedSupplier = ref()
+const selectedSize = ref();
+const selectedPurpose = ref();
+const selectedTexture = ref();
+const selectedThickness = ref();
+const selectedAdditional = ref();
 const addedProducts = ref<IProduct[]>([])
 
 const euro = ref('')
@@ -63,90 +65,51 @@ const getСourse = async () => {
   }
 }
 getСourse()
-// watch(  () => urlAPpi, // Наблюдаемый источник
-//     async (newValue) =>{
-//     try {
-//         const res = await fetch(urlAPpi);
-//         const data  = await res.json();
-//         euro.value  = data.Valute.EUR.Previous.toFixed(2)
-//     } catch (error) {
-//          euro.value = 'Ошибка! Нет доступа к API. ';
-//         console.error(error);
-//     }
-// });
 
-const products: IProduct[] = [
+
+
+const pro: IProduct[] = [
   {
-    name: 'Белый Холодный (Cold White)',
-    size: '1840х3670мм',
-    thickness: '12мм',
-    article: 'RC851XL',
-    kraft: 'Черный',
-    texture: 'SF (шагрень)',
-    purposes: 'Интерьерный стандартный',
-    additional: 'Защитная пленка',
+    supplier: "Crown Décor",
+    name: 'Белый Холодный (Cold White)', size: '1840х3670мм', thickness: '12мм', article: 'RC851XL', kraft: 'Черный', texture: 'SF (шагрень)', purposes: 'Интерьерный стандартный', additional: 'Защитная пленка',
     totalCost: 0,
     calculateSmallWholesalePrice: 0,
     calculateWholesalePrice: 0,
-    calculateDealerPrice: 0,
+    calculateDealerPrice: 0
   },
   {
-    name: 'Белый Холодный (Cold White)',
-    size: '1860х4300мм',
-    thickness: '12мм',
-    article: 'RC851XL',
-    kraft: 'Черный',
-    texture: 'SF (шагрень)',
-    purposes: 'Интерьерный стандартный',
-    additional: 'Защитная пленка',
+    supplier: "Crown Décor",
+    name: 'Белый Холодный (Cold White)', size: '1860х4300мм', thickness: '12мм', article: 'RC851XL', kraft: 'Черный', texture: 'SF (шагрень)', purposes: 'Интерьерный стандартный', additional: 'Защитная пленка',
     totalCost: 0,
     calculateSmallWholesalePrice: 0,
     calculateWholesalePrice: 0,
-    calculateDealerPrice: 0,
+    calculateDealerPrice: 0
   },
   {
-    name: 'Белый Холодный (Cold White)',
-    size: '1300х3050мм',
-    thickness: '6мм',
-    article: 'RC851XL',
-    kraft: 'Черный',
-    texture: 'SF (шагрень)',
-    purposes: 'Интерьерный стандартный',
-    additional: 'Защитная пленка',
+    supplier: "Crown Décor",
+    name: 'Белый Холодный (Cold White)', size: '1300х3050мм', thickness: '6мм', article: 'RC851XL', kraft: 'Черный', texture: 'SF (шагрень)', purposes: 'Интерьерный стандартный', additional: 'Защитная пленка',
     totalCost: 0,
     calculateSmallWholesalePrice: 0,
     calculateWholesalePrice: 0,
-    calculateDealerPrice: 0,
+    calculateDealerPrice: 0
   },
   {
-    name: 'Слоновая кость (IVORY)',
-    size: '1840х3670мм',
-    thickness: '12мм',
-    article: 'RC855XL',
-    kraft: 'Черный',
-    texture: 'SF (шагрень)',
-    purposes: 'Интерьерный стандартный',
-    additional: 'Защитная пленка',
+    supplier: "Crown Décor",
+    name: 'Слоновая кость (IVORY)', size: '1840х3670мм', thickness: '12мм', article: 'RC855XL', kraft: 'Черный', texture: 'SF (шагрень)', purposes: 'Интерьерный стандартный', additional: 'Защитная пленка',
     totalCost: 0,
     calculateSmallWholesalePrice: 0,
     calculateWholesalePrice: 0,
-    calculateDealerPrice: 0,
+    calculateDealerPrice: 0
   },
   {
-    name: 'Графит (Dark Grey)',
-    size: '1860х4300мм',
-    thickness: '12мм',
-    article: 'RC811111XL',
-    kraft: 'Черный',
-    texture: 'SF (шагрень)',
-    purposes: 'Интерьерный стандартный',
-    additional: 'Защитная пленка Overlay с двух стороyн',
+    supplier: "Krafter",
+    name: 'Графит (Dark Grey)', size: '1860х4300мм', thickness: '12мм', article: 'RC811111XL', kraft: 'Черный', texture: 'SF (шагрень)', purposes: 'Интерьерный стандартный', additional: 'Защитная пленка Overlay с двух стороyн',
     totalCost: 0,
     calculateSmallWholesalePrice: 0,
     calculateWholesalePrice: 0,
-    calculateDealerPrice: 0,
-  },
-]
+    calculateDealerPrice: 0
+  }
+];
 const area = [
   { name: '1840х3670мм', area: '6.753 м2' },
   { name: '1300х3050мм', area: '3.965 м2' },
@@ -168,32 +131,45 @@ const smallWholesale = 10
 const wholesale = 20
 const dealersale = 30
 
-const getUniqueValues = <T extends keyof IProduct>(key: T) => {
-  return [...new Set(products.map((product) => product[key]))].map((value) => ({ name: value }))
-}
+const productsFilterOfSupplier = (initialProducts: IProduct[]): IProduct[] => {
+  if (!selectedSupplier.value) {
+    return initialProducts
+  }
+  return initialProducts.filter((product: IProduct) =>
+    selectedSupplier.value === null || selectedSupplier.value === product.supplier
+  );
+};
+const products = productsFilterOfSupplier(pro)
+
+const getUniqueValues = <T extends keyof IProduct>(key: T): { name: IProduct[T] }[] => {
+  return [...new Set(products.map((product) => product[key]))].map(value => ({ name: value }));
+};
+
+const filteredSupplier = computed<UniqueValue[]>(() => {
+  return getUniqueValues('supplier')
+})
+// console.log(filteredSupplier())
 
 const filteredNames = computed<UniqueValue[]>(() => {
-  if (
-    !selectedSize.value &&
-    !selectedThickness.value &&
-    !selectedPurpose.value &&
-    !selectedTexture.value &&
-    !selectedAdditional.value
-  ) {
+
+  if (!selectedSize.value && !selectedThickness.value && !selectedPurpose.value && !selectedTexture.value && !selectedAdditional.value) {
     return getUniqueValues('name')
   }
-  return getUniqueValues('name').filter((name) =>
-    products.some(
-      (product) =>
-        product.name === name.name &&
-        (!selectedSize.value || product.size === selectedSize.value.name) &&
-        (!selectedThickness.value || product.thickness === selectedThickness.value.name) &&
-        (!selectedPurpose.value || product.purposes === selectedPurpose.value.name) &&
-        (!selectedTexture.value || product.texture === selectedTexture.value.name) &&
-        (!selectedAdditional.value || product.additional === selectedAdditional.value.name),
-    ),
-  )
-})
+  return getUniqueValues('name').filter(name =>
+    products.some(product =>
+
+      product.name === name.name &&
+
+      (!selectedSize.value || product.size === selectedSize.value.name) &&
+      (!selectedThickness.value || product.thickness === selectedThickness.value.name) &&
+      (!selectedPurpose.value || product.purposes === selectedPurpose.value.name) &&
+      (!selectedTexture.value || product.texture === selectedTexture.value.name) &&
+      (!selectedAdditional.value || product.additional === selectedAdditional.value.name)
+    )
+  );
+});
+
+
 
 const filteredSizes = computed<UniqueValue[]>(() => {
   if (
@@ -322,27 +298,30 @@ const getItem = computed<'' | IProduct | undefined>(() => {
 const purposes = ref([{ name: 'Интерьерный стандартный' }, { name: 'Экстерьерный и Специальный' }])
 
 const selectedItem = computed(() => {
+
   const item = {
-    kraft: getItem.value && typeof getItem.value !== 'string' ? getItem.value.kraft : null,
-    article: getItem.value && typeof getItem.value !== 'string' ? getItem.value.article : null,
+    supplier: getItem.value && typeof getItem.value !== "string" ? getItem.value.supplier : null,
+    kraft: getItem.value && typeof getItem.value !== "string" ? getItem.value.kraft : null,
+    article: getItem.value && typeof getItem.value !== "string" ? getItem.value.article : null,
     name: selectedName.value ? selectedName.value.name : null,
     size: selectedSize.value ? selectedSize.value.name : null,
     thickness: selectedThickness.value ? selectedThickness.value.name : null,
     texture: selectedTexture.value ? selectedTexture.value.name : null,
     purpose: selectedPurpose.value ? selectedPurpose.value.name : null,
-    additional: selectedAdditional.value ? selectedAdditional.value.name : null,
-  }
+    additional: selectedAdditional.value ? selectedAdditional.value.name : null
+  };
 
-  const matchedItem = products.find(
-    (product) =>
-      (!item.article || product.article === item.article) &&
-      (!item.kraft || product.kraft === item.kraft) &&
-      (!item.name || product.name === item.name) &&
-      (!item.size || product.size === item.size) &&
-      (!item.thickness || product.thickness === item.thickness) &&
-      (!item.purpose || product.purposes === item.purpose) &&
-      (!item.texture || product.texture === item.texture) &&
-      (!item.additional || product.additional === item.additional),
+  const matchedItem = products.find(product =>
+
+    (!item.supplier || product.supplier === item.supplier) &&
+    (!item.article || product.article === item.article) &&
+    (!item.kraft || product.kraft === item.kraft) &&
+    (!item.name || product.name === item.name) &&
+    (!item.size || product.size === item.size) &&
+    (!item.thickness || product.thickness === item.thickness) &&
+    (!item.purpose || product.purposes === item.purpose) &&
+    (!item.texture || product.texture === item.texture) &&
+    (!item.additional || product.additional === item.additional)
   )
 
   return matchedItem ? matchedItem : null
@@ -393,17 +372,16 @@ const calculateDealerPrice = computed(() => {
 })
 
 const addProductList = () => {
-  const item = selectedItem.value
-  if (
-    item &&
-    totalCost.value &&
-    selectedName.value &&
-    selectedAdditional.value &&
-    selectedSize.value &&
-    selectedThickness.value &&
-    selectedPurpose.value
-  ) {
-    const { name, size, thickness, texture, purposes, additional } = item
+  const item = selectedItem.value;
+  if (item && totalCost.value && selectedName.value && selectedAdditional.value && selectedSize.value && selectedThickness.value && selectedPurpose.value) {
+    const {
+      name,
+      size,
+      thickness,
+      texture,
+      purposes,
+      additional
+    } = item;
 
     const newItem = {
       kraft: item.kraft,
@@ -414,13 +392,13 @@ const addProductList = () => {
       texture,
       purposes,
       additional,
-      // photo: null | string,
+      // photo: null | string, 
       totalCost: totalCost.value,
       calculateDealerPrice: calculateDealerPrice.value,
       calculateWholesalePrice: calculateWholesalePrice.value,
       calculateSmallWholesalePrice: calculateSmallWholesalePrice.value,
-    }
-
+    };
+    // @ts-ignore
     addedProducts.value.push(newItem)
 
     clearSelections()
@@ -443,82 +421,53 @@ const deleteProduct = (index: number) => {
 
 <template>
   <div class="container_selected">
-    <div class="api">
-      Текущий курс EUR
 
-      <span class="api">{{ euro }} руб.</span>
+
+
+    <div class="api">
+
+      <FloatLabel class="grid-header">
+        <Dropdown v-model="selectedSupplier" :options="filteredSupplier" showClear optionLabel="supplier" invalid
+          class="w-full md:w-9rem" />
+        <label for="ac">Производитель</label>
+      </FloatLabel>
     </div>
     <div class="grid-container">
       <FloatLabel class="grid-header">
-        <Dropdown
-          v-model="selectedName"
-          :options="filteredNames"
-          showClear
-          optionLabel="name"
-          invalid
-          class="w-full md:w-14rem"
-        />
+        <Dropdown v-model="selectedName" :options="filteredNames" showClear optionLabel="name" invalid
+          class="w-full md:w-10rem" />
         <label for="ac">Наименование </label>
       </FloatLabel>
       <FloatLabel class="grid-header">
-        <Dropdown
-          v-model="selectedSize"
-          :options="filteredSizes"
-          showClear
-          optionLabel="name"
-          invalid
-          class="w-full md:w-14rem"
-        />
+        <Dropdown v-model="selectedSize" :options="filteredSizes" showClear optionLabel="name" invalid
+          class="w-full md:w-10rem" />
         <label for="ac">Формат листа </label>
       </FloatLabel>
       <FloatLabel class="grid-header">
-        <Dropdown
-          v-model="selectedThickness"
-          :options="filteredThicknesses"
-          showClear
-          optionLabel="name"
-          invalid
-          class="w-full md:w-14rem"
-        />
+        <Dropdown v-model="selectedThickness" :options="filteredThicknesses" showClear optionLabel="name" invalid
+          class="w-full md:w-10rem" />
         <label for="ac">Толщина</label>
       </FloatLabel>
       <!-- <FloatLabel class="grid-header">Крафт (срез)</FloatLabel> -->
       <FloatLabel class="grid-header">
-        <Dropdown
-          v-model="selectedTexture"
-          :options="filteredTexture"
-          showClear
-          optionLabel="name"
-          invalid
-          class="w-full md:w-14rem"
-        />
+        <Dropdown v-model="selectedTexture" :options="filteredTexture" showClear optionLabel="name" invalid
+          class="w-full md:w-10rem" />
         <label for="ac">Финишная текстура</label>
       </FloatLabel>
       <FloatLabel class="grid-header">
-        <Dropdown
-          v-model="selectedPurpose"
-          :options="filteredPurposes"
-          showClear
-          optionLabel="name"
-          invalid
-          class="w-full md:w-14rem"
-        />
+        <Dropdown v-model="selectedPurpose" :options="filteredPurposes" showClear optionLabel="name" invalid
+          class="w-full md:w-10rem" />
         <label for="ac">Назначение</label>
       </FloatLabel>
       <FloatLabel class="grid-header">
-        <Dropdown
-          v-model="selectedAdditional"
-          :options="filteredAdditionals"
-          showClear
-          optionLabel="name"
-          invalid
-          class="w-full md:w-14rem"
-        />
+        <Dropdown v-model="selectedAdditional" :options="filteredAdditionals" showClear optionLabel="name" invalid
+          class="w-full md:w-10rem" />
         <label for="ac">Дополнительно</label>
       </FloatLabel>
     </div>
     <div class="grid-container">
       <Button @click="addProductList">Добавить</Button>
+
     </div>
 
     <div class="logo">

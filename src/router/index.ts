@@ -8,8 +8,8 @@ import PyramidManagement from '@/views/PyramidManagement.vue'
 import CreatingDepartment from '@/views/CreatingDepartment.vue'
 
 import PyramidTree from '@/views/PyramidTree.vue'
-// @ts-ignore
 import Price from '@/views/Price.vue'
+import PriceBox from '@/views/PriceBox.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -66,6 +66,11 @@ const router = createRouter({
       path: '/Price',
       name: 'Price',
       component: Price,
+    },
+    {
+      path: '/PriceBox',
+      name: 'PriceBox',
+      component: PriceBox,
     },
   ],
 })

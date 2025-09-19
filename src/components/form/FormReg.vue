@@ -6,7 +6,7 @@ import { registration, fetchUzers } from '../../http/userAPI.js'
 
 import ProfileContact from './ProfileContent.vue'
 import JobInformationContentfrom from './JobInformationContent.vue'
-import JobContactComponent from './JobContactComponent.vue'
+import JobContactComponent from '@/components/form/JobContactComponent.vue'
 import PersonalContactsComponent from './PersonalContactsComponent.vue'
 import PassportData from './PassportData.vue'
 
@@ -222,7 +222,7 @@ const errorProfile = (e: any, tr: boolean) => {
           <div v-if="addeduser" class="text-green-600 mb-5">Пользователь добавлен!</div>
           <div v-if="condition" class="text-red-600 mb-5">{{ messageCondition }}</div>
         </div>
-        <button class="saveButton" @click="handleSubmit">Сохранить</button>
+        <button class="saveButton" @click="handleSubmit">Добавить пользователя</button>
         <button class="cancelButton">Отмена</button>
       </div>
     </div>

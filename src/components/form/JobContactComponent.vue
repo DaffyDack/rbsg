@@ -1,4 +1,6 @@
-<script lang="ts" setup></script>
+<script setup lang="ts">
+
+</script>
 <template>
   <div>
     <div class="group_form-control-two">

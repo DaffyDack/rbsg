@@ -85,6 +85,14 @@ const brand = ref([
 const errors = ref<Errors>({
   startDate: '',
 })
+
+const combiningForm = ref({
+  post: '',
+  department: ''
+})
+const combining = ref([])
+
+
 const CheckingJobInformationComponent = () => {
   validateForm()
   isEmpty(errors.value)
@@ -110,7 +118,20 @@ const validateForm = () => {
     }
   })
 }
-
+const addCombining = () => {
+  const newObject = {
+    id: new Date().valueOf(),
+    post: combiningForm.value.post,
+    department: combiningForm.value.department
+  }
+  combining.value.push(newObject)
+  combiningForm.value.post = ''
+}
+const deleteCombining = (id: any) => {
+  combining.value = combining.value.filter(x => {
+    return x.id != id;
+  })
+}
 watch(
   () => [form.value.startDate],
   () => {
@@ -171,12 +192,9 @@ defineExpose({ CheckingJobInformationComponent })
       <div class="special">
         <div class="group_form-control-five-evenly">
           <div class="form-control">
-            <label for="jobInformationPostCombining">Должность</label>
-            <select name="pets" id="jobInformationPostCombining">
-              <option value="ООО «РБС ГРУПП»">Директор</option>
-              <option value="ООО «КРАФТЕР»">Художник</option>
-              <option value="ИП Т">Программист</option>
-            </select>
+            <label for="jobInformationPostCombining" id="posts">Должность</label>
+            <Select v-model="combiningForm.post" placeholder="Должность" id="posts" :options="posts" optionLabel="post"
+              class="w-full" />
           </div>
           <div class="form-control">
             <label for="jobInformationCompanyCombining">Компания</label>
@@ -195,11 +213,8 @@ defineExpose({ CheckingJobInformationComponent })
           </div>
           <div class="form-control">
             <label for="jobInformationDepartmentCombining">Отдел</label>
-            <select name="pets" id="jobInformationDepartmentCombining">
-              <option value="Генеральный директор">Следственные подразделения и дознание</option>
-              <option value="Испольнительный директор">Криминальная полиция</option>
-              <option value="Финансовый директор">Полиция общественной безопасности</option>
-            </select>
+            <Select v-model="combiningForm.department" filter id="jobInformationDepartmentCombining"
+              :options="departments" optionLabel="department" placeholder="Отдел" class="w-full" />
           </div>
           <div class="form-control">
             <label for="jobInformationStartDateCombination">Дата начала совмещения</label>
@@ -207,38 +222,40 @@ defineExpose({ CheckingJobInformationComponent })
               id="jobInformationStartDateCombination" dateFormat="dd/mm/yy" placeholder="Дата начала совмещения" />
           </div>
         </div>
-        <div class="group_form-control-four">
-          <div class="form-control">
-            <label for="jobInformationCompanyCombining2">Компания</label>
-            <select name="pets" id="jobInformationCompanyCombining2">
-              <option value="BMW">BMW</option>
-              <option value="AUDI">AUDI</option>
-            </select>
-          </div>
-          <div class="form-control">
-            <label for="jobInformationBrandCombining2">Бренд</label>
-            <select name="pets" id="jobInformationBrandCombining2">
-              <option value="Nike">Nike</option>
-              <option value="IKEA">IKEA</option>
-            </select>
-          </div>
-          <div class="form-control">
-            <label for="jobInformationDepartmentCombining2">Отдел</label>
-            <select name="pets" id="jobInformationDepartmentCombining2">
-              <option value="Убойный">Убойный</option>
-              <option value="Оперативный">Оперативный</option>
-            </select>
-          </div>
-          <div class="form-control">
-            <label for="jobInformationProbationPeriod">Испытательный срок до</label>
-            <input type="text" id="jobInformationProbationPeriod" placeholder="Испытательный срок до" />
-          </div>
-        </div>
       </div>
+      <button class="saveButton m-3" @click="addCombining">Добавить восмещение</button>
+      <ul class="combining">
+        <li v-for="(item, i) in combining" :key="i">
+          <div>
+            <div>Должность: {{ item.post.post }}</div>
+            <div>Отдел: {{ item.department.department }}</div>
+          </div>
+          <div>
+            <button @click="deleteCombining(item.id)">X</button>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 <style scoped lang="scss">
+.combining {
+  & li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    margin: 5px 0;
+
+    & button {
+      padding: 10px 30px;
+      background: #ee4d4d;
+      border-radius: 5px;
+    }
+  }
+}
+
 .special {
   padding-left: 10px;
   border-left: 2px solid #000;
