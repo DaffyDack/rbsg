@@ -35,7 +35,7 @@ interface Form {
   company: Company
   brand: Company
   department: string
-  positions: Company
+  positions: string
   dateEmployment: string
   startDate: string
   probationPeriod: string
@@ -56,9 +56,9 @@ const form = ref<Form>({
   company: { name: 'TOYOTA', code: 'BMW' },
   brand: { name: 'Land Cruiser', code: 'Land Cruiser' },
   department: '',
-  positions: { name: 'Генеральный директор', code: 'Генеральный директор' },
+  positions: '',
   dateEmployment: '',
-  startDate: 'По дефолту заполнена для проврки на ошибки',
+  startDate: '',
   probationPeriod: '',
   combiningPosition: '',
   combiningCompfny: '',
@@ -159,7 +159,6 @@ defineExpose({ CheckingJobInformationComponent })
           <label for="jobInformationStartDate">Дата начала работы</label>
           <Calendar v-model="form.startDate" style="width: 100%" id="jobInformationStartDate"
             placeholder="Дата начала работы" dateFormat="dd/mm/yy" />
-
           <small v-if="errors.startDate">{{ errors.startDate }}</small>
         </div>
         <div class="form-control">
@@ -204,8 +203,8 @@ defineExpose({ CheckingJobInformationComponent })
           </div>
           <div class="form-control">
             <label for="jobInformationStartDateCombination">Дата начала совмещения</label>
-            <!-- <Calendar v-modal="form.startDateCombination" type="text" style="width: 100%"
-                            id="jobInformationStartDateCombination" placeholder="dd/mm/yy" /> -->
+            <Calendar v-modal="form.startDateCombination" type="text" style="width: 100%"
+              id="jobInformationStartDateCombination" dateFormat="dd/mm/yy" placeholder="Дата начала совмещения" />
           </div>
         </div>
         <div class="group_form-control-four">

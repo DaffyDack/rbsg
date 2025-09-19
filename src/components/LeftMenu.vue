@@ -40,15 +40,9 @@ function ExitStatus() {
       {{ name.role }}-{{ name.email }}
     </h4>
     <ul v-show="isSidebarOpen" class="namePage">
-      <div
-        v-show="isSidebarOpen"
-        class="namePage"
-        style="width: 96px; height: 96px; border-radius: 100%; margin: 0 auto"
-      >
-        <div
-          class="img"
-          :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + avatar.img + ')' }"
-        ></div>
+      <div v-show="isSidebarOpen" class="namePage"
+        style="width: 96px; height: 96px; border-radius: 100%; margin: 0 auto">
+        <div class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + avatar.img + ')' }"></div>
       </div>
       <li @click="toggleSidebar">
         <RouterLink to="/">
@@ -80,14 +74,14 @@ function ExitStatus() {
           <span>Профиль</span>
         </RouterLink>
       </li>
-      <!-- <li>
+      <li>
         <RouterLink to="/PyramidManagement">
           <div class="flex items-center justify-center">
             <i class="pi pi-share-alt"></i>
           </div>
           <span>Пирамида управления</span>
         </RouterLink>
-      </li> -->
+      </li>
       <li @click="toggleSidebar">
         <RouterLink to="/PyramidTree">
           <div class="flex items-center justify-center">
@@ -206,12 +200,10 @@ function ExitStatus() {
 
 .wrapper {
   overflow: scroll;
-  background: linear-gradient(
-    45deg,
-    rgba(86, 0, 60, 1) 0%,
-    rgba(7, 62, 137, 1) 35%,
-    rgba(41, 182, 253, 1) 100%
-  );
+  background: linear-gradient(45deg,
+      rgba(86, 0, 60, 1) 0%,
+      rgba(7, 62, 137, 1) 35%,
+      rgba(41, 182, 253, 1) 100%);
 }
 
 $sidebar-width: 4rem;

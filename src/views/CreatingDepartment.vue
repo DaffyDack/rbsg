@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import Select from 'primevue/select'
 import MultiSelect from 'primevue/multiselect'
 import Tree from 'primevue/tree'
@@ -44,7 +44,10 @@ interface TreeNode {
   // icon: string
   children: TreeNode[]
 }
-
+interface Errors {
+  department: string,
+  department_affiliation: string
+}
 interface Form {
   fullname: any
   department: string
@@ -110,6 +113,12 @@ const codeFromDelete = ref<string>('')
 const departmentFromDelete = ref({
   fullname: '',
 })
+const errors = ref<Errors>({
+  department: '',
+  department_affiliation: ''
+})
+
+
 
 const selectedDepartment = (e: any) => {
   console.log('!!!!', e.data)
@@ -209,13 +218,32 @@ const RegistrationDepartment = async () => {
     condition.value = true
   }
 }
-
-const creadetDepartmentForm = () => {
-  departments.value = null
-  existingDepartments.value = [
-    { department: "Корневой отдел", code: "0" }
+const validateForm = () => {
+  const validations: Array<{ field: keyof Form; message: string }> = [
+    { field: 'department', message: 'Обязательное поле' },
+    { field: 'department_affiliation', message: 'Обязательное поле' },
   ]
-  RegistrationDepartment()
+
+  validations.forEach(({ field, message }) => {
+    if (!form.value[field]) {
+      errors.value[field as keyof Errors] = message
+    }
+  })
+}
+function isEmpty(obj: Record<string, string>) {
+  const hasEmptyValue = Object.values(obj).every((value) => value === '')
+
+  if (hasEmptyValue) {
+    departments.value = null
+    existingDepartments.value = [
+      { department: "Корневой отдел", code: "0" }
+    ]
+    RegistrationDepartment()
+  }
+}
+const creadetDepartmentForm = () => {
+  validateForm()
+  isEmpty(errors.value)
 }
 const deleteDepartmentForm = async () => {
   try {
@@ -227,7 +255,7 @@ const deleteDepartmentForm = async () => {
     fetchDepartment().then((data) => {
       departments.value = data
       startBuild()
-      existingDepartments.value = [...existingDepartments.value, ...getUniqueItems(departments.value)]
+      existingDepartments.value = data
     })
   } catch (error) {
     console.log('что то с удалением', error)
@@ -294,14 +322,30 @@ function getNamesChangeDepartmen(): void {
 function getDirectorChangeDepartmen() {
   changeFormDepartment.value.director = selectedDirectorChange.value?.fullname
 }
+watch(
+  () => [
+    form.value.department,
+    form.value.department_affiliation,
+  ],
+  () => {
+    if (form.value.department != '') {
+      errors.value.department = ''
+    }
+    if (form.value.department_affiliation != '') {
+      errors.value.department_affiliation = ''
+    }
+  },
+)
 </script>
 <template>
   <div>
     <div v-if="nameRole.role === 'ADMIN'">
       <div class="group_form-control-five">
-        <div class="form-control">
+        <div class="form-control"
+          :class="{ error: errors.department, success: !errors.department && form.department != '' }">
           <label for="jobContactTel" style="color: #fff">Название отдела</label>
           <input v-model="form.department" type="text" id="jobContactTel" placeholder="Название отдела" />
+          <small v-if="errors.department">{{ errors.department }}</small>
         </div>
         <div class="form-control">
           <label for="participant1" style="color: #fff">Руководитель</label>
@@ -318,10 +362,12 @@ function getDirectorChangeDepartmen() {
           <MultiSelect v-model="selectedName" @change="getNamesAsString()" id="participants" :options="usersString"
             optionLabel="fullname" filter placeholder="Участник" :maxSelectedLabels="3" class="w-full md:w-80" />
         </div>
-        <div class="form-control">
+        <div class="form-control"
+          :class="{ error: errors.department_affiliation, success: !errors.department_affiliation && form.department_affiliation != '' }">
           <label for="participant" style="color: #fff">Пренадлежность к отделу</label>
           <Select v-model="form.department_affiliation" filter id="Participant" :options="existingDepartments"
             optionLabel="department" placeholder="Пренадлежность к отделу" class="w-full" />
+          <small v-if="errors.department_affiliation">{{ errors.department_affiliation }}</small>
         </div>
       </div>
       <div class="group_form-control">
