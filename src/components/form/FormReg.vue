@@ -165,70 +165,68 @@ const errorProfile = (e: any, tr: boolean) => {
 
 <template>
   <div>
-    <div class="sidebar">
-      <div class="nano">
-        <div class="title_setting_profile">Регистрация нового сотрудника</div>
-        <div class="wrapper_setting_profile">
-          <div class="card">
-            <Tabs value="0" scrollable>
-              <TabList>
-                <Tab v-for="(tab, i) in userTabs" :key="i" :value="String(i)" class="tag_error">
-                  <span class="tag" :class="{ error: tab.errors }"></span>
-                  {{ tab.title }}
-                </Tab>
-              </TabList>
-              <TabPanels>
-                <TabPanel value="0">
-                  <ProfileContact ref="RequestProfileComponent" @callParentMethod="handleParentMethod"
-                    @callErrorProfile="errorProfile" @callNormComponent="updateErrors" />
-                </TabPanel>
-                <TabPanel value="1">
-                  <JobInformationContentfrom ref="RequestJobInformationComponent"
-                    @callParentMethod="JobInformationMethod" @callErrorProfile="errorProfile"
-                    @callNormComponent="updateErrors" />
-                </TabPanel>
-                <TabPanel value="2">
-                  <JobContactComponent />
-                </TabPanel>
-                <TabPanel value="3">
-                  <PersonalContactsComponent />
-                </TabPanel>
-                <TabPanel value="4">
-                  <PassportData />
-                </TabPanel>
-                <TabPanel value="5">
-                  <p class="m-0">At vero eos et accusamus</p>
-                </TabPanel>
-                <TabPanel value="6">
-                  <p class="m-0">At vero eos et accusamus</p>
-                </TabPanel>
-                <TabPanel value="7">
-                  <p class="m-0">At vero eos et accusamus</p>
-                </TabPanel>
-                <TabPanel value="8">
-                  <p class="m-0">At vero eos et accusamus</p>
-                </TabPanel>
-                <TabPanel value="9">
-                  <p class="m-0">At vero eos et accusamus</p>
-                </TabPanel>
-                <TabPanel value="10">
-                  <p class="m-0">At vero eos et accusamus</p>
-                </TabPanel>
-                <TabPanel value="11">
-                  <p class="m-0">At vero eos et accusamus</p>
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
-          </div>
-          <div class="buttonWrapper form-control">
-            <div>
-              <div v-if="addeduser" class="text-green-600 mb-5">Пользователь добавлен!</div>
-              <div v-if="condition" class="text-red-600 mb-5">{{ messageCondition }}</div>
-            </div>
-            <button class="saveButton" @click="handleSubmit">Сохранить</button>
-            <button class="cancelButton">Отмена</button>
-          </div>
+    <div class="title_setting_profile">Регистрация нового сотрудника</div>
+    <div class="wrapper_setting_profile">
+      <div class="card">
+        <div>
+
+          <Tabs value="0" scrollable>
+            <TabList>
+              <Tab v-for="(tab, i) in userTabs" :key="i" :value="String(i)" class="tag_error">
+                <span class="tag" :class="{ error: tab.errors }"></span>
+                {{ tab.title }}
+              </Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel value="0">
+                <ProfileContact ref="RequestProfileComponent" @callParentMethod="handleParentMethod"
+                  @callErrorProfile="errorProfile" @callNormComponent="updateErrors" />
+              </TabPanel>
+              <TabPanel value="1">
+                <JobInformationContentfrom ref="RequestJobInformationComponent" @callParentMethod="JobInformationMethod"
+                  @callErrorProfile="errorProfile" @callNormComponent="updateErrors" />
+              </TabPanel>
+              <TabPanel value="2">
+                <JobContactComponent />
+              </TabPanel>
+              <TabPanel value="3">
+                <PersonalContactsComponent />
+              </TabPanel>
+              <TabPanel value="4">
+                <PassportData />
+              </TabPanel>
+              <TabPanel value="5">
+                <p class="m-0">At vero eos et accusamus</p>
+              </TabPanel>
+              <TabPanel value="6">
+                <p class="m-0">At vero eos et accusamus</p>
+              </TabPanel>
+              <TabPanel value="7">
+                <p class="m-0">At vero eos et accusamus</p>
+              </TabPanel>
+              <TabPanel value="8">
+                <p class="m-0">At vero eos et accusamus</p>
+              </TabPanel>
+              <TabPanel value="9">
+                <p class="m-0">At vero eos et accusamus</p>
+              </TabPanel>
+              <TabPanel value="10">
+                <p class="m-0">At vero eos et accusamus</p>
+              </TabPanel>
+              <TabPanel value="11">
+                <p class="m-0">At vero eos et accusamus</p>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </div>
+      </div>
+      <div class="buttonWrapper form-control">
+        <div>
+          <div v-if="addeduser" class="text-green-600 mb-5">Пользователь добавлен!</div>
+          <div v-if="condition" class="text-red-600 mb-5">{{ messageCondition }}</div>
+        </div>
+        <button class="saveButton" @click="handleSubmit">Сохранить</button>
+        <button class="cancelButton">Отмена</button>
       </div>
     </div>
   </div>

@@ -10,8 +10,6 @@ import { check } from './http/userAPI'
 import ProgressSpinner from 'primevue/progressspinner'
 
 const store = useCounterStore()
-const store1 = useUsersStore()
-const isSidebarOpen = shallowRef(false)
 const componentKey = ref(0)
 const loading = ref(true)
 
@@ -32,9 +30,6 @@ onMounted(() => {
 function incrCounter() {
   componentKey.value++
 }
-function toggleSidebar() {
-  isSidebarOpen.value = !isSidebarOpen.value
-}
 </script>
 
 <template>
@@ -47,10 +42,8 @@ function toggleSidebar() {
         <Reg />
       </div>
       <div v-else class="wrapper flex items-stretch">
-        <div>
-          <LeftMenu :key="componentKey" @counter-event="incrCounter" />
-        </div>
-        <div class="p-10 w-[100%] wrapperRouter">
+        <LeftMenu :key="componentKey" @counter-event="incrCounter" />
+        <div class="p-3 w-[100%] wrapperRouter">
           <RouterView />
         </div>
       </div>

@@ -212,28 +212,18 @@ $toggle-duration: 300ms;
 $sidebar-padding-inline-start: 1rem;
 
 aside {
-  border: solid 1px #396f74;
+  border: solid 1px rgb(255, 255, 255, 0.08);
   border-left: none;
-
-  position: fixed;
   top: 110px;
   border-radius: 0 15px 15px 0;
   z-index: 10;
   color: #ffffff;
-  background:
-    linear-gradient(0deg, rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.01)),
-    linear-gradient(270deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-    linear-gradient(90deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%),
-    linear-gradient(0deg, rgba(0, 0, 0, 0) 70%, rgba(0, 138, 251, 0.1) 100%);
-  backdrop-filter: blur(20px);
   display: flex;
   flex-direction: column;
-  // min-height: 100vh;
+  min-height: 100vh;
   padding-block: 1rem;
   transition: all $toggle-duration;
   width: $sidebar-width;
-  overflow: hidden;
 }
 
 aside[vue\:is-open='true'] {
