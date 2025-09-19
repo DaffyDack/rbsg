@@ -168,57 +168,54 @@ const errorProfile = (e: any, tr: boolean) => {
     <div class="title_setting_profile">Регистрация нового сотрудника</div>
     <div class="wrapper_setting_profile">
       <div class="card">
-        <div>
-
-          <Tabs value="0" scrollable>
-            <TabList>
-              <Tab v-for="(tab, i) in userTabs" :key="i" :value="String(i)" class="tag_error">
-                <span class="tag" :class="{ error: tab.errors }"></span>
-                {{ tab.title }}
-              </Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel value="0">
-                <ProfileContact ref="RequestProfileComponent" @callParentMethod="handleParentMethod"
-                  @callErrorProfile="errorProfile" @callNormComponent="updateErrors" />
-              </TabPanel>
-              <TabPanel value="1">
-                <JobInformationContentfrom ref="RequestJobInformationComponent" @callParentMethod="JobInformationMethod"
-                  @callErrorProfile="errorProfile" @callNormComponent="updateErrors" />
-              </TabPanel>
-              <TabPanel value="2">
-                <JobContactComponent />
-              </TabPanel>
-              <TabPanel value="3">
-                <PersonalContactsComponent />
-              </TabPanel>
-              <TabPanel value="4">
-                <PassportData />
-              </TabPanel>
-              <TabPanel value="5">
-                <p class="m-0">At vero eos et accusamus</p>
-              </TabPanel>
-              <TabPanel value="6">
-                <p class="m-0">At vero eos et accusamus</p>
-              </TabPanel>
-              <TabPanel value="7">
-                <p class="m-0">At vero eos et accusamus</p>
-              </TabPanel>
-              <TabPanel value="8">
-                <p class="m-0">At vero eos et accusamus</p>
-              </TabPanel>
-              <TabPanel value="9">
-                <p class="m-0">At vero eos et accusamus</p>
-              </TabPanel>
-              <TabPanel value="10">
-                <p class="m-0">At vero eos et accusamus</p>
-              </TabPanel>
-              <TabPanel value="11">
-                <p class="m-0">At vero eos et accusamus</p>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </div>
+        <Tabs value="0" scrollable>
+          <TabList>
+            <Tab v-for="(tab, i) in userTabs" :key="i" :value="String(i)" class="tag_error">
+              <span class="tag" :class="{ error: tab.errors }"></span>
+              {{ tab.title }}
+            </Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel value="0">
+              <ProfileContact ref="RequestProfileComponent" @callParentMethod="handleParentMethod"
+                @callErrorProfile="errorProfile" @callNormComponent="updateErrors" />
+            </TabPanel>
+            <TabPanel value="1">
+              <JobInformationContentfrom ref="RequestJobInformationComponent" @callParentMethod="JobInformationMethod"
+                @callErrorProfile="errorProfile" @callNormComponent="updateErrors" />
+            </TabPanel>
+            <TabPanel value="2">
+              <JobContactComponent />
+            </TabPanel>
+            <TabPanel value="3">
+              <PersonalContactsComponent />
+            </TabPanel>
+            <TabPanel value="4">
+              <PassportData />
+            </TabPanel>
+            <TabPanel value="5">
+              <p class="m-0">At vero eos et accusamus</p>
+            </TabPanel>
+            <TabPanel value="6">
+              <p class="m-0">At vero eos et accusamus</p>
+            </TabPanel>
+            <TabPanel value="7">
+              <p class="m-0">At vero eos et accusamus</p>
+            </TabPanel>
+            <TabPanel value="8">
+              <p class="m-0">At vero eos et accusamus</p>
+            </TabPanel>
+            <TabPanel value="9">
+              <p class="m-0">At vero eos et accusamus</p>
+            </TabPanel>
+            <TabPanel value="10">
+              <p class="m-0">At vero eos et accusamus</p>
+            </TabPanel>
+            <TabPanel value="11">
+              <p class="m-0">At vero eos et accusamus</p>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </div>
       <div class="buttonWrapper form-control">
         <div>

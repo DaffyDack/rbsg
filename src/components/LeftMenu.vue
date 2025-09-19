@@ -227,7 +227,7 @@ aside {
 }
 
 aside[vue\:is-open='true'] {
-  width: 3 * $sidebar-width;
+  width: 4 * $sidebar-width;
 }
 
 ul {
