@@ -28,7 +28,7 @@ const tabs: Ref<Tabs[]> = ref([
   { component: '', title: 'Добавление позиции в базу', errors: false },
   ]);
 
-const euro = ref('EUR')
+const euro = ref()
 const initialPrice = ref()
 const products = ref([]);
 const selectedCourse = ref('EUR')

@@ -16,7 +16,7 @@ const additionally:Additionally[] = [
 {name:'FR трудногорючий', price: '2.00'},
 ]
 
-import { ref, type Ref,computed,watchEffect, watch} from 'vue';
+import { ref, type Ref,computed,watchEffect, watch, type ComputedRef} from 'vue';
 import PriceList from '@/components/price/PriceList.vue';
 import html2pdf from 'html2pdf.js'
 import Button from 'primevue/button';
@@ -45,7 +45,7 @@ interface Currency {
         thickness: string,
         area: string,
         price: string,
-        options?: Additionally[] | undefined,
+        options?: string,
         totalCost?:number| string,
         calculateSmallWholesalePrice?: string | number,
         calculateWholesalePrice?: string | number,
@@ -96,7 +96,7 @@ const props = defineProps<{
     items: Products[],
     dataRatio: {inputConversion: number, inputOverheadCosts: number},
     initialPrice: { CharCode: string }
-    curs:string }>();
+    curs:number }>();
     
 
 console.log(props.initialPrice)
@@ -192,7 +192,7 @@ const uniqueKeys = computed(()=> {
         return ''; 
     });
 
-console.log(getNamesString.value)
+
     const filteredProducts = computed(() => {
        filteredArr.value = filteredArr.value.filter(product => {
             return Object.keys(selectedValues.value).every(key => {

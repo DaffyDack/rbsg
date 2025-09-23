@@ -43,7 +43,7 @@ const submitForm = () => {
     resetForm();
 };
 
-const deleteProduct = (index: number) => {
+const deleteProduct = (index: any) => {
     products.value.splice(index, 1);
 };
 
@@ -82,9 +82,9 @@ const isFormIncomplete = computed(() => {
       <Column field="thickness" header="Толщина" />
       <Column field="area" header="Площадь" />
       <Column header="Действия">
-        <template #body="{ rowIndex }">
-          <Button label="Удалить" icon="pi pi-times" @click="deleteProduct(rowIndex)" />
-          <Button label="Редактировать" icon="pi pi-pencil" @click="editProduct(rowIndex)" />
+        <template #body="{index}">
+          <Button label="Удалить" icon="pi pi-times" @click="deleteProduct(index)" />
+          <Button label="Редактировать" icon="pi pi-pencil" @click="editProduct(index)" />
         </template>
       </Column>
     </DataTable>
