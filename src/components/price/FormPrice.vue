@@ -1,11 +1,12 @@
-    <script setup lang="ts">
-    import { ref, computed } from 'vue';
-import  InputText  from 'primevue/inputtext';
-import  Button  from 'primevue/button';
-import  DataTable  from 'primevue/datatable';
-import  Column  from 'primevue/column';
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import type { Products } from './DatePrice.vue';
 
-const initialFormProduct = {
+const initialFormProduct: Products = {
     manufacturer: '',
     article: '',
     name: '',
@@ -18,83 +19,38 @@ const initialFormProduct = {
     area: '',
     price: ''
 }
-const products = ref([]);
-const product = ref({});
 
-const submitForm = () => {
-  if (product.value.id) {
-      const index = products.value.findIndex(p => p.id === product.value.id);
-    if (index !== -1) {
-      products.value[index] = { ...product.value };
-    }
-  } else {
-    products.value.push({ ...product.value, id: Date.now() });
-  }
-  resetForm();
-};
+const products = ref<Products[]>([]);
+const product = ref<Products>(initialFormProduct);
+const editingIndex = ref<number | null>(null);
 
-const deleteProduct = (rowData) => {
-    console.log(rowData)
-   products.value = products.value.filter(p => p.id !== rowData.id);
-};
-
-const editProduct = (rowData) => {
-  product.value = { ...rowData };
+const editProduct = (index: number) => {
+    product.value = { ...products.value[index] };
+    editingIndex.value = index;
 };
 
 const resetForm = () => {
-  product.value = initialFormProduct
+    product.value = initialFormProduct;
+    editingIndex.value = null;
+};
+
+const submitForm = () => {
+    if (editingIndex.value !== null) {
+        products.value[editingIndex.value] = { ...product.value };
+    } else {
+        products.value.push({ ...product.value, id: Date.now() });
+    }
+    resetForm();
+};
+
+const deleteProduct = (index: number) => {
+    products.value.splice(index, 1);
 };
 
 const isFormIncomplete = computed(() => {
-  return Object.values(product.value).some(value => !value);
+    return Object.values(product.value).some(value => !value);
 });
-//         const props = defineProps<{items: Array<Record<string, any>>}>();
-   
-//         const rename = {
-//         manufacturer:"Производитель",
-//         article: "Артикул",
-//         name:"Наименование",
-//         craft:"Крафт",
-//         texture:"Текстура",
-//         class: "class",
-//         type: "type",
-//         size: "size",
-//         thickness: "name",
-//         area: "area",
-//         price: "price"
-//     }
-
-//         const n = {
-//         manufacturer:"Производитель",
-//         article: "Артикул",
-//         name:"Наименование",
-//         craft:"Крафт",
-//         texture:"Текстура",
-//         class: "Однотонные (белый холодный)",
-//         type: "Назначение",
-//         size: "Формат листа",
-//         thickness: "Толщина",
-//         area: "Площадь"
-//         }
-    
-//         function renameKeys(arr, renameMap) {
-//             return arr.map(obj => {
-//                 const newObj = {};
-//                 for (const [newKey, oldKey] of Object.entries(renameMap)) {
-//                     if (oldKey in obj) {
-//                         newObj[newKey] = obj[oldKey];
-//                     }
-//                 }
-//                 return newObj;
-//             });
-//         }
-
-// const renamedData = renameKeys(props?.items, rename);
-// console.log(renamedData);
-
- </script>
-
+</script>
 
 <template>
   <div>
@@ -105,7 +61,7 @@ const isFormIncomplete = computed(() => {
       <InputText v-model="product.name" placeholder="Наименование" />
       <InputText v-model="product.craft" placeholder="Крафт" />
       <InputText v-model="product.texture" placeholder="Текстура" />
-      <InputText v-model="product.class" placeholder="Однотонные (белый холодный)" />
+      <InputText v-model="product.class" placeholder="Класс" />
       <InputText v-model="product.type" placeholder="Назначение" />
       <InputText v-model="product.size" placeholder="Формат листа" />
       <InputText v-model="product.thickness" placeholder="Толщина" />
@@ -125,22 +81,18 @@ const isFormIncomplete = computed(() => {
       <Column field="size" header="Размер" />
       <Column field="thickness" header="Толщина" />
       <Column field="area" header="Площадь" />
-      <Column 
-        body="{(rowData) => deleteProduct(rowData)}"
-        headerStyle="width:8rem"
-        :body="{ rowData }">
-        <template #body="{ rowData }">
-          <Button label="Удалить" icon="pi pi-times" @click.prevent="deleteProduct(rowData)" />
-          <Button label="Редактировать" icon="pi pi-pencil" @click.prevent="editProduct(rowData)" />
+      <Column header="Действия">
+        <template #body="{ rowIndex }">
+          <Button label="Удалить" icon="pi pi-times" @click="deleteProduct(rowIndex)" />
+          <Button label="Редактировать" icon="pi pi-pencil" @click="editProduct(rowIndex)" />
         </template>
       </Column>
     </DataTable>
   </div>
 </template>
 
-
 <style lang="scss">
  h1 {
-    color: white
+    color: white;
  }
 </style>

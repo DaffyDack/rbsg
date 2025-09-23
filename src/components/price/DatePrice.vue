@@ -1,6 +1,9 @@
 <script setup lang="ts">
-
-const additionally = [ 
+interface Additionally {
+    name:string,
+    price: string
+}
+const additionally:Additionally[] = [ 
 {name:'Tонкий HPL Постформируемый', price: '0.70' },
 {name:'Защитная транспортная пленка', price:'0.30'},
 {name:'Антимикробное покрытие', price: '0.40'},
@@ -29,8 +32,9 @@ interface Currency {
     Previous: number;
     Value: number; 
 }
-interface Products {
-    manufacturer: string,
+ export interface Products {
+         id?: number | undefined,
+        manufacturer: string,
         article: string,
         name: string,
         craft: string,
@@ -40,11 +44,25 @@ interface Products {
         size: string,
         thickness: string,
         area: string,
-        price: number
+        price: string,
+        options?: Additionally[] | undefined,
+        totalCost?:number| string,
+        calculateSmallWholesalePrice?: string | number,
+        calculateWholesalePrice?: string | number,
+        calculateDealerPrice?: string | number,
+
+}
+export interface InitialPrice {
+    CharCode: string,
+    ID: string,
+    Name: string,
+    Nominal: number, 
+    NumCode: string,
+    Previous: number, 
+    Value: number
 }
 
-
-const n = {
+const n: Products= {
        manufacturer:"Производитель",
        article: "Артикул",
        name:"Наименование",
@@ -54,7 +72,8 @@ const n = {
        type: "Назначение",
        size: "Формат листа",
        thickness: "Толщина",
-       area: "Площадь"
+       area: "Площадь",
+       price: "Цена"
        }
 const exportToPDF = () => {
 
@@ -74,16 +93,17 @@ const exportToPDF = () => {
 // const name = ref(JSON.parse(localStorage.getItem('role') || ''))
 
 const props = defineProps<{ 
-    items: Array<Record<string, any>>,
+    items: Products[],
     dataRatio: {inputConversion: number, inputOverheadCosts: number},
-    initialPrice: Currency,
-    curs:number }>();
+    initialPrice: { CharCode: string }
+    curs:string }>();
     
 
+console.log(props.initialPrice)
 
 const selectedValues = ref();
 const filteredOptions  = ref();
-const selectedOptions = ref([]);
+const selectedOptions = ref();
 const filteredItemsOrder = ref()
 const cart = ref()
 
@@ -109,7 +129,7 @@ const dealersale = 30;
 
 
 
-const getUniqueKeys = (items: Array<Record<string, number>>) => {
+const getUniqueKeys = (items:Products[], n: Products) => {
     if (items.length > 0) {
         return Object.keys(items[1]); 
     }
@@ -122,19 +142,21 @@ const uniqueKeys = computed(()=> {
 
 
    watchEffect(() => {
+    if (uniqueKeys.value) {
          uniqueKeys.value.forEach(key => {
              filteredOptions.value[key] = [...new Set(props.items
                  .filter(product => {
                      return Object.keys(selectedValues.value).every(filterKey => 
-                         !selectedValues.value[filterKey] || product[filterKey] === selectedValues.value[filterKey]
+                         !selectedValues.value[filterKey] || product[filterKey as keyof Products] === selectedValues.value[filterKey]
                      );
                  })
-                 .map(product => product[key]))];
+                 .map(product => product[key as keyof Products]))];
          });
+        }
      });
 
     uniqueKeys.value.forEach(key => {
-        filteredOptions.value[key] = [...new Set(props.items.map(product => product[key]))];
+        filteredOptions.value[key] = [...new Set(props.items.map(product => product[key as keyof Products]))];
     });
 
     const updateFilteredOptions = () => {
@@ -144,18 +166,21 @@ const uniqueKeys = computed(()=> {
             filteredOptions.value[key] = [...new Set(props.items
                 .filter(product => {
                     return selectedKeys.every(filterKey => 
-                        product[filterKey] === selectedValues.value[filterKey]
+                        product[filterKey as keyof Products] === selectedValues.value[filterKey]
                     );
                 })
-                .map(product => product[key]))];
+                .map(product => product[key as keyof Products]))];
         });
     };
 
     const summOptionsPrice = computed(() => {
 
-      return selectedOptions.value.reduce((total, item) => {
-        return total + Number(item.price);
-    }, 0);
+      if(selectedOptions.value) {
+          return selectedOptions.value.reduce((acc: number, item: Products) => {
+                return acc + Number(item.price);
+        }, 0);
+
+      }
     });
 
 
@@ -167,16 +192,18 @@ const uniqueKeys = computed(()=> {
         return ''; 
     });
 
+console.log(getNamesString.value)
     const filteredProducts = computed(() => {
        filteredArr.value = filteredArr.value.filter(product => {
             return Object.keys(selectedValues.value).every(key => {
-                    return !selectedValues.value[key] || product[key] === selectedValues.value[key];
+                    return !selectedValues.value[key] || product[key as keyof Products] === selectedValues.value[key];
                 });
             });
             
             filteredArr.value.forEach(product => {
-                const price = Number(product.price) + Number(summOptionsPrice.value);
-                const totalCost = props.initialPrice.CharCode!== 'EUR' ? price * props.curs  * props.dataRatio.inputOverheadCosts * props.dataRatio.inputConversion:  price * props.curs * props.dataRatio.inputOverheadCosts;
+             
+                const price = summOptionsPrice.value? Number(product.price) + summOptionsPrice.value : Number(product.price)
+                const totalCost = props.initialPrice.CharCode!== 'EUR' ? price * Number(props.curs)  * props.dataRatio.inputOverheadCosts * props.dataRatio.inputConversion:  price * props.curs * props.dataRatio.inputOverheadCosts;
                 product.options = getNamesString.value
                 product.totalCost = totalCost.toFixed(2);
                 product.calculateSmallWholesalePrice = (totalCost * (1 - smallWholesale / 100)).toFixed(2);
@@ -217,7 +244,7 @@ const uniqueKeys = computed(()=> {
        const newItems = filteredProducts.value;
        filteredItemsOrder.value = [...existingItems, ...newItems];
 
-       cart.value = filteredItemsOrder.value.length;
+       cart.value.push(filteredItemsOrder.value);
 }
 
 </script>
@@ -235,7 +262,7 @@ const uniqueKeys = computed(()=> {
     </div>
     <div class="grid-container">
         <div class="table_select" v-for="(key, index) in uniqueKeys" :key="index">
-            <label :for="key">{{ n[key] }}</label>
+            <label :for="key">{{ n[key as keyof Products] }}</label>
             <select :id="key" v-model="selectedValues[key]">
                 <option v-for="value in filteredOptions[key]" :key="value" :value="value">{{ value }}</option>
             </select>

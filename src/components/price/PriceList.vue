@@ -4,25 +4,37 @@
   import Button from 'primevue/button';
   
   import { type IProduct } from '../../views/Price.vue'
-
-  
+  const name = ref(JSON.parse(localStorage.getItem('role') || ''))
+  const editingIndex = ref();
+  const editedItem = ref(); 
   const {items} = defineProps<{items: Array<Record<string, any>>}>();
 
-const getNamesString = computed(() => {
-
-       
+  const getNamesString = computed(() => {
         if (items[0].options && Array.isArray(items[0].options)) {
-          
             return items[0].options.map(type => type.name).join(', ');
         }
         return ''; 
 
 });
-  
-  let options = getNamesString.value
+  const startEditing = (index: number) => {
+    editingIndex.value = index;
+    editedItem.value = { ...items[index] }; 
+};
 
-  console.log(options)
 
+const saveEdit = () => {
+    if (editingIndex.value !== null && editedItem.value) {
+        items[editingIndex.value] = { ...editedItem.value }; 
+        editingIndex.value = null; 
+        editedItem.value = null; 
+    }
+};
+
+
+const cancelEdit = () => {
+    editingIndex.value = null;
+    editedItem.value = null;
+};
  </script>
 
 <template>
@@ -50,8 +62,57 @@ const getNamesString = computed(() => {
         </tr>
       </thead>
       <tbody>
-
+         
         <tr v-for="(item, index) in items" :key="index">
+          <td>{{ index + 1 }}</td>
+          <td v-if="editingIndex !== index">{{ item.manufacturer }}</td>
+          <td v-else><input v-model="editedItem.manufacturer" /></td>
+
+          <td>фото</td>
+
+          <td v-if="editingIndex !== index">{{ item.article }}</td>
+          <td v-else><input v-model="editedItem.article" /></td>
+
+          <td v-if="editingIndex !== index">{{ item.name }}</td>
+          <td v-else><input v-model="editedItem.name" /></td>
+
+          <td v-if="editingIndex !== index">{{ item.size }}</td>
+          <td v-else><input v-model="editedItem.size" /></td>
+
+           <td v-if="editingIndex !== index">{{ item.thickness }}</td>
+          <td v-else><input v-model="editedItem.thickness" /></td>
+
+          <td v-if="editingIndex !== index">{{ item.craft }}</td>
+          <td v-else><input v-model="editedItem.craft" /></td>
+
+          <td v-if="editingIndex !== index">{{ item.texture }}</td>
+          <td v-else><input v-model="editedItem.texture" /></td>
+
+          <td v-if="editingIndex !== index">{{ item.class }}</td>
+          <td v-else><input v-model="editedItem.class" /></td>
+
+          <td v-if="editingIndex !== index">{{ item.options }}</td>
+          <td v-else><input v-model="editedItem.options" /></td>
+
+          <td v-if="editingIndex !== index">{{ item.totalCost }}</td>
+          <td v-else><input v-model="editedItem.totalCost" /></td>
+
+          <td v-if="editingIndex !== index">{{ item.calculateSmallWholesalePrice }}</td>
+          <td v-else><input v-model="editedItem.calculateSmallWholesalePrice" /></td>
+           <td v-if="editingIndex !== index">{{ item.calculateWholesalePrice }}</td>
+          <td v-else><input v-model="editedItem.calculateWholesalePrice" /></td>
+
+          <td v-if="editingIndex !== index">{{ item.calculateDealerPrice }}</td>
+          <td v-else><input v-model="editedItem.calculateDealerPrice" /></td>
+
+          <td v-if="name.role === 'ADMIN'" class="buttonAdd">
+            <Button @click="startEditing(index)">Редактировать</Button><br>
+            <Button v-if="editingIndex === index" @click="saveEdit">Сохранить</Button><br>
+            <Button v-if="editingIndex === index" @click="cancelEdit">Отмена</Button><br>
+          </td>
+          <Button @click="$emit('remove', index)">Х</Button><br>
+        </tr>
+        <!-- <tr v-for="(item, index) in items" :key="index">
           <th>{{ index + 1 }}</th>
           <th>{{ item.manufacturer}}</th>
           <th>фото</th>
@@ -68,7 +129,7 @@ const getNamesString = computed(() => {
           <th>{{ item.calculateWholesalePrice }}</th>
           <th>{{ item.calculateDealerPrice }}</th>
           <tr class="buttonAdd" @click="$emit('remove', index)"> Х </tr>
-        </tr>
+        </tr> -->
 
         <!-- <tr v-if="items.length > 0" class="trTotal">
           <th></th>
@@ -101,7 +162,7 @@ const getNamesString = computed(() => {
   }
 
   .buttonAdd {
-    display: none;
+    display: flex;
   }
 }
 
