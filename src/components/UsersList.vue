@@ -259,8 +259,8 @@ watch(
           </Column>
           <Column v-if="name.role === 'ADMIN'" header="Действие" :exportable="false">
             <template #body="slotProps">
-              <Button class="mr-2" v-if="storeUser.info.id !== slotProps.data.id" icon="pi pi-pencil" outlined rounded
-                severity="warn" @click="confirmEditUser(slotProps.data)" />
+              <Button class="mr-2" icon="pi pi-pencil" outlined rounded severity="warn"
+                @click="confirmEditUser(slotProps.data)" />
               <Button v-if="storeUser.info.id !== slotProps.data.id" icon="pi pi-trash" outlined rounded
                 severity="danger" @click="confirmDeleteUser(slotProps.data)" />
             </template>

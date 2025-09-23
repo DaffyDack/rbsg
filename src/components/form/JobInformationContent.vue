@@ -14,7 +14,6 @@ const departments = ref()
 const posts = ref<ItemPosts[]>([])
 
 onMounted(() => {
-  // usersString.value = JSON.parse(localStorage.getItem('users') ?? '[]')
   fetchDepartment().then((data) => {
     departments.value = data
   })
@@ -22,18 +21,13 @@ onMounted(() => {
     posts.value = data
   })
 })
-const test = ref()
 const emit = defineEmits()
-interface Company {
-  name: string
-  code: string
-}
 interface Errors {
   startDate: string
 }
 interface Form {
-  company: Company
-  brand: Company
+  company: string
+  brand: string
   department: string
   positions: string
   dateEmployment: string
@@ -53,8 +47,8 @@ interface Form {
 }
 
 const form = ref<Form>({
-  company: { name: 'TOYOTA', code: 'BMW' },
-  brand: { name: 'Land Cruiser', code: 'Land Cruiser' },
+  company: '',
+  brand: '',
   department: '',
   positions: '',
   dateEmployment: '',
@@ -88,9 +82,20 @@ const errors = ref<Errors>({
 
 const combiningForm = ref({
   post: '',
-  department: ''
+  department: '',
+  company: '',
+  brand: '',
+  dataCombining: ''
 })
-const combining = ref([])
+interface comb {
+  id: number
+  post: string
+  company: string
+  department: string
+  brand: string
+  dataCombining: string
+}
+const combining = ref<comb[]>([])
 
 
 const CheckingJobInformationComponent = () => {
@@ -122,15 +127,25 @@ const addCombining = () => {
   const newObject = {
     id: new Date().valueOf(),
     post: combiningForm.value.post,
-    department: combiningForm.value.department
+    department: combiningForm.value.department,
+    company: combiningForm.value.company,
+    brand: combiningForm.value.brand,
+    dataCombining: formatDate(combiningForm.value.dataCombining),
   }
   combining.value.push(newObject)
-  combiningForm.value.post = ''
+  Object.keys(combiningForm.value).forEach(key => {
+    combiningForm.value[key as keyof typeof combiningForm.value] = '';
+  });
 }
 const deleteCombining = (id: any) => {
-  combining.value = combining.value.filter(x => {
-    return x.id != id;
-  })
+  combining.value = combining.value.filter(x => x.id != id)
+}
+function formatDate(dateString: any) {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${month}.${day}.${year}`;
 }
 watch(
   () => [form.value.startDate],
@@ -198,18 +213,13 @@ defineExpose({ CheckingJobInformationComponent })
           </div>
           <div class="form-control">
             <label for="jobInformationCompanyCombining">Компания</label>
-            <select name="pets" id="jobInformationCompanyCombining">
-              <option value="Генеральный директор">Ozon</option>
-              <option value="Испольнительный директор">Яндекс</option>
-              <option value="Финансовый директор">Ламода</option>
-            </select>
+            <Select v-model="combiningForm.company" id="jobInformationCompanyCombining" :options="kompany"
+              optionLabel="name" placeholder="Компания" class="w-full" />
           </div>
           <div class="form-control">
             <label for="jobInformationBrandCombining">Бренд</label>
-            <select name="pets" id="jobInformationBrandCombining">
-              <option value="Nike">Nike</option>
-              <option value="IKEA">IKEA</option>
-            </select>
+            <Select v-model="combiningForm.brand" id="jobInformationBrandCombining" :options="brand" optionLabel="name"
+              placeholder="Бренд" class="w-full" />
           </div>
           <div class="form-control">
             <label for="jobInformationDepartmentCombining">Отдел</label>
@@ -218,8 +228,8 @@ defineExpose({ CheckingJobInformationComponent })
           </div>
           <div class="form-control">
             <label for="jobInformationStartDateCombination">Дата начала совмещения</label>
-            <Calendar v-modal="form.startDateCombination" type="text" style="width: 100%"
-              id="jobInformationStartDateCombination" dateFormat="dd/mm/yy" placeholder="Дата начала совмещения" />
+            <Calendar v-model="combiningForm.dataCombining" style="width: 100%" id="jobInformationStartDateCombination"
+              dateFormat="dd.mm.yy" placeholder="Дата начала совмещения" />
           </div>
         </div>
       </div>
@@ -229,6 +239,9 @@ defineExpose({ CheckingJobInformationComponent })
           <div>
             <div>Должность: {{ item.post.post }}</div>
             <div>Отдел: {{ item.department.department }}</div>
+            <div>Компания: {{ item.company.name }}</div>
+            <div>Бренд: {{ item.brand.name }}</div>
+            <div>Дата начала совмещения: {{ item.dataCombining }}</div>
           </div>
           <div>
             <button @click="deleteCombining(item.id)">X</button>
