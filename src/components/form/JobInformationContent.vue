@@ -25,6 +25,14 @@ const emit = defineEmits()
 interface Errors {
   startDate: string
 }
+interface comb {
+  id: number
+  post: string
+  company: string
+  department: string
+  brand: string
+  dataCombining: string
+}
 interface Form {
   company: string
   brand: string
@@ -44,6 +52,7 @@ interface Form {
   TwoCombiningDepartment: string
   TwoCombiningStartDateOfCombination: string
   startDateCombination: string
+  combining: comb[]
 }
 
 const form = ref<Form>({
@@ -65,6 +74,7 @@ const form = ref<Form>({
   TwoCombiningDepartment: '',
   TwoCombiningStartDateOfCombination: '',
   startDateCombination: '',
+  combining: []
 })
 const kompany = ref([
   { name: 'РБС ГРУПП', code: 'РБС ГРУПП' },
@@ -87,15 +97,7 @@ const combiningForm = ref({
   brand: '',
   dataCombining: ''
 })
-interface comb {
-  id: number
-  post: string
-  company: string
-  department: string
-  brand: string
-  dataCombining: string
-}
-const combining = ref<comb[]>([])
+
 
 
 const CheckingJobInformationComponent = () => {
@@ -132,13 +134,13 @@ const addCombining = () => {
     brand: combiningForm.value.brand,
     dataCombining: formatDate(combiningForm.value.dataCombining),
   }
-  combining.value.push(newObject)
+  form.value.combining.push(newObject)
   Object.keys(combiningForm.value).forEach(key => {
     combiningForm.value[key as keyof typeof combiningForm.value] = '';
   });
 }
 const deleteCombining = (id: any) => {
-  combining.value = combining.value.filter(x => x.id != id)
+  form.value.combining = form.value.combining.filter(x => x.id != id)
 }
 function formatDate(dateString: any) {
   const date = new Date(dateString);
@@ -235,7 +237,7 @@ defineExpose({ CheckingJobInformationComponent })
       </div>
       <button class="saveButton m-3" @click="addCombining">Добавить восмещение</button>
       <ul class="combining">
-        <li v-for="(item, i) in combining" :key="i">
+        <li v-for="(item, i) in form.combining" :key="i">
           <div>
             <div>Должность: {{ item.post.post }}</div>
             <div>Отдел: {{ item.department.department }}</div>

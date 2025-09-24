@@ -32,24 +32,6 @@ interface ItemPosts {
 interface Email {
   email: string;
 }
-interface Company {
-  name: string
-  code: string
-}
-interface ChoosingRole {
-  name: string
-  code: string
-}
-
-
-interface Rating {
-  name: string
-  value: string
-}
-interface Gender {
-  name: string
-  value: string
-}
 interface Errors {
   password: string
   password2: string
@@ -105,6 +87,7 @@ const rating = ref([
 const deleteUserDialog = ref(false)
 const editUserDialog = ref(false)
 const infoJobfunctionsDialog = ref(false)
+const infoDialogUser = ref(false)
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
 })
@@ -151,12 +134,17 @@ onMounted(() => {
 
 function confirmDeleteUser(e: any) {
   product.value = store.user?.find((x: any) => x.id === e.id) ?? null
+  // product.value.combining = JSON.parse(product.value.combining)
+  // console.log(product.value.combining, 'Преобразовали?')
   deleteUserDialog.value = true
 }
 function confirmInfoPositions(e: any) {
   console.log(e, 'Находим сведения о работе')
   jobfunctions.value = e.jobfunctions
   infoJobfunctionsDialog.value = true
+}
+function confirmInfoUser(e: any) {
+  infoDialogUser.value = true
 }
 
 const deleteUser = async () => {
@@ -198,6 +186,7 @@ const editUser = async () => {
 }
 function confirmEditUser(e: any) {
   product.value = JSON.parse(JSON.stringify(store.user?.find((x: any) => x.id === e.id) ?? null))
+  product.value.combining = JSON.parse(product.value.combining)
   editUserDialog.value = true
 }
 function previewFiles(event: any) {
@@ -247,7 +236,13 @@ watch(
           </template>
           <Column field="id" header="ID" sortable></Column>
           <Column field="department" header="Отдел" sortable></Column>
-          <Column field="fullname" header="Имя" sortable></Column>
+          <Column field="fullname" header="Имя" sortable>
+            <template #body="slotProps">
+              <div @click="confirmInfoUser(slotProps.data)">
+                {{ slotProps.data.fullname }}
+              </div>
+            </template>
+          </Column>
           <Column field="email" header="Email" sortable></Column>
           <Column field="role" header="Роль" sortable></Column>
           <Column field="positions" header="Должность" sortable>
@@ -384,11 +379,31 @@ watch(
             <label for="selctFile">Загрузить фото</label>
             <input type="file" ref="upload" id="selctFile" @change="previewFiles" />
           </div>
+          <div class="form-control">
+            <label for="selctFile">Совмещение</label>
+            <ul>
+              <li v-for="(item, i) in product.combining" :key="i">
+                <div>{{ item.department.department }}</div>
+                <div>{{ item.brand.name }}</div>
+                <div>{{ item.company.name }}</div>
+                <div>{{ item.dataCombining }}</div>
+              </li>
+            </ul>
+          </div>
         </div>
         <template #footer>
           <Button label="Отмена" icon="pi pi-times" text @click="editUserDialog = false" />
           <Button label="Изменить" icon="pi pi-check" @click="editUser" />
         </template>
+      </Dialog>
+
+      <Dialog v-model:visible="infoDialogUser" header="Инфа о пользователе" :style="{ width: '763px', height: '100vh' }"
+        position="right" :modal="true" :draggable="false">
+        <span class="text-surface-500 dark:text-surface-400 block mb-8">Сюда выведем инфу о пользователе</span>
+
+        <!-- <div class="flex justify-end gap-2">
+          <Button type="button" label="Закрыть" @click="infoDialogUser = false"></Button>
+        </div> -->
       </Dialog>
 
       <Dialog v-model:visible="infoJobfunctionsDialog" :style="{ width: '50%' }" header="Должностные обязанности"

@@ -58,6 +58,7 @@ const generatejwt = (
   fullname,
   working_contact_workphone,
   code,
+  combining,
 ) => {
   return jwt.sign(
     {
@@ -81,6 +82,7 @@ const generatejwt = (
       fullname,
       working_contact_workphone,
       code,
+      combining,
     },
     process.env.SECRET_KEY,
     {
@@ -111,6 +113,7 @@ class UserController {
         datebirth,
         fullname,
         code,
+        combining,
       } = req.body
 
       const { img } = req.files // Дефолтное значение для img
@@ -152,6 +155,7 @@ class UserController {
         fullname,
         code: newCode,
         jobfunctions,
+        combining,
       })
       await Admins.create({ userId: user.id })
       // const WC = await WorkingContacts.create({
@@ -178,6 +182,7 @@ class UserController {
         user.img,
         user.fullname,
         user.code,
+        user.combining,
         // WC?.workphone,
       )
 

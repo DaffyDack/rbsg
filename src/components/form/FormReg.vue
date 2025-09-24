@@ -44,6 +44,7 @@ interface formDataTest {
   code?: string
   jobfunctions?: string
   fullname?: string
+  combining?: string
 }
 
 const userTabs: Ref<UserTab[]> = ref([
@@ -78,6 +79,7 @@ const formDataTest = ref<formDataTest>({
   code: '',
   jobfunctions: '',
   fullname: '',
+  combining: '',
 })
 const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
@@ -93,6 +95,7 @@ function set() {
   }, 2000)
 }
 const RegistrationUser = async (formData: any) => {
+  console.log(formData, 'смотрим на combining')
   try {
     const response = await registration(formData)
     condition.value = false
@@ -131,9 +134,10 @@ const JobInformationMethod = (e: any) => {
   formDataTest.value.jobfunctions = e.positions.description
   formDataTest.value.department = e.department.department
   formDataTest.value.code = e.department.code
+  formDataTest.value.combining = JSON.stringify(e.combining)
 }
 
-const handleSubmit = () => {
+const createNewUser = () => {
   RequestProfileComponent.value.CheckingProfileComponent()
   RequestJobInformationComponent.value.CheckingJobInformationComponent()
   const hasErrorValue = Object.values(userTabs.value).every((value) => value.errors === false)
@@ -222,7 +226,7 @@ const errorProfile = (e: any, tr: boolean) => {
           <div v-if="addeduser" class="text-green-600 mb-5">Пользователь добавлен!</div>
           <div v-if="condition" class="text-red-600 mb-5">{{ messageCondition }}</div>
         </div>
-        <button class="saveButton" @click="handleSubmit">Добавить пользователя</button>
+        <button class="saveButton" @click="createNewUser">Добавить пользователя</button>
         <button class="cancelButton">Отмена</button>
       </div>
     </div>
