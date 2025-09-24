@@ -8,9 +8,10 @@ import TabPanel from 'primevue/tabpanel'
 import { ref, type Ref, onMounted, computed,watch} from 'vue';
 import PriceListPhl from '@/components/price/PriceListPhl.vue'
 import DatePrice from '@/components/price/DatePrice.vue'
-import InputNumber from 'primevue/inputnumber';
+import InputNumber, { type InputNumberInputEvent } from 'primevue/inputnumber';
 import FormPrice from '@/components/price/FormPrice.vue';
 import Tabletop from '@/components/price/Tabletop.vue';
+
 
 const name = ref(JSON.parse(localStorage.getItem('role') || ''))
 
@@ -111,7 +112,6 @@ watch(selectedTypeCalc, (newValue) => {
 
 
 
-
 </script>
 <template>
    <div class="sidebar">
@@ -135,7 +135,7 @@ watch(selectedTypeCalc, (newValue) => {
          </div>
          <div class="flex-auto">
             <label class ="labelInput" >Накладные расходы</label>
-            <InputNumber v-model="inputOverheadCosts"  inputId="locale-us" locale="en-US" :minFractionDigits="2" />
+            <InputNumber v-model="inputOverheadCosts"  inputId="locale-us" locale="en-US" :minFractionDigits="2"  />
         </div>
     </div>
         </div>
