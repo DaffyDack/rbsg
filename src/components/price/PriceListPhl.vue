@@ -2,17 +2,18 @@
 import { ref, type Ref,computed,watchEffect, watch} from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import type { Products } from './DatePrice.vue';
 
 
 
 const props = defineProps<{ 
-     items: Array<Record<string, any>>,
-     curs: Array<Record<string, any>>;
-     initialPrice: Array<Record<string, any>>}>();
+     items:  Products[],
+     curs: number|string;
+     initialPrice: number|string}>();
 
 
-const selectedValues = ref({});
-const filteredOptions = ref({});
+const selectedValues = ref();
+const filteredOptions = ref();
 const smallWholesale = 10;
 const wholesale = 20;
 const dealersale = 30;
@@ -20,7 +21,7 @@ const dealersale = 30;
 
 
 
-const getUniqueKeys = (items: Array<Record<string, any>>) => {
+const getUniqueKeys = (items: Products[]) => {
     if (items.length > 0) {
         return Object.keys(items[1]); 
     }
@@ -39,15 +40,15 @@ const uniqueKeysTable = computed(()=> {
              filteredOptions.value[key] = [...new Set(props.items
                  .filter(product => {
                      return Object.keys(selectedValues.value).every(filterKey => 
-                         !selectedValues.value[filterKey] || product[filterKey] === selectedValues.value[filterKey]
+                         !selectedValues.value[filterKey] || product[filterKey as keyof Products] === selectedValues.value[filterKey]
                      );
                  })
-                 .map(product => product[key]))];
+                 .map(product => product[key as keyof Products]))];
          });
      });
 
     uniqueKeys.value.forEach(key => {
-        filteredOptions.value[key] = [...new Set(props.items.map(product => product[key]))];
+        filteredOptions.value[key] = [...new Set(props.items.map(product => product[key as keyof Products]))];
     });
 
     const updateFilteredOptions = () => {
@@ -57,10 +58,10 @@ const uniqueKeysTable = computed(()=> {
             filteredOptions.value[key] = [...new Set(props.items
                 .filter(product => {
                     return selectedKeys.every(filterKey => 
-                        product[filterKey] === selectedValues.value[filterKey]
+                        product[filterKey as keyof Products] === selectedValues.value[filterKey]
                     );
                 })
-                .map(product => product[key]))];
+                .map(product => product[key as keyof Products ]))];
         });
     };
 
@@ -75,19 +76,19 @@ const uniqueKeysTable = computed(()=> {
     const filteredProducts = computed(() => {
     const filtered = props.items.filter(product => {
         return Object.keys(selectedValues.value).every(key => {
-            return !selectedValues.value[key] || product[key] === selectedValues.value[key];
+            return !selectedValues.value[key] || product[key as keyof Products] === selectedValues.value[key];
         });
     });
 
     
     filtered.forEach(product => {
         const initiolPrice = props.initialPrice
-        const selectCours = initiolPrice/props.curs
+        const selectCours = Number(initiolPrice)/Number(props.curs)
        
         const price = product.price ;
         const areaInSquareMeters = parseFloat(product.area)
 
-        const totalCost = (price * selectCours * props.curs  * areaInSquareMeters) || 0; 
+        const totalCost = (Number(price) * selectCours * Number(props.curs)  * areaInSquareMeters) || 0; 
         product.totalCost = totalCost.toFixed(2);
         product.calculateSmallWholesalePrice = (totalCost * (1 - smallWholesale / 100)).toFixed(2);
         product.calculateWholesalePrice = (totalCost * (1 - wholesale / 100)).toFixed(2);

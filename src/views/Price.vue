@@ -125,11 +125,26 @@ const thickness = [
   { name: '10мм', price: '49.49' },
   { name: '12мм', price: '57.92' },
   { name: '14мм', price: '67.58' },
-  { name: '16мм', price: '77.25' },
-]
-const smallWholesale = 10
-const wholesale = 20
-const dealersale = 30
+  { name: '16мм', price: '77.25' }
+];
+
+//ebterf NewItem: {
+//     kraft: string;
+//     article: string;
+//     name: string;
+//     size: string;
+//     thickness: string;
+//     texture: string;
+//     purposes: string;
+//     additional: string;
+//     totalCost: number;
+//     calculateDealerPrice: number;
+//     calculateWholesalePrice: number;
+//     calculateSmallWholesalePrice: number;
+// } 
+const smallWholesale = 10;
+const wholesale = 20;
+const dealersale = 30;
 
 const productsFilterOfSupplier = (initialProducts: IProduct[]): IProduct[] => {
   if (!selectedSupplier.value) {
@@ -383,7 +398,8 @@ const addProductList = () => {
       additional
     } = item;
 
-    const newItem = {
+    const newItem: IProduct = {
+      supplier: item.supplier,
       kraft: item.kraft,
       article: item.article,
       name,
@@ -392,14 +408,14 @@ const addProductList = () => {
       texture,
       purposes,
       additional,
-      // photo: null | string, 
       totalCost: totalCost.value,
       calculateDealerPrice: calculateDealerPrice.value,
       calculateWholesalePrice: calculateWholesalePrice.value,
       calculateSmallWholesalePrice: calculateSmallWholesalePrice.value,
     };
-    // @ts-ignore
+
     addedProducts.value.push(newItem)
+
 
     clearSelections()
   }

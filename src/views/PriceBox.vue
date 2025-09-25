@@ -1,4 +1,4 @@
-<script setup lang="ts">
+  <script setup lang="ts">
 
 import TabList from 'primevue/tablist'
 import Tab from 'primevue/tab'
@@ -8,8 +8,11 @@ import TabPanel from 'primevue/tabpanel'
 import { ref, type Ref, onMounted, computed,watch} from 'vue';
 import PriceListPhl from '@/components/price/PriceListPhl.vue'
 import DatePrice from '@/components/price/DatePrice.vue'
-import InputNumber from 'primevue/inputnumber';
+import InputNumber, { type InputNumberInputEvent } from 'primevue/inputnumber';
 import FormPrice from '@/components/price/FormPrice.vue';
+import Tabletop from '@/components/price/Tabletop.vue';
+
+
 const name = ref(JSON.parse(localStorage.getItem('role') || ''))
 
 
@@ -26,14 +29,14 @@ const tabs: Ref<Tabs[]> = ref([
   { component: '', title: 'Добавление позиции в базу', errors: false },
   ]);
 
-const euro = ref('EUR')
-const initialPrice = ref('EUR')
+const euro = ref()
+const initialPrice = ref()
 const products = ref([]);
 const selectedCourse = ref('EUR')
 const selectedTypeCalc = ref('Заказ')
 
 
-const  inputConversion = ref(1.03)
+const inputConversion = ref(1.03)
 const inputOverheadCosts = ref(1.7)
 const urlInStock =  '../../public/dataPrice.json'
 const urlOrder =  '../../public/data.json'
@@ -45,6 +48,7 @@ const typeCalc = {"Заказ": "Заказ", 'В наличии': "В нали�
 const token = "0f54e5e6b25475a140f44143c70830db"
 const urlAPpi = 'https://www.cbr-xml-daily.ru/daily_json.js';
 const dataRatio = computed(() => {
+
   return {
   inputConversion: inputConversion.value,
   inputOverheadCosts: inputOverheadCosts.value
@@ -108,7 +112,6 @@ watch(selectedTypeCalc, (newValue) => {
 
 
 
-
 </script>
 <template>
    <div class="sidebar">
@@ -132,7 +135,7 @@ watch(selectedTypeCalc, (newValue) => {
          </div>
          <div class="flex-auto">
             <label class ="labelInput" >Накладные расходы</label>
-            <InputNumber v-model="inputOverheadCosts"  inputId="locale-us" locale="en-US" :minFractionDigits="2" />
+            <InputNumber v-model="inputOverheadCosts"  inputId="locale-us" locale="en-US" :minFractionDigits="2"  />
         </div>
     </div>
         </div>
@@ -151,13 +154,14 @@ watch(selectedTypeCalc, (newValue) => {
               <DatePrice :items="products" :curs="euro" :dataRatio="dataRatio" :initialPrice="initialPrice"/>
           </TabPanel>
           <TabPanel value="1"> 
+            <Tabletop :items="products"/>
           </TabPanel>
           
           <TabPanel  value="2">            
             <PriceListPhl :items="products" :curs="euro" :initialPrice="initialPrice" />        
           </TabPanel>
           
-          <TabPanel  value="3">            
+          <TabPanel v-if="name.role === 'ADMIN'" value="3">            
               <FormPrice :items="products"/>        
           </TabPanel>
         
@@ -219,7 +223,7 @@ watch(selectedTypeCalc, (newValue) => {
   }
 .wrapper_setting_profile {
   .p-tablist-tab-list {
-    // background: none !important;
+     background: none !important;
   }
 }
 </style>
