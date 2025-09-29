@@ -25,6 +25,9 @@ const year90YearsAgo = currentDate.getFullYear() - 90;
 const date90YearsAgo = new Date(year90YearsAgo, currentDate.getMonth(), currentDate.getDate());
 const minDate = ref(date90YearsAgo)
 const maxDate = ref(new Date())
+const imgW = ref({
+  imgUrl: import.meta.env.VITE_API_URL,
+})
 
 interface ItemPosts {
   post: string
@@ -134,8 +137,6 @@ onMounted(() => {
 
 function confirmDeleteUser(e: any) {
   product.value = store.user?.find((x: any) => x.id === e.id) ?? null
-  // product.value.combining = JSON.parse(product.value.combining)
-  // console.log(product.value.combining, 'Преобразовали?')
   deleteUserDialog.value = true
 }
 function confirmInfoPositions(e: any) {
@@ -144,6 +145,7 @@ function confirmInfoPositions(e: any) {
   infoJobfunctionsDialog.value = true
 }
 function confirmInfoUser(e: any) {
+  product.value = JSON.parse(JSON.stringify(store.user?.find((x: any) => x.id === e.id) ?? null))
   infoDialogUser.value = true
 }
 
@@ -197,6 +199,13 @@ function previewFiles(event: any) {
 //     addeduser.value = false
 //   }, 2000)
 // }
+function formatDate(dateString: any) {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${month}.${day}.${year}`;
+}
 watch(
   () => [
     newPassword.value.password,
@@ -399,8 +408,28 @@ watch(
 
       <Dialog v-model:visible="infoDialogUser" header="Инфа о пользователе" :style="{ width: '763px', height: '100vh' }"
         position="right" :modal="true" :draggable="false">
-        <span class="text-surface-500 dark:text-surface-400 block mb-8">Сюда выведем инфу о пользователе</span>
+        <div class="wrapperFromInfoUser">
 
+          <div class="namePage flex">
+            <div class="photoWrapper">
+              <div>
+                <div class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + product.img + ')' }"></div>
+              </div>
+              <div class="buttonFromPhoto">
+                <button>Чат</button>
+                <button>Совмещение</button>
+              </div>
+            </div>
+            <div>
+              <div>ФИО: {{ product.fullname }}</div>
+              <div>День рждения: {{ product.datebirth }}</div>
+              <div>Почта: {{ product.email }}</div>
+              <div>Номер телеона: {{ product.workphone }}</div>
+              <div>Должность: {{ product.positions }}</div>
+              <div>Отдел: {{ product.department }}</div>
+            </div>
+          </div>
+        </div>
         <!-- <div class="flex justify-end gap-2">
           <Button type="button" label="Закрыть" @click="infoDialogUser = false"></Button>
         </div> -->
@@ -415,3 +444,29 @@ watch(
     </div>
   </div>
 </template>
+<style scoped lang="scss">
+.wrapperFromInfoUser {
+  .photoWrapper {
+    display: flex;
+    flex-direction: column;
+
+    .buttonFromPhoto {
+      display: flex;
+      justify-content: space-around;
+
+      button {
+        padding: 10px;
+        background: #ccc;
+      }
+    }
+
+    .img {
+      border-radius: 16px;
+      min-height: 227px;
+      min-width: 227px;
+      margin-right: 10px;
+      background-size: cover;
+    }
+  }
+}
+</style>

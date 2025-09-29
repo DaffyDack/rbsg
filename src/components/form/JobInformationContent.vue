@@ -5,6 +5,7 @@ import Select from 'primevue/select'
 import Calendar from 'primevue/calendar'
 
 import { fetchDepartment, fetchPosts } from '../../http/userAPI.js'
+
 interface ItemPosts {
   post: string
 }
@@ -235,7 +236,7 @@ defineExpose({ CheckingJobInformationComponent })
           </div>
         </div>
       </div>
-      <button class="saveButton m-3" @click="addCombining">Добавить восмещение</button>
+      <button class="saveButton m-3" @click="addCombining">Добавить совмещение</button>
       <ul class="combining">
         <li v-for="(item, i) in form.combining" :key="i">
           <div>
