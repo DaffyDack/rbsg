@@ -108,7 +108,7 @@ const emit = defineEmits()
 
 const callParent = () => {
   emit('callParentMethod', form.value)
-  // clearForm()
+  clearForm()
 }
 
 type FilterKeysByValue<O, V> = keyof { [K in keyof O as O[K] extends V ? K : never]: O[K] }
@@ -222,18 +222,13 @@ maxDate.value.setFullYear(nextYear)
   <div>
     <div>
       <div class="group_form-control-five">
-        <div
-          class="form-control"
-          :class="{ error: errors.lastname, success: !errors.lastname && form.lastname != '' }"
-        >
+        <div class="form-control" :class="{ error: errors.lastname, success: !errors.lastname && form.lastname != '' }">
           <label for="last_name">Фамилия</label>
           <input type="text" v-model="form.lastname" id="last_name" placeholder="Фамилия" />
           <small v-if="errors.lastname">{{ errors.lastname }}</small>
         </div>
-        <div
-          class="form-control"
-          :class="{ error: errors.firstname, success: !errors.firstname && form.firstname != '' }"
-        >
+        <div class="form-control"
+          :class="{ error: errors.firstname, success: !errors.firstname && form.firstname != '' }">
           <label for="firstname">Имя</label>
           <input type="text" v-model="form.firstname" id="firstname" placeholder="Имя" />
           <small v-if="errors.firstname">{{ errors.firstname }}</small>
@@ -245,50 +240,26 @@ maxDate.value.setFullYear(nextYear)
         </div>
         <div class="form-control">
           <label for="middle_name">Пол</label>
-          <Select
-            v-model="form.gender"
-            id="middle_name"
-            :options="gender"
-            optionLabel="name"
-            placeholder="М"
-            class="w-full"
-          />
+          <Select v-model="form.gender" id="middle_name" :options="gender" optionLabel="name" placeholder="М"
+            class="w-full" />
         </div>
         <div class="form-control">
           <label for="birth_day">Дата рождения</label>
-          <Calendar
-            v-model="form.datebirth"
-            style="width: 100%"
-            id="birth_day"
-            placeholder="День рождения"
-            dateFormat="dd/mm/yy"
-            :minDate="minDate"
-            :maxDate="maxDate"
-            :manualInput="false"
-          />
+          <Calendar v-model="form.datebirth" style="width: 100%" id="birth_day" placeholder="День рождения"
+            dateFormat="dd/mm/yy" :minDate="minDate" :maxDate="maxDate" :manualInput="false" />
         </div>
       </div>
     </div>
     <div class="group_form-control-four">
       <div class="form-control">
         <label for="mobile_self">Мобильный телефон (личный)</label>
-        <InputMask
-          type="text"
-          mask="+7 999-999-9999"
-          id="mobile_self"
-          v-model="form.mobilephone"
-          placeholder="Мобильный телефон (личный)"
-        />
+        <InputMask type="text" mask="+7 999-999-9999" id="mobile_self" v-model="form.mobilephone"
+          placeholder="Мобильный телефон (личный)" />
       </div>
       <div class="form-control">
         <label for="mobile_work">Мобильный телефон (рабчий)</label>
-        <InputMask
-          type="text"
-          mask="+7 999-999-9999"
-          id="mobile_work"
-          v-model="form.workphone"
-          placeholder="Мобильный телефон (рабочий)"
-        />
+        <InputMask type="text" mask="+7 999-999-9999" id="mobile_work" v-model="form.workphone"
+          placeholder="Мобильный телефон (рабочий)" />
       </div>
       <div class="form-control">
         <label for="link_whatsapp">Ссылка на ватсам</label>
@@ -304,75 +275,39 @@ maxDate.value.setFullYear(nextYear)
         <label for="email_self">E-mail личный</label>
         <input type="text" id="email_self" placeholder="E-mail личный" />
       </div>
-      <div
-        class="form-control"
-        :class="{ error: errors.email, success: !errors.email && form.email != '' }"
-      >
+      <div class="form-control" :class="{ error: errors.email, success: !errors.email && form.email != '' }">
         <label for="email">Email</label>
         <input type="email" v-model="form.email" id="email" placeholder="Введите email" />
         <small v-if="errors.email">{{ errors.email }}</small>
       </div>
       <div class="form-control">
         <label for="work_location">Расположение рабочего места</label>
-        <input
-          type="text"
-          id="work_location"
-          v-model="form.locations"
-          placeholder="Расположение рабочего места"
-        />
+        <input type="text" id="work_location" v-model="form.locations" placeholder="Расположение рабочего места" />
       </div>
     </div>
     <div class="group_form-control-four">
-      <div
-        class="form-control"
-        :class="{ error: errors.password, success: !errors.password && form.password != '' }"
-      >
+      <div class="form-control" :class="{ error: errors.password, success: !errors.password && form.password != '' }">
         <label for="password">Пароль</label>
-        <Password
-          v-model="form.password"
-          id="password"
-          variant="filled"
-          placeholder="Введите пароль"
-          toggleMask
-        />
+        <Password v-model="form.password" id="password" variant="filled" placeholder="Введите пароль" toggleMask />
         <small v-if="errors.password">{{ errors.password }}</small>
       </div>
 
-      <div
-        class="form-control"
-        :class="{ error: errors.password2, success: !errors.password2 && form.password2 != '' }"
-      >
+      <div class="form-control"
+        :class="{ error: errors.password2, success: !errors.password2 && form.password2 != '' }">
         <label for="password2">Повторите пароль</label>
-        <input
-          type="password"
-          v-model="form.password2"
-          id="password2"
-          placeholder="Повторите пароль"
-        />
+        <input type="password" v-model="form.password2" id="password2" placeholder="Повторите пароль" />
         <small v-if="errors.password2">{{ errors.password2 }}</small>
       </div>
 
       <div class="form-control">
         <label for="selctRole">Роль пользователя</label>
-        <Select
-          v-model="form.choosing_role"
-          id="selctRole"
-          :options="cities"
-          optionLabel="name"
-          placeholder="USER"
-          class="w-full"
-        />
+        <Select v-model="form.choosing_role" id="selctRole" :options="cities" optionLabel="name" placeholder="USER"
+          class="w-full" />
       </div>
       <div class="form-control">
         <label for="assignRating">Присвоить рейтинг</label>
-        <Select
-          v-model="form.rating"
-          id="assignRating"
-          :options="rating"
-          optionLabel="name"
-          placeholder="1"
-          class="w-full"
-        />
+        <Select v-model="form.rating" id="assignRating" :options="rating" optionLabel="name" placeholder="1"
+          class="w-full" />
       </div>
     </div>
     <!-- Должностые обязанности, будут браться исходя из должности -->
@@ -381,10 +316,7 @@ maxDate.value.setFullYear(nextYear)
       <textarea type="text" v-model="form.jobfunctions" id="jobfunctions"
         placeholder="Должностные обязанности"></textarea>
     </div> -->
-    <div
-      class="form-control"
-      :class="{ error: errors.file, success: !errors.file && form.file != '' }"
-    >
+    <div class="form-control" :class="{ error: errors.file, success: !errors.file && form.file != '' }">
       <label for="selctFile">Загрузить фото</label>
       <input type="file" ref="upload" id="selctFile" @change="previewFiles" />
       <small v-if="errors.file">{{ errors.file }}</small>

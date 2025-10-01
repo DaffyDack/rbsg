@@ -4,7 +4,7 @@ import { RouterLink } from 'vue-router'
 import { useCounterStore } from '../stores/counter'
 import { useRouter } from 'vue-router'
 
- 
+
 const emit = defineEmits(['counterEvent'])
 const router = useRouter()
 const store = useCounterStore()
@@ -45,13 +45,15 @@ function ExitStatus() {
         style="width: 96px; height: 96px; border-radius: 100%; margin: 0 auto">
         <div class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + avatar.img + ')' }"></div>
       </div>
-      <li @click="toggleSidebar">
+      <!-- <li>
         <RouterLink to="/">
           <div class="flex items-center justify-center">
             <i class="pi pi-list-check"></i>
           </div>
           <span>Мои проекты</span>
         </RouterLink>
+      </li> -->
+      <li>
         <RouterLink to="/CreatingDepartment">
           <div class="flex items-center justify-center">
             <i class="pi pi-pencil"></i>
@@ -67,14 +69,14 @@ function ExitStatus() {
           <span>Мои задачи</span>
         </RouterLink>
       </li> -->
-      <li @click="toggleSidebar">
+      <!-- <li>
         <RouterLink to="/SettingProfile">
           <div class="flex items-center justify-center">
             <i class="pi pi-user"></i>
           </div>
           <span>Профиль</span>
         </RouterLink>
-      </li>
+      </li> -->
       <!-- <li>
         <RouterLink to="/PyramidManagement">
           <div class="flex items-center justify-center">
@@ -83,7 +85,7 @@ function ExitStatus() {
           <span>Пирамида управления</span>
         </RouterLink>
       </li> -->
-      <li @click="toggleSidebar">
+      <li>
         <RouterLink to="/PyramidTree">
           <div class="flex items-center justify-center">
             <i class="pi pi-share-alt"></i>
@@ -91,7 +93,7 @@ function ExitStatus() {
           <span>Пирамида древом</span>
         </RouterLink>
       </li>
-      <li @click="toggleSidebar">
+      <li>
         <RouterLink to="/UsersList">
           <div class="flex items-center justify-center">
             <i class="pi pi-users"></i>
@@ -99,15 +101,15 @@ function ExitStatus() {
           <span>Пользователи</span>
         </RouterLink>
       </li>
-      <li v-if="name.role === 'ADMIN'" @click="toggleSidebar">
+      <!-- <li v-if="name.role === 'ADMIN'" @click="toggleSidebar">
         <RouterLink to="/PageTest">
           <div class="flex items-center justify-center">
             <i class="pi pi-cog"></i>
           </div>
           <span>Для тестов</span>
         </RouterLink>
-      </li>
-      <li @click="toggleSidebar">
+      </li> -->
+      <li>
         <RouterLink to="/PriceBox">
           <div class="flex items-center justify-center">
             <i class="pi pi-user"></i>

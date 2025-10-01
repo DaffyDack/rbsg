@@ -13,8 +13,10 @@ interface ItemPosts {
 const props = defineProps(['check'])
 const departments = ref()
 const posts = ref<ItemPosts[]>([])
+const usersString = ref()
 
 onMounted(() => {
+  usersString.value = JSON.parse(localStorage.getItem('users') ?? '[]')
   fetchDepartment().then((data) => {
     departments.value = data
   })
@@ -37,6 +39,7 @@ interface comb {
 interface Form {
   company: string
   brand: string
+  director: string
   department: string
   positions: string
   dateEmployment: string
@@ -59,6 +62,7 @@ interface Form {
 const form = ref<Form>({
   company: '',
   brand: '',
+  director: '',
   department: '',
   positions: '',
   dateEmployment: '',
@@ -110,9 +114,21 @@ function isEmpty(obj: Record<string, string>) {
   const hasEmptyValue = Object.values(obj).every((value) => value === '')
   if (hasEmptyValue) {
     emit('callParentMethod', form.value)
+    clearForm()
   } else {
     emit('callErrorProfile', 'JobInformationContent')
   }
+}
+
+function clearForm() {
+  Object.keys(form.value).forEach((key) => {
+    const typedKey = key as keyof Form;
+    if (Array.isArray(form.value[typedKey])) {
+      form.value[typedKey] = [] as any;
+    } else {
+      form.value[typedKey] = '' as any;
+    }
+  });
 }
 
 const validateForm = () => {
@@ -187,9 +203,9 @@ defineExpose({ CheckingJobInformationComponent })
             placeholder="Должность" class="w-full" />
         </div>
       </div>
-      <div class="group_form-control-tree">
+      <div class="group_form-control-four">
         <div class="form-control">
-          <label for="jobInformationDateOfficialEmployment">Дата официального трудоустройства</label>
+          <label for="jobInformationDateOfficialEmployment">Дата оф.труд.</label>
           <Calendar type="text" v-model="form.dateEmployment" style="width: 100%"
             id="jobInformationDateOfficialEmployment" placeholder="Дата официального трудоустройства" />
         </div>
@@ -201,9 +217,14 @@ defineExpose({ CheckingJobInformationComponent })
           <small v-if="errors.startDate">{{ errors.startDate }}</small>
         </div>
         <div class="form-control">
-          <label for="jobInformationProbationPeriodUntil">Испытательный срок до</label>
+          <label for="jobInformationProbationPeriodUntil">Исп. срок до</label>
           <Calendar v-model="form.probationPeriod" style="width: 100%" id="jobInformationProbationPeriodUntil"
             placeholder="Испытательный срок до" dateFormat="dd/mm/yy" />
+        </div>
+        <div class="form-control">
+          <label for="director">Руководитель</label>
+          <Select v-model="form.director" id="director" filter :options="usersString" optionLabel="fullname"
+            placeholder="Руководитель" class="w-full" />
         </div>
       </div>
       <div class="italic">Совмещение</div>
@@ -236,7 +257,7 @@ defineExpose({ CheckingJobInformationComponent })
           </div>
         </div>
       </div>
-      <button class="saveButton m-3" @click="addCombining">Добавить совмещение</button>
+      <button class="saveButton m-3 text-white" @click="addCombining">Добавить совмещение</button>
       <ul class="combining">
         <li v-for="(item, i) in form.combining" :key="i">
           <div>

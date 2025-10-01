@@ -45,21 +45,23 @@ interface formDataTest {
   jobfunctions?: string
   fullname?: string
   combining?: string
+  rating?: string
+  director?: string
 }
 
 const userTabs: Ref<UserTab[]> = ref([
   { component: 'ProfileContent', title: 'Профиль', errors: false },
   { component: 'JobInformationContent', title: 'Данные о работе', errors: false },
-  { component: '', title: 'Контакты рабочие', errors: false },
-  { component: '', title: 'Личные контакты', errors: false },
-  { component: '', title: 'Паспортные данные', errors: false },
-  { component: '', title: 'Прочие личные данные', errors: false },
-  { component: '', title: 'Кадровые данные', errors: false },
-  { component: '', title: 'Эффективность работы', errors: false },
-  { component: '', title: 'Знания и аттестация', errors: false },
-  { component: '', title: 'HR профиль', errors: false },
-  { component: '', title: 'Материальная ответственность', errors: false },
-  { component: '', title: 'Заработная плата', errors: false },
+  // { component: '', title: 'Контакты рабочие', errors: false },
+  // { component: '', title: 'Личные контакты', errors: false },
+  // { component: '', title: 'Паспортные данные', errors: false },
+  // { component: '', title: 'Прочие личные данные', errors: false },
+  // { component: '', title: 'Кадровые данные', errors: false },
+  // { component: '', title: 'Эффективность работы', errors: false },
+  // { component: '', title: 'Знания и аттестация', errors: false },
+  // { component: '', title: 'HR профиль', errors: false },
+  // { component: '', title: 'Материальная ответственность', errors: false },
+  // { component: '', title: 'Заработная плата', errors: false },
 ])
 const formDataTest = ref<formDataTest>({
   firstname: '',
@@ -80,14 +82,12 @@ const formDataTest = ref<formDataTest>({
   jobfunctions: '',
   fullname: '',
   combining: '',
+  rating: '',
+  director: '',
 })
 const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
 const addeduser = ref<boolean>(false)
-
-const working_contact = ref({
-  working_contact_workphone: '111!!',
-})
 
 function set() {
   setTimeout(() => {
@@ -101,8 +101,11 @@ const RegistrationUser = async (formData: any) => {
     condition.value = false
     addeduser.value = true
     set()
-    fetchUzers().then((data) => store.registrationCompleted(data))
-    fetchUzers().then((data) => localStorage.setItem('users', JSON.stringify(data)))
+    fetchUzers().then((data) => {
+      store.registrationCompleted(data)
+      localStorage.setItem('users', JSON.stringify(data))
+    })
+    // fetchUzers().then((data) => localStorage.setItem('users', JSON.stringify(data)))
     AllowCleaning.value = false
   } catch (e: any) {
     messageCondition.value = e.response.data.message
@@ -126,6 +129,7 @@ const handleParentMethod = (e: any, tr: boolean) => {
   // formDataTest.value.workphone = working_contact.value.working_contact_workphone
   formDataTest.value.workphone = e.workphone
   formDataTest.value.jobfunctions = e.jobfunctions
+  formDataTest.value.rating = e.rating.name
 }
 const JobInformationMethod = (e: any) => {
   errorProfile('JobInformationContent', true)
@@ -135,6 +139,7 @@ const JobInformationMethod = (e: any) => {
   formDataTest.value.department = e.department.department
   formDataTest.value.code = e.department.code
   formDataTest.value.combining = JSON.stringify(e.combining)
+  formDataTest.value.director = e.director.fullname
 }
 
 const createNewUser = () => {
@@ -194,30 +199,7 @@ const errorProfile = (e: any, tr: boolean) => {
             <TabPanel value="3">
               <PersonalContactsComponent />
             </TabPanel>
-            <TabPanel value="4">
-              <PassportData />
-            </TabPanel>
-            <TabPanel value="5">
-              <p class="m-0">At vero eos et accusamus</p>
-            </TabPanel>
-            <TabPanel value="6">
-              <p class="m-0">At vero eos et accusamus</p>
-            </TabPanel>
-            <TabPanel value="7">
-              <p class="m-0">At vero eos et accusamus</p>
-            </TabPanel>
-            <TabPanel value="8">
-              <p class="m-0">At vero eos et accusamus</p>
-            </TabPanel>
-            <TabPanel value="9">
-              <p class="m-0">At vero eos et accusamus</p>
-            </TabPanel>
-            <TabPanel value="10">
-              <p class="m-0">At vero eos et accusamus</p>
-            </TabPanel>
-            <TabPanel value="11">
-              <p class="m-0">At vero eos et accusamus</p>
-            </TabPanel>
+
           </TabPanels>
         </Tabs>
       </div>
@@ -227,7 +209,7 @@ const errorProfile = (e: any, tr: boolean) => {
           <div v-if="condition" class="text-red-600 mb-5">{{ messageCondition }}</div>
         </div>
         <button class="saveButton" @click="createNewUser">Добавить пользователя</button>
-        <button class="cancelButton">Отмена</button>
+        <!-- <button class="cancelButton">Отмена</button> -->
       </div>
     </div>
   </div>
@@ -289,6 +271,7 @@ const errorProfile = (e: any, tr: boolean) => {
       min-width: 280px;
       border-radius: 16px;
       margin-right: 15px;
+      font-size: 15px;
     }
 
     .cancelButton {

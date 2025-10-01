@@ -23,7 +23,9 @@ const User = sequelize.define('user', {
   datebirth: { type: DataTypes.STRING, defaultValue: 'dateBirth' },
   code: { type: DataTypes.STRING, defaultValue: '0' },
   img: { type: DataTypes.STRING, allowNull: false },
-  combining: { type: DataTypes.TEXT, defaultValue: 'Нет совмещений' },
+  combining: { type: DataTypes.TEXT, defaultValue: '[]' },
+  rating: { type: DataTypes.STRING, defaultValue: '1' },
+  director: { type: DataTypes.STRING, defaultValue: 'some' },
 })
 
 const Type = sequelize.define('type', {

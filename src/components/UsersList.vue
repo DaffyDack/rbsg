@@ -15,10 +15,12 @@ import Select from 'primevue/select'
 import Password from 'primevue/password'
 import Calendar from 'primevue/calendar'
 import InputMask from 'primevue/inputmask'
+
 import { fetchDepartment, fetchPosts, changeInfoUser } from '../http/userAPI.js'
 import { checkEmail, checkLength } from '../utils/helper.js'
 const store = useUsersStore()
 const storeUser = useCounterStore()
+const usersString = ref()
 const name = ref(JSON.parse(localStorage.getItem('role') || ''))
 const currentDate = new Date();
 const year90YearsAgo = currentDate.getFullYear() - 90;
@@ -38,6 +40,14 @@ interface Email {
 interface Errors {
   password: string
   password2: string
+}
+interface comb {
+  id: number
+  post: string
+  company: string
+  department: string
+  brand: string
+  dataCombining: string
 }
 interface Form {
   department: ''
@@ -125,8 +135,41 @@ const newPassword = ref({
 const newEmail = ref<Email>({
   email: ''
 })
+interface str {
+  dataCombining: string
+}
+const combiningForm = ref({
+  post: '',
+  department: '',
+  company: '',
+  brand: '',
+  dataCombining: ''
+})
+const kompany = ref([
+  { name: 'РБС ГРУПП', code: 'РБС ГРУПП' },
+  { name: 'КРАФТЕР', code: 'КРАФТЕР' },
+  { name: 'РБС ГРУПП / КРАФТЕР', code: 'РБС ГРУПП / КРАФТЕР' },
+])
+const brand = ref([
+  { name: 'КРАФТЕР', code: 'КРАФТЕР' },
+  { name: 'АТЕРИ', code: 'АТЕРИ' },
+])
+const addCombining = () => {
+  const newObject = {
+    id: new Date().valueOf(),
+    post: combiningForm.value.post,
+    department: combiningForm.value.department,
+    company: combiningForm.value.company,
+    brand: combiningForm.value.brand,
+    dataCombining: formatDate(combiningForm.value.dataCombining),
+  }
+  product.value.combining.push(newObject)
+  Object.keys(combiningForm.value).forEach(key => {
+    combiningForm.value[key as keyof typeof combiningForm.value] = '';
+  });
+}
 onMounted(() => {
-  // usersString.value = JSON.parse(localStorage.getItem('users') ?? '[]')
+  usersString.value = JSON.parse(localStorage.getItem('users') ?? '[]')
   fetchDepartment().then((data) => {
     departments.value = data
   })
@@ -146,6 +189,7 @@ function confirmInfoPositions(e: any) {
 }
 function confirmInfoUser(e: any) {
   product.value = JSON.parse(JSON.stringify(store.user?.find((x: any) => x.id === e.id) ?? null))
+  product.value.combining = JSON.parse(product.value.combining)
   infoDialogUser.value = true
 }
 
@@ -170,8 +214,11 @@ const editUser = async () => {
   newObject.append('positions', product.value.positions.post ?? product.value.positions,)
   newObject.append('role', product.value.role.name ?? product.value.role,)
   newObject.append('img', product.value.img,)
+  newObject.append('rating', product.value.rating.name ?? product.value.rating,)
   newObject.append('email', newEmail.value.email == product.value.email ? '' : newEmail.value.email,)
   newObject.append('password', newPassword.value.password,)
+  newObject.append('director', product.value.director.fullname ?? product.value.director,)
+  newObject.append('combining', JSON.stringify(product.value.combining),)
   newObject.append('fullname', product.value.firstname + ' ' + product.value.lastname + ' ' + product.value.patronymic)
   try {
     const response = await changeInfoUser(newObject)
@@ -205,6 +252,9 @@ function formatDate(dateString: any) {
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
   return `${month}.${day}.${year}`;
+}
+const deleteCombining = (id: any) => {
+  product.value.combining = product.value.combining.filter((x: { id: any }) => x.id != id)
 }
 watch(
   () => [
@@ -332,8 +382,9 @@ watch(
               <Select v-model="product.positions" filter id="jobInformationPost" :options="posts" optionLabel="post"
                 :placeholder="product.positions" class="w-full" />
             </div>
+
           </div>
-          <div class="group_form-control-tree">
+          <div class="group_form-control-four">
             <div class="form-control">
               <label for="email_self">E-mail личный</label>
               <input type="text" id="email_self" placeholder="E-mail личный" />
@@ -343,9 +394,14 @@ watch(
               <input type="email" v-model="newEmail.email" id="email" :placeholder="product.email" />
             </div>
             <div class="form-control">
-              <label for="work_location">Расположение рабочего места</label>
+              <label for="work_location">Рабочее место</label>
               <input type="text" id="work_location" v-model="product.locations"
                 placeholder="Расположение рабочего места" />
+            </div>
+            <div class="form-control">
+              <label for="director">Руководитель</label>
+              <Select v-model="product.director" id="director" filter :options="usersString" optionLabel="fullname"
+                :placeholder="product.director" class="w-full" />
             </div>
           </div>
           <div class="group_form-control-four">
@@ -375,8 +431,8 @@ watch(
             </div>
             <div class="form-control">
               <label for="assignRating">Присвоить рейтинг</label>
-              <Select v-model="product.rating" id="assignRating" :options="rating" optionLabel="name" placeholder="1"
-                class="w-full" />
+              <Select v-model="product.rating" id="assignRating" :options="rating" optionLabel="name"
+                :placeholder="product.rating" class="w-full" />
             </div>
           </div>
           <div>
@@ -388,14 +444,50 @@ watch(
             <label for="selctFile">Загрузить фото</label>
             <input type="file" ref="upload" id="selctFile" @change="previewFiles" />
           </div>
+
           <div class="form-control">
             <label for="selctFile">Совмещение</label>
-            <ul>
+            <div class="special">
+              <div class="group_form-control-five-evenly">
+                <div class="form-control">
+                  <label for="jobInformationPostCombining" id="posts">Должность</label>
+                  <Select v-model="combiningForm.post" placeholder="Должность" id="posts" :options="posts"
+                    optionLabel="post" class="w-full" />
+                </div>
+                <div class="form-control">
+                  <label for="jobInformationCompanyCombining">Компания</label>
+                  <Select v-model="combiningForm.company" id="jobInformationCompanyCombining" :options="kompany"
+                    optionLabel="name" placeholder="Компания" class="w-full" />
+                </div>
+                <div class="form-control">
+                  <label for="jobInformationBrandCombining">Бренд</label>
+                  <Select v-model="combiningForm.brand" id="jobInformationBrandCombining" :options="brand"
+                    optionLabel="name" placeholder="Бренд" class="w-full" />
+                </div>
+                <div class="form-control">
+                  <label for="jobInformationDepartmentCombining">Отдел</label>
+                  <Select v-model="combiningForm.department" filter id="jobInformationDepartmentCombining"
+                    :options="departments" optionLabel="department" placeholder="Отдел" class="w-full" />
+                </div>
+                <div class="form-control">
+                  <label for="jobInformationStartDateCombination">Дата начала совмещения</label>
+                  <Calendar v-model="combiningForm.dataCombining as any" style="width: 100%"
+                    id="jobInformationStartDateCombination" dateFormat="dd.mm.yy"
+                    placeholder="Дата начала совмещения" />
+                </div>
+              </div>
+            </div>
+            <button class="saveButton m-3 text-white" @click="addCombining">Добавить совмещение</button>
+            <ul class="combining">
               <li v-for="(item, i) in product.combining" :key="i">
-                <div>{{ item.department.department }}</div>
-                <div>{{ item.brand.name }}</div>
-                <div>{{ item.company.name }}</div>
-                <div>{{ item.dataCombining }}</div>
+                <div>Должность: {{ item.post.post }}</div>
+                <div>Отдел: {{ item.department.department }}</div>
+                <div>Компания: {{ item.company.name }}</div>
+                <div>Бренд: {{ item.brand.name }}</div>
+                <div>Дата начала совмещение: {{ item.dataCombining }}</div>
+                <div>
+                  <button @click="deleteCombining(item.id)">X</button>
+                </div>
               </li>
             </ul>
           </div>
@@ -413,21 +505,48 @@ watch(
           <div class="namePage flex">
             <div class="photoWrapper">
               <div>
-                <div class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + product.img + ')' }"></div>
+                <div class="img" :style="{ backgroundImage: 'url(' + imgW.imgUrl + '/' + product.img + ')' }">
+                  <div v-if="product.role === 'ADMIN'" class="admin">Администратор</div>
+                </div>
               </div>
               <div class="buttonFromPhoto">
                 <button>Чат</button>
-                <button>Совмещение</button>
+                <button>Совещание</button>
               </div>
             </div>
             <div>
               <div>ФИО: {{ product.fullname }}</div>
-              <div>День рждения: {{ product.datebirth }}</div>
+              <div>День рждения: {{ formatDate(product.datebirth) }}</div>
               <div>Почта: {{ product.email }}</div>
-              <div>Номер телеона: {{ product.workphone }}</div>
+              <div>Номер телфона: {{ product.workphone }}</div>
+              <div>Номер телфона личный: {{ product.mobilephone }}</div>
               <div>Должность: {{ product.positions }}</div>
               <div>Отдел: {{ product.department }}</div>
+              <div>Руководитель: {{ product.director }}</div>
+              <div>Рейтинг: {{ product.rating }}</div>
             </div>
+          </div>
+          <div class="additionalInformation">
+            <h1 class="mb-4">Дополнительная информация</h1>
+            <div>
+              <div>Совмещение:
+                <ul>
+                  <li v-for="(item, index) in product.combining" :key="index">
+                    <div>Должность: {{ item.post.post }}</div>
+                    <div>Отдел: {{ item.department.department }}</div>
+                    <div>Компания: {{ item.company.name }}</div>
+                    <div>Бренд: {{ item.brand.name }}</div>
+                    <div>Дата начала совмещение: {{ item.dataCombining }}</div>
+                  </li>
+                </ul>
+              </div>
+              <div>Рабочее место: {{ product.locations }}</div>
+              <div>Рабочая группа: {{ product.brand }}</div>
+            </div>
+          </div>
+          <div class="jobfunctions">
+            <h1 class="mb-4">Должностные обязанности</h1>
+            <p>{{ product.jobfunctions }}</p>
           </div>
         </div>
         <!-- <div class="flex justify-end gap-2">
@@ -445,27 +564,81 @@ watch(
   </div>
 </template>
 <style scoped lang="scss">
-.wrapperFromInfoUser {
-  .photoWrapper {
+.combining {
+  & li {
     display: flex;
     flex-direction: column;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    margin: 5px 0;
+    position: relative;
 
-    .buttonFromPhoto {
-      display: flex;
-      justify-content: space-around;
+    & button {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      padding: 10px 30px;
+      background: #ee4d4d;
+      border-radius: 5px;
+    }
+  }
+}
 
-      button {
-        padding: 10px;
-        background: #ccc;
-      }
+.wrapperFromInfoUser {
+  color: #fff;
+
+  .namePage,
+  .additionalInformation,
+  .jobfunctions {
+    background: #5c5b5b;
+    padding: 15px;
+    border-radius: 16px;
+    margin-bottom: 10px;
+
+    li {
+      padding: 5px;
+      margin: 3px;
+      border: 1px solid #fff;
     }
 
-    .img {
-      border-radius: 16px;
-      min-height: 227px;
-      min-width: 227px;
+    .photoWrapper {
+      display: flex;
+      flex-direction: column;
       margin-right: 10px;
-      background-size: cover;
+
+      .buttonFromPhoto {
+        display: flex;
+        justify-content: space-around;
+
+        button {
+          padding: 10px;
+          margin: 10px;
+          background: #ccc;
+          border-radius: 16px;
+          width: 100%;
+        }
+      }
+
+      .img {
+        border-radius: 16px;
+        min-height: 227px;
+        min-width: 227px;
+        background-size: cover;
+        position: relative;
+
+        .admin {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          display: block;
+          background: #178FFF;
+          background: linear-gradient(45deg, rgba(23, 143, 255, 1) 0%, rgba(255, 51, 228, 1) 100%);
+          padding: 3px 20px;
+          border-radius: 16px;
+          color: #fff;
+        }
+      }
     }
   }
 }

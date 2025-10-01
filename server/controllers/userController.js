@@ -114,6 +114,8 @@ class UserController {
         fullname,
         code,
         combining,
+        rating,
+        director,
       } = req.body
 
       const { img } = req.files // Дефолтное значение для img
@@ -156,6 +158,8 @@ class UserController {
         code: newCode,
         jobfunctions,
         combining,
+        rating,
+        director,
       })
       await Admins.create({ userId: user.id })
       // const WC = await WorkingContacts.create({
@@ -183,6 +187,8 @@ class UserController {
         user.fullname,
         user.code,
         user.combining,
+        user.rating,
+        user.director,
         // WC?.workphone,
       )
 
@@ -208,6 +214,9 @@ class UserController {
         role,
         password,
         email,
+        rating,
+        combining,
+        director,
       } = req.body
 
       let fileName = false
@@ -238,6 +247,9 @@ class UserController {
         department,
         positions,
         role,
+        rating,
+        combining,
+        director,
       }
       if (fileName) updatedData.img = fileName
       if (hashPassword) updatedData.password = hashPassword
@@ -262,6 +274,9 @@ class UserController {
         updatedCount.role,
         updatedCount?.email,
         updatedCount?.img,
+        updatedCount?.rating,
+        updatedCount?.combining,
+        updatedCount?.director,
       )
       return res.json({ token })
     } catch (error) {
@@ -324,6 +339,9 @@ class UserController {
       req.user.img,
       req.user.fullname,
       req.user.code,
+      req.user.rating,
+      req.user.combining,
+      req.user.director,
       // req.WC?.workphone,
     )
     return res.json({ token })

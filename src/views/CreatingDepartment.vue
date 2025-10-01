@@ -471,6 +471,7 @@ watch(
   min-width: 280px;
   border-radius: 16px;
   margin-right: 15px;
+  font-size: 15px;
 }
 
 .department {
