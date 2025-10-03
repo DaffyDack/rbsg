@@ -114,7 +114,7 @@ function isEmpty(obj: Record<string, string>) {
   const hasEmptyValue = Object.values(obj).every((value) => value === '')
   if (hasEmptyValue) {
     emit('callParentMethod', form.value)
-    clearForm()
+    // clearForm()
   } else {
     emit('callErrorProfile', 'JobInformationContent')
   }
@@ -273,6 +273,7 @@ defineExpose({ CheckingJobInformationComponent })
         </li>
       </ul>
     </div>
+    <button @click="clearForm()">Очистить форму</button>
   </div>
 </template>
 <style scoped lang="scss">

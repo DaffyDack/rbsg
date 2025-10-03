@@ -217,6 +217,7 @@ class UserController {
         rating,
         combining,
         director,
+        status,
       } = req.body
 
       let fileName = false
@@ -250,6 +251,7 @@ class UserController {
         rating,
         combining,
         director,
+        status,
       }
       if (fileName) updatedData.img = fileName
       if (hashPassword) updatedData.password = hashPassword
@@ -277,6 +279,7 @@ class UserController {
         updatedCount?.rating,
         updatedCount?.combining,
         updatedCount?.director,
+        updatedCount?.status,
       )
       return res.json({ token })
     } catch (error) {
@@ -289,6 +292,9 @@ class UserController {
     const WC = await WorkingContacts.findOne({ where: { userId: user.id } })
     if (!user) {
       return next(ApiError.internal('пользователь не найден'))
+    }
+    if (user.status === 'Уволен') {
+      return next(ApiError.internal('Сотрудник уволен!'))
     }
     let comparePassword = bcrypt.compareSync(password, user.password)
     if (!comparePassword) {

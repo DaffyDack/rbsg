@@ -26,6 +26,7 @@ const User = sequelize.define('user', {
   combining: { type: DataTypes.TEXT, defaultValue: '[]' },
   rating: { type: DataTypes.STRING, defaultValue: '1' },
   director: { type: DataTypes.STRING, defaultValue: 'some' },
+  status: { type: DataTypes.STRING, defaultValue: 'Активен' },
 })
 
 const Type = sequelize.define('type', {

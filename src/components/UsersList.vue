@@ -154,6 +154,11 @@ const brand = ref([
   { name: 'КРАФТЕР', code: 'КРАФТЕР' },
   { name: 'АТЕРИ', code: 'АТЕРИ' },
 ])
+const status = ref([
+  { name: 'Активет' },
+  { name: 'В отпуске' },
+  { name: 'Уволен' },
+])
 const addCombining = () => {
   const newObject = {
     id: new Date().valueOf(),
@@ -213,6 +218,7 @@ const editUser = async () => {
   newObject.append('department', product.value.department.department ?? product.value.department,)
   newObject.append('positions', product.value.positions.post ?? product.value.positions,)
   newObject.append('role', product.value.role.name ?? product.value.role,)
+  newObject.append('status', product.value.status.name ?? product.value.status,)
   newObject.append('img', product.value.img,)
   newObject.append('rating', product.value.rating.name ?? product.value.rating,)
   newObject.append('email', newEmail.value.email == product.value.email ? '' : newEmail.value.email,)
@@ -304,6 +310,7 @@ watch(
           </Column>
           <Column field="email" header="Email" sortable></Column>
           <Column field="role" header="Роль" sortable></Column>
+          <Column field="status" header="Статус" sortable></Column>
           <Column field="positions" header="Должность" sortable>
             <template #body="slotProps">
               <div @click="confirmInfoPositions(slotProps.data)">
@@ -444,7 +451,11 @@ watch(
             <label for="selctFile">Загрузить фото</label>
             <input type="file" ref="upload" id="selctFile" @change="previewFiles" />
           </div>
-
+          <div class="form-control">
+            <label for="status">Статус сотрудника</label>
+            <Select v-model="product.status" id="assignRating" :options="status" optionLabel="name"
+              :placeholder="product.status" class="w-full" />
+          </div>
           <div class="form-control">
             <label for="selctFile">Совмещение</label>
             <div class="special">

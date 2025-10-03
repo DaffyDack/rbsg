@@ -108,7 +108,7 @@ const emit = defineEmits()
 
 const callParent = () => {
   emit('callParentMethod', form.value)
-  clearForm()
+  // clearForm()
 }
 
 type FilterKeysByValue<O, V> = keyof { [K in keyof O as O[K] extends V ? K : never]: O[K] }
@@ -321,6 +321,7 @@ maxDate.value.setFullYear(nextYear)
       <input type="file" ref="upload" id="selctFile" @change="previewFiles" />
       <small v-if="errors.file">{{ errors.file }}</small>
     </div>
+    <button @click="clearForm()">Очистить форму</button>
   </div>
 </template>
 

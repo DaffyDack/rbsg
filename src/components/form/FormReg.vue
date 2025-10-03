@@ -47,6 +47,7 @@ interface formDataTest {
   combining?: string
   rating?: string
   director?: string
+  company?: string
 }
 
 const userTabs: Ref<UserTab[]> = ref([
@@ -84,6 +85,7 @@ const formDataTest = ref<formDataTest>({
   combining: '',
   rating: '',
   director: '',
+  company: '',
 })
 const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
@@ -140,6 +142,7 @@ const JobInformationMethod = (e: any) => {
   formDataTest.value.code = e.department.code
   formDataTest.value.combining = JSON.stringify(e.combining)
   formDataTest.value.director = e.director.fullname
+  formDataTest.value.company = e.company.name
 }
 
 const createNewUser = () => {
