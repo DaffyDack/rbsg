@@ -48,21 +48,12 @@ interface formDataTest {
   rating?: string
   director?: string
   company?: string
+  brand?: string
 }
 
 const userTabs: Ref<UserTab[]> = ref([
   { component: 'ProfileContent', title: 'Профиль', errors: false },
   { component: 'JobInformationContent', title: 'Данные о работе', errors: false },
-  // { component: '', title: 'Контакты рабочие', errors: false },
-  // { component: '', title: 'Личные контакты', errors: false },
-  // { component: '', title: 'Паспортные данные', errors: false },
-  // { component: '', title: 'Прочие личные данные', errors: false },
-  // { component: '', title: 'Кадровые данные', errors: false },
-  // { component: '', title: 'Эффективность работы', errors: false },
-  // { component: '', title: 'Знания и аттестация', errors: false },
-  // { component: '', title: 'HR профиль', errors: false },
-  // { component: '', title: 'Материальная ответственность', errors: false },
-  // { component: '', title: 'Заработная плата', errors: false },
 ])
 const formDataTest = ref<formDataTest>({
   firstname: '',
@@ -86,6 +77,7 @@ const formDataTest = ref<formDataTest>({
   rating: '',
   director: '',
   company: '',
+  brand: '',
 })
 const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
@@ -127,7 +119,7 @@ const handleParentMethod = (e: any, tr: boolean) => {
   formDataTest.value.role = e.choosing_role.name
   formDataTest.value.img = e.file
   formDataTest.value.locations = e.locations
-  formDataTest.value.fullname = e.firstname + ' ' + e.lastname + ' ' + e.patronymic
+  formDataTest.value.fullname = e.lastname + ' ' + e.firstname + ' ' + e.patronymic
   // formDataTest.value.workphone = working_contact.value.working_contact_workphone
   formDataTest.value.workphone = e.workphone
   formDataTest.value.jobfunctions = e.jobfunctions
@@ -143,6 +135,7 @@ const JobInformationMethod = (e: any) => {
   formDataTest.value.combining = JSON.stringify(e.combining)
   formDataTest.value.director = e.director.fullname
   formDataTest.value.company = e.company.name
+  formDataTest.value.brand = e.brand.name
 }
 
 const createNewUser = () => {
@@ -231,10 +224,20 @@ const errorProfile = (e: any, tr: boolean) => {
 }
 
 .wrapper_setting_profile {
-  background: #ffffffe9;
+  background: #101619;
   padding: 32px;
   border-radius: 24px;
   margin-top: 25px;
+
+  .p-tab-active {
+    color: rgba(255, 255, 255, 0.87);
+  }
+
+  .p-tabpanels {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+
 
   .card {
     border-radius: 16px;
@@ -269,7 +272,8 @@ const errorProfile = (e: any, tr: boolean) => {
     padding: 0;
 
     .saveButton {
-      background: #06a80b;
+      background: #178FFF;
+      background: linear-gradient(45deg, rgba(23, 143, 255, 1) 0%, rgba(255, 51, 228, 1) 100%);
       min-height: 42px;
       min-width: 280px;
       border-radius: 16px;

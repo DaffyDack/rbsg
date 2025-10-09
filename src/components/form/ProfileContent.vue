@@ -54,6 +54,7 @@ interface Errors {
   password: string
   password2: string
   file: string
+  size: string
 }
 
 const form = ref<Form>({
@@ -81,6 +82,7 @@ const errors = ref<Errors>({
   password: '',
   password2: '',
   file: '',
+  size: ''
 })
 
 const cities = ref([
@@ -123,6 +125,7 @@ function isKeyForValue<T, O>(
 
 function clearForm() {
   upload.value.value = null
+  form.value.file = ''
   Object.keys(form.value).forEach((key) => {
     if (isKeyForValue(key, form.value, (v) => typeof v === 'string')) {
       form.value[key] = ''
@@ -165,8 +168,13 @@ function isEmpty(obj: Record<string, string>) {
   }
 }
 function previewFiles(event: any) {
-  console.log(event.target.files[0])
-  form.value.file = event.target.files[0]
+  console.log(event.target.files[0], event.target.files[0].size)
+  if (event.target.files[0].size > 1500000) {
+    errors.value.size = 'Рзмер больше чем 1.5 Мб'
+  } else {
+    errors.value.size = ''
+    form.value.file = event.target.files[0]
+  }
 }
 
 const CheckingProfileComponent = () => {
@@ -186,6 +194,8 @@ watch(
   () => {
     if (form.value.file != '') {
       errors.value.file = ''
+    } else {
+      errors.value.size = ''
     }
     if (form.value.lastname != '') {
       errors.value.lastname = ''
@@ -316,10 +326,13 @@ maxDate.value.setFullYear(nextYear)
       <textarea type="text" v-model="form.jobfunctions" id="jobfunctions"
         placeholder="Должностные обязанности"></textarea>
     </div> -->
-    <div class="form-control" :class="{ error: errors.file, success: !errors.file && form.file != '' }">
+    <div class="form-control"
+      :class="{ error: errors.file || errors.size, success: !errors.file && form.file != '' || !errors.size && form.size != '' }">
       <label for="selctFile">Загрузить фото</label>
       <input type="file" ref="upload" id="selctFile" @change="previewFiles" />
-      <small v-if="errors.file">{{ errors.file }}</small>
+      <small v-if="errors.size">{{ errors.size }}</small>
+      <small v-else="errors.file">{{ errors.file }}</small>
+      <div></div>
     </div>
     <button @click="clearForm()">Очистить форму</button>
   </div>

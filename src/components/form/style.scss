@@ -1,3 +1,28 @@
+.p-select,
+.p-multiselect {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 0.6px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.p-select-label.p-placeholder,
+.p-select-label,
+.p-inputtext,
+.p-datatable-header {
+  color: rgba(255, 255, 255, 0.32) !important;
+}
+.p-datatable-header,
+.p-datatable-header-cell,
+td,
+tr,
+.p-paginator {
+  background: none !important;
+  color: rgba(255, 255, 255, 0.32) !important;
+}
+.p-inputtext:enabled:focus,
+.p-inputtext:enabled:hover {
+  border-color: rgba(255, 255, 255, 0.32) !important;
+}
+
 .form {
   padding: 30px 40px;
 }
@@ -48,7 +73,7 @@
 }
 
 .form-control label {
-  color: #777;
+  color: rgba(255, 255, 255, 0.32);
   display: block;
   margin-bottom: 5px;
 }
@@ -56,23 +81,33 @@
 .form-control input,
 .form-control select,
 .form-control textarea {
-  border: 1px solid #d0d0d0;
+  border: 0.6px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 4px;
   display: block;
   width: 100%;
   padding: 10px;
   font-size: 14px;
+  color: rgba(255, 255, 255, 0.32);
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.32) !important;
+  }
+}
+::placeholder {
+  /* Most modern browsers support this now. */
+  color: rgba(255, 255, 255, 0.32) !important;
+  // font-family: 'monrope' !important;
 }
 
 .form-control input:focus,
 .form-control select:focus,
 .form-control textarea:focus {
   outline: 0;
-  border-color: #777;
+  border-color: rgba(255, 255, 255, 0.32) !important;
 }
 
 .form-control.success input {
-  border-color: #2ecc71;
+  // border-color: #2ecc71;
 }
 
 .form-control.error input {

@@ -14,7 +14,12 @@ async function checkIfDepartmentExists(nameDepartment) {
         },
       },
     })
-    return existingDepartment !== null
+    console.log(existingDepartment, 'Он же блять существует!!!!!!')
+    if (existingDepartment) {
+      return existingDepartment.id
+    } else {
+      return null
+    }
   } catch (error) {
     console.error('Ошибка при проверке существования "nameDepartment":', error)
     throw error
@@ -141,19 +146,28 @@ class DepartmentController {
 
   async changeInfoDepartment(req, res) {
     try {
-      const { id, fullname, department_description, participants } = req.body
-      const updatedCount = await Department.update(
-        {
-          fullname: fullname, // Новое значение для колонки info
-          department_description: department_description, // Новое значение для колонки code
-          participants: participants, // Новое значение для колонки info
-        },
-        {
-          where: {
-            id: id, // Условие для поиска записи по id
+      const { id, fullname, department_description, participants, department } = req.body
+      const nameDepartment = await checkIfDepartmentExists(department)
+      console.log(nameDepartment, 'смена отдела', id, department)
+      let updatedCount = null
+      if (nameDepartment !== id && nameDepartment !== null) {
+        updatedCount = { name: 'Такой отдел уже есть' }
+      } else {
+        updatedCount = await Department.update(
+          {
+            fullname: fullname, // Новое значение для колонки info
+            department_description: department_description, // Новое значение для колонки code
+            participants: participants, // Новое значение для колонки info
+            department: department, // Новое значение для колонки info
           },
-        },
-      )
+          {
+            where: {
+              id: id, // Условие для поиска записи по id
+            },
+          },
+        )
+      }
+
       return res.json(updatedCount)
     } catch (error) {
       console.error('Ошибка при обновлении записи:', error)

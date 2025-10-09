@@ -104,6 +104,7 @@ class UserController {
         gender,
         department,
         company,
+        brand,
         positions,
         locations,
         jobfunctions,
@@ -145,7 +146,6 @@ class UserController {
         patronymic,
         gender,
         department,
-        company,
         positions,
         locations,
         jobfunctions,
@@ -156,10 +156,11 @@ class UserController {
         img: fileName,
         fullname,
         code: newCode,
-        jobfunctions,
         combining,
         rating,
         director,
+        company,
+        brand,
       })
       await Admins.create({ userId: user.id })
       // const WC = await WorkingContacts.create({
@@ -176,6 +177,7 @@ class UserController {
         user.gender,
         user.department,
         user.company,
+        user.brand,
         user.positions,
         user.locations,
         user.jobfunctions,
@@ -218,6 +220,9 @@ class UserController {
         combining,
         director,
         status,
+        jobfunctions,
+        company,
+        brand,
       } = req.body
 
       let fileName = false
@@ -252,6 +257,9 @@ class UserController {
         combining,
         director,
         status,
+        jobfunctions,
+        company,
+        brand,
       }
       if (fileName) updatedData.img = fileName
       if (hashPassword) updatedData.password = hashPassword
@@ -279,7 +287,8 @@ class UserController {
         updatedCount?.rating,
         updatedCount?.combining,
         updatedCount?.director,
-        updatedCount?.status,
+        updatedCount?.company,
+        updatedCount?.brand,
       )
       return res.json({ token })
     } catch (error) {
@@ -289,7 +298,7 @@ class UserController {
   async login(req, res, next) {
     const { email, password } = req.body
     const user = await User.findOne({ where: { email } })
-    const WC = await WorkingContacts.findOne({ where: { userId: user.id } })
+    // const WC = await WorkingContacts.findOne({ where: { userId: user.id } })
     if (!user) {
       return next(ApiError.internal('пользователь не найден'))
     }
@@ -310,6 +319,7 @@ class UserController {
       user.gender,
       user.department,
       user.company,
+      user.brand,
       user.positions,
       user.locations,
       user.jobfunctions,
@@ -335,6 +345,7 @@ class UserController {
       req.user.gender,
       req.user.department,
       req.user.company,
+      req.user.brand,
       req.user.positions,
       req.user.locations,
       req.user.jobfunctions,

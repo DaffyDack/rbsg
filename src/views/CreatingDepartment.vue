@@ -62,6 +62,7 @@ interface changeForm {
   participants: any
   id: number
   director: string | undefined
+  department: string
 }
 interface Item {
   department: string
@@ -77,6 +78,7 @@ interface name {
 const ThereIsAlreadyDepartmentVisible = ref<boolean>(false)
 const selectedName = ref<name[]>([])
 const selectedNameChange = ref<name[]>([])
+const selectedDepartmentChange = ref<string>('')
 const selectedDirectorChange = ref<{ fullname: string }>()
 const form = ref<Form>({
   fullname: '',
@@ -93,6 +95,7 @@ const changeFormDepartment = ref<changeForm>({
   participants: '',
   id: 0,
   director: '',
+  department: '',
 })
 const messageCondition = ref<string>('')
 const condition = ref<boolean>(false)
@@ -136,11 +139,13 @@ const selectedDeleteDepartment = (e: any) => {
 }
 
 const selectedEditDepartment = async (e: any) => {
+
   editedDepartment.value = e.data.department
   changeFormDepartment.value.department_description = e.data.department_description
   changeFormDepartment.value.participants = e.data.participants
   changeFormDepartment.value.id = e.data.id
   changeFormDepartment.value.director = e.data.director
+  changeFormDepartment.value.department = e.data.department
   editDepartmentVisible.value = true
 }
 
@@ -178,7 +183,7 @@ const RegistrationDepartment = async () => {
       'fullname',
       form.value.fullname == ''
         ? `Отсутствует`
-        : `${form.value.fullname.firstname} ${form.value.fullname.lastname} ${form.value.fullname.patronymic}`,
+        : `${form.value.fullname.lastname} ${form.value.fullname.firstname} ${form.value.fullname.patronymic}`,
     )
     formData.append('department', form.value.department)
     formData.append('post', form.value.post.post)
@@ -263,20 +268,26 @@ const deleteDepartmentForm = async () => {
 }
 
 const changeDepartmentForm = async () => {
+
   try {
     const newObject = {
       id: changeFormDepartment.value.id,
       department_description: changeFormDepartment.value.department_description,
       participants: changeFormDepartment.value.participants,
       fullname: changeFormDepartment.value.director,
+      department: selectedDepartmentChange.value === '' ? changeFormDepartment.value.department : selectedDepartmentChange.value,
     }
     const response = await changeInfoDepartment(newObject)
-    editDepartmentVisible.value = false
-    fetchDepartment().then((data) => {
-      departments.value = data
-      startBuild()
-      existingDepartments.value = [...existingDepartments.value, ...getUniqueItems(departments.value)]
-    })
+    if (response['name'] !== undefined) {
+      ThereIsAlreadyDepartmentVisible.value = true
+    } else {
+      editDepartmentVisible.value = false
+      fetchDepartment().then((data) => {
+        departments.value = data
+        startBuild()
+        existingDepartments.value = [...existingDepartments.value, ...getUniqueItems(departments.value)]
+      })
+    }
     selectedNameChange.value = []
   } catch (error) {
     console.log('что то с изменениями', error)
@@ -360,7 +371,7 @@ watch(
         <div class="form-control">
           <label for="participants" style="color: #fff">Участники</label>
           <MultiSelect v-model="selectedName" @change="getNamesAsString()" id="participants" :options="usersString"
-            optionLabel="fullname" filter placeholder="Участник" :maxSelectedLabels="3" class="w-full md:w-80" />
+            optionLabel="fullname" filter placeholder="Участники" :maxSelectedLabels="3" class="w-full md:w-80" />
         </div>
         <div class="form-control"
           :class="{ error: errors.department_affiliation, success: !errors.department_affiliation && form.department_affiliation != '' }">
@@ -423,7 +434,7 @@ watch(
     </Dialog>
     <Dialog v-model:visible="editDepartmentVisible" modal :header="`Редактирование отдела: ${editedDepartment}`"
       :style="{ width: '80%' }">
-      <div class="group_form-control-two">
+      <div class="group_form-control-tree">
         <div class="form-control">
           <label for="Director" style="color: #000">Руководитель</label>
           <Select v-model="selectedDirectorChange" filter @change="getDirectorChangeDepartmen()" id="Director"
@@ -434,6 +445,11 @@ watch(
           <MultiSelect v-model="selectedNameChange" @change="getNamesChangeDepartmen()" id="participants1"
             :options="usersString" optionLabel="fullname" filter placeholder="Участник" :maxSelectedLabels="3"
             class="w-full md:w-[100%]" />
+        </div>
+        <div class="form-control">
+          <label for="Department" style="color: #000">Отдел</label>
+          <input v-model="selectedDepartmentChange" id="Department" :options="usersString" optionLabel="fullname"
+            :placeholder="editedDepartment" class="w-full md:w-[100%]" />
         </div>
       </div>
       <div class="group_form-control">
@@ -466,7 +482,8 @@ watch(
 }
 
 .saveButton {
-  background: #06a80b;
+  background: #178FFF;
+  background: linear-gradient(45deg, rgba(23, 143, 255, 1) 0%, rgba(255, 51, 228, 1) 100%);
   min-height: 42px;
   min-width: 280px;
   border-radius: 16px;

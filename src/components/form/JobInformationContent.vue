@@ -82,13 +82,25 @@ const form = ref<Form>({
   combining: []
 })
 const kompany = ref([
-  { name: 'РБС ГРУПП', code: 'РБС ГРУПП' },
-  { name: 'КРАФТЕР', code: 'КРАФТЕР' },
-  { name: 'РБС ГРУПП / КРАФТЕР', code: 'РБС ГРУПП / КРАФТЕР' },
+  { name: 'RBS MULTIVERSE', code: 'RBS MULTIVERSE' },
+  { name: 'RBS fit - out GROUP', code: 'RBS fit-out GROUP' },
+  { name: 'RBS IT', code: 'RBS IT' },
+  { name: 'RBS WOWORK', code: 'RBS WOWORK' },
+  { name: 'KRAFTER', code: 'KRAFTER' },
+  { name: 'KRAFTER мебель', code: 'KRAFTER мебель' },
+  { name: 'АТЭРИ', code: 'АТЭРИ' },
+  { name: 'HPL STOL', code: 'HPL STOL' },
+  { name: 'KRAFT HPL', code: 'KRAFT HPL' },
+  { name: 'STK MARKET', code: 'STK MARKET' },
 ])
 const brand = ref([
-  { name: 'КРАФТЕР', code: 'КРАФТЕР' },
-  { name: 'АТЕРИ', code: 'АТЕРИ' },
+  { name: 'ООО «РБС ГРУПП»', code: 'ООО «РБС ГРУПП»' },
+  { name: 'ООО «КРАФТЕР»', code: 'ООО «КРАФТЕР»' },
+  { name: 'ИП Т', code: 'ИП Т' },
+  { name: 'ИП К', code: 'ИП К' },
+  { name: 'Самозанятый', code: 'Самозанятый' },
+  { name: 'Гражданско-правовые', code: 'Гражданско-правовые' },
+  { name: 'ООО «МУЛЬТИВЕРС»', code: 'ООО «МУЛЬТИВЕРС»' },
 ])
 
 const errors = ref<Errors>({
@@ -288,7 +300,9 @@ defineExpose({ CheckingJobInformationComponent })
 
     & button {
       padding: 10px 30px;
-      background: #ee4d4d;
+      background: #178FFF;
+      background: linear-gradient(45deg, rgba(23, 143, 255, 1) 0%, rgba(255, 51, 228, 1) 100%);
+      color: #fff;
       border-radius: 5px;
     }
   }
@@ -301,5 +315,6 @@ defineExpose({ CheckingJobInformationComponent })
 
 .italic {
   font-style: italic;
+  color: rgba(255, 255, 255, 0.32);
 }
 </style>

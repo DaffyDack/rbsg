@@ -146,13 +146,25 @@ const combiningForm = ref({
   dataCombining: ''
 })
 const kompany = ref([
-  { name: 'РБС ГРУПП', code: 'РБС ГРУПП' },
-  { name: 'КРАФТЕР', code: 'КРАФТЕР' },
-  { name: 'РБС ГРУПП / КРАФТЕР', code: 'РБС ГРУПП / КРАФТЕР' },
+  { name: 'RBS MULTIVERSE', code: 'RBS MULTIVERSE' },
+  { name: 'RBS fit - out GROUP', code: 'RBS fit-out GROUP' },
+  { name: 'RBS IT', code: 'RBS IT' },
+  { name: 'RBS WOWORK', code: 'RBS WOWORK' },
+  { name: 'KRAFTER', code: 'KRAFTER' },
+  { name: 'KRAFTER мебель', code: 'KRAFTER мебель' },
+  { name: 'АТЭРИ', code: 'АТЭРИ' },
+  { name: 'HPL STOL', code: 'HPL STOL' },
+  { name: 'KRAFT HPL', code: 'KRAFT HPL' },
+  { name: 'STK MARKET', code: 'STK MARKET' },
 ])
 const brand = ref([
-  { name: 'КРАФТЕР', code: 'КРАФТЕР' },
-  { name: 'АТЕРИ', code: 'АТЕРИ' },
+  { name: 'ООО «РБС ГРУПП»', code: 'ООО «РБС ГРУПП»' },
+  { name: 'ООО «КРАФТЕР»', code: 'ООО «КРАФТЕР»' },
+  { name: 'ИП Т', code: 'ИП Т' },
+  { name: 'ИП К', code: 'ИП К' },
+  { name: 'Самозанятый', code: 'Самозанятый' },
+  { name: 'Гражданско-правовые', code: 'Гражданско-правовые' },
+  { name: 'ООО «МУЛЬТИВЕРС»', code: 'ООО «МУЛЬТИВЕРС»' },
 ])
 const status = ref([
   { name: 'Активет' },
@@ -220,12 +232,15 @@ const editUser = async () => {
   newObject.append('role', product.value.role.name ?? product.value.role,)
   newObject.append('status', product.value.status.name ?? product.value.status,)
   newObject.append('img', product.value.img,)
+  newObject.append('company', product.value.company.name ?? product.value.company)
+  newObject.append('brand', product.value.brand.name ?? product.value.brand)
   newObject.append('rating', product.value.rating.name ?? product.value.rating,)
   newObject.append('email', newEmail.value.email == product.value.email ? '' : newEmail.value.email,)
   newObject.append('password', newPassword.value.password,)
   newObject.append('director', product.value.director.fullname ?? product.value.director,)
+  newObject.append('jobfunctions', product.value.jobfunctions)
   newObject.append('combining', JSON.stringify(product.value.combining),)
-  newObject.append('fullname', product.value.firstname + ' ' + product.value.lastname + ' ' + product.value.patronymic)
+  newObject.append('fullname', product.value.lastname + ' ' + product.value.firstname + ' ' + product.value.patronymic)
   try {
     const response = await changeInfoUser(newObject)
     fetchUzers().then((data) => store.registrationCompleted(data))
@@ -246,6 +261,9 @@ function confirmEditUser(e: any) {
 }
 function previewFiles(event: any) {
   product.value.img = event.target.files[0]
+}
+function updateJobFunctions(selectedPosition: any) {
+  product.value.jobfunctions = selectedPosition.value.description;
 }
 // function set() {
 //   setTimeout(() => {
@@ -386,8 +404,8 @@ watch(
             </div>
             <div class="form-control">
               <label for="jobInformationPost">Должность</label>
-              <Select v-model="product.positions" filter id="jobInformationPost" :options="posts" optionLabel="post"
-                :placeholder="product.positions" class="w-full" />
+              <Select v-model="product.positions" @change="updateJobFunctions" filter id="jobInformationPost"
+                :options="posts" optionLabel="post" :placeholder="product.positions" class="w-full" />
             </div>
 
           </div>
@@ -451,10 +469,22 @@ watch(
             <label for="selctFile">Загрузить фото</label>
             <input type="file" ref="upload" id="selctFile" @change="previewFiles" />
           </div>
-          <div class="form-control">
-            <label for="status">Статус сотрудника</label>
-            <Select v-model="product.status" id="assignRating" :options="status" optionLabel="name"
-              :placeholder="product.status" class="w-full" />
+          <div class="group_form-control-tree">
+            <div class="form-control">
+              <label for="status">Статус сотрудника</label>
+              <Select v-model="product.status" id="assignRating" :options="status" optionLabel="name"
+                :placeholder="product.status" class="w-full" />
+            </div>
+            <div class="form-control">
+              <label for="editCmopany">Компания</label>
+              <Select v-model="product.company" id="editCmopany" :options="kompany" optionLabel="name"
+                :placeholder="product.company" class="w-full" />
+            </div>
+            <div class="form-control">
+              <label for="editBrand">Бренд</label>
+              <Select v-model="product.brand" id="editBrand" :options="brand" optionLabel="name"
+                :placeholder="product.brand" class="w-full" />
+            </div>
           </div>
           <div class="form-control">
             <label for="selctFile">Совмещение</label>
@@ -535,6 +565,8 @@ watch(
               <div>Отдел: {{ product.department }}</div>
               <div>Руководитель: {{ product.director }}</div>
               <div>Рейтинг: {{ product.rating }}</div>
+              <div>Компания: {{ product.company }}</div>
+              <div>Бренд: {{ product.brand }}</div>
             </div>
           </div>
           <div class="additionalInformation">
@@ -590,7 +622,8 @@ watch(
       top: 5px;
       right: 5px;
       padding: 10px 30px;
-      background: #ee4d4d;
+      background: #178FFF;
+      background: linear-gradient(45deg, rgba(23, 143, 255, 1) 0%, rgba(255, 51, 228, 1) 100%);
       border-radius: 5px;
     }
   }
