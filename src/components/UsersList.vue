@@ -354,7 +354,7 @@ watch(
         </div>
         <template #footer>
           <Button label="Отмена" icon="pi pi-times" text @click="deleteUserDialog = false" />
-          <Button label="Удалить" icon="pi pi-check" @click="deleteUser" />
+          <Button label="Удалить" class="saveButton" icon="pi pi-check" @click="deleteUser" />
         </template>
       </Dialog>
       <Dialog v-model:visible="editUserDialog" :style="{ width: '80%' }" header="Редактирование пользователя"
@@ -535,7 +535,7 @@ watch(
         </div>
         <template #footer>
           <Button label="Отмена" icon="pi pi-times" text @click="editUserDialog = false" />
-          <Button label="Изменить" icon="pi pi-check" @click="editUser" />
+          <Button label="Изменить" class="saveButton" icon="pi pi-check" @click="editUser" />
         </template>
       </Dialog>
 
@@ -635,7 +635,7 @@ watch(
   .namePage,
   .additionalInformation,
   .jobfunctions {
-    background: #5c5b5b;
+    background: rgba(255, 255, 255, 0.04);
     padding: 15px;
     border-radius: 16px;
     margin-bottom: 10px;

@@ -429,7 +429,7 @@ watch(
         ?</span>
       <div class="flex justify-end gap-2">
         <Button type="button" label="Отмена" severity="secondary" @click="visibleDeleteDepartment = false"></Button>
-        <Button type="button" label="Удалить" @click="deleteDepartmentForm"></Button>
+        <Button type="button" class="saveButton" label="Удалить" @click="deleteDepartmentForm"></Button>
       </div>
     </Dialog>
     <Dialog v-model:visible="editDepartmentVisible" modal :header="`Редактирование отдела: ${editedDepartment}`"
@@ -448,8 +448,8 @@ watch(
         </div>
         <div class="form-control">
           <label for="Department" style="color: #000">Отдел</label>
-          <input v-model="selectedDepartmentChange" id="Department" :options="usersString" optionLabel="fullname"
-            :placeholder="editedDepartment" class="w-full md:w-[100%]" />
+          <input v-model="selectedDepartmentChange" id="Department" :options="existingDepartments"
+            optionLabel="department" :placeholder="editedDepartment" class="w-full md:w-[100%]" />
         </div>
       </div>
       <div class="group_form-control">
@@ -461,7 +461,7 @@ watch(
       </div>
       <div class="flex justify-end gap-2">
         <Button type="button" label="Отмена" severity="secondary" @click="editDepartmentVisible = false"></Button>
-        <Button type="button" label="Изменить" @click="changeDepartmentForm"></Button>
+        <Button type="button" class="saveButton" label="Изменить" @click="changeDepartmentForm"></Button>
       </div>
     </Dialog>
   </div>
@@ -476,20 +476,21 @@ watch(
       display: flex;
       justify-content: space-between;
       padding: 5px;
-      border: 1px solid #ccc;
+      border-top: 0.6px solid rgba(255, 255, 255, 0.4);
     }
   }
 }
 
-.saveButton {
-  background: #178FFF;
-  background: linear-gradient(45deg, rgba(23, 143, 255, 1) 0%, rgba(255, 51, 228, 1) 100%);
-  min-height: 42px;
-  min-width: 280px;
-  border-radius: 16px;
-  margin-right: 15px;
-  font-size: 15px;
-}
+// .saveButton {
+//   background: #178FFF;
+//   background: linear-gradient(45deg, rgba(23, 143, 255, 1) 0%, rgba(255, 51, 228, 1) 100%);
+//   min-height: 42px;
+//   min-width: 280px;
+//   border-radius: 16px;
+//   margin-right: 15px;
+//   font-size: 15px;
+//   color: #fff;
+// }
 
 .department {
   padding: 10px;

@@ -14,7 +14,6 @@ async function checkIfDepartmentExists(nameDepartment) {
         },
       },
     })
-    console.log(existingDepartment, 'Он же блять существует!!!!!!')
     if (existingDepartment) {
       return existingDepartment.id
     } else {

@@ -252,15 +252,16 @@
     margin: 0;
     padding: 0;
 
-    .saveButton {
-      background: #178FFF;
-      background: linear-gradient(45deg, rgba(23, 143, 255, 1) 0%, rgba(255, 51, 228, 1) 100%);
-      min-height: 42px;
-      min-width: 280px;
-      border-radius: 16px;
-      margin-right: 15px;
-      font-size: 15px;
-    }
+    // .saveButton {
+    //   background: #178FFF;
+    //   background: linear-gradient(45deg, rgba(23, 143, 255, 1) 0%, rgba(255, 51, 228, 1) 100%);
+    //   min-height: 42px;
+    //   min-width: 280px;
+    //   border-radius: 16px;
+    //   margin-right: 15px;
+    //   font-size: 15px;
+    //   color: #fff;
+    // }
 
     .cancelButton {
       background: #37382d;

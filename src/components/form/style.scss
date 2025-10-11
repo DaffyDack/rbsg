@@ -1,13 +1,45 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.32) !important;
+  transition: background-color 1000s ease-in-out 0s !important;
+  box-shadow: inset 0 0 20px 20px rgba(255, 255, 255, 0.04) !important;
+}
+
 .p-select,
 .p-multiselect {
   background: rgba(255, 255, 255, 0.04) !important;
   border: 0.6px solid rgba(255, 255, 255, 0.08) !important;
 }
+.p-select-overlay {
+  background: #101619 !important;
+  border: none !important;
+  color: rgba(255, 255, 255, 0.32) !important;
+}
+.p-select-option {
+  color: rgba(255, 255, 255, 0.32) !important;
+}
+.p-select-option.p-select-option-selected,
+.p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+.p-dialog {
+  background: #101619 !important;
+  border: none !important;
+}
+.p-dialog-footer {
+  padding: 10px !important;
+}
 
 .p-select-label.p-placeholder,
 .p-select-label,
 .p-inputtext,
-.p-datatable-header {
+.p-datatable-header,
+.p-dialog-header,
+.p-dialog-content {
+  background: rgba(255, 255, 255, 0.04) !important;
   color: rgba(255, 255, 255, 0.32) !important;
 }
 .p-datatable-header,
@@ -17,6 +49,13 @@ tr,
 .p-paginator {
   background: none !important;
   color: rgba(255, 255, 255, 0.32) !important;
+}
+.p-tree {
+  background: none !important;
+  color: rgba(255, 255, 255, 0.87) !important;
+  b {
+    color: rgba(255, 255, 255, 0.87) !important;
+  }
 }
 .p-inputtext:enabled:focus,
 .p-inputtext:enabled:hover {
@@ -73,7 +112,7 @@ tr,
 }
 
 .form-control label {
-  color: rgba(255, 255, 255, 0.32);
+  color: rgba(255, 255, 255, 0.32) !important;
   display: block;
   margin-bottom: 5px;
 }
@@ -81,7 +120,7 @@ tr,
 .form-control input,
 .form-control select,
 .form-control textarea {
-  border: 0.6px solid rgba(255, 255, 255, 0.08);
+  border: 0.6px solid rgba(255, 255, 255, 0.08) !important;
   background: rgba(255, 255, 255, 0.04);
   border-radius: 4px;
   display: block;
@@ -153,4 +192,21 @@ tr,
   text-align: center;
   text-decoration: none;
   transform: rotate(45deg);
+}
+
+.saveButton {
+  background: #178fff !important;
+  background: linear-gradient(
+    45deg,
+    rgba(23, 143, 255, 1) 0%,
+    rgba(255, 51, 228, 1) 100%
+  ) !important;
+  min-height: 42px;
+  min-width: 180px;
+  border-radius: 16px;
+  margin-right: 15px;
+  font-size: 15px;
+  color: #fff !important;
+  border: none !important;
+  padding: 0 15px;
 }
